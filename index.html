@@ -367,71 +367,91 @@
     </button>
   </div>
 
-  <!-- Department selector -->
-  <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
-    <label class="text-sm font-medium text-gray-700">Select Department</label>
-    <select id="deptSelect"
-            class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300">
-      <option value="" selected disabled>— Choose a department —</option>
-      <option value="ahr">Asia Human Resources</option>
-      <option value="cgi">CGI</option>
-      <option value="eng">Engineering</option>
-      <option value="hradmin">HR and Administration</option>
-      <option value="pd">Product Development</option>
-      <option value="qa">Quality Assurance</option>
-      <option value="sqe">Sample Quality Engineering</option>
-      <option value="sc">Strategic Sourcing</option>
-      <option value="se">Strategy Execution</option>
-      <option value="vp">HoDs - Evaluate by the VP</option>
-    </select>
-  </div>
+<!-- Department selector -->
+<div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
+  <label class="text-sm font-medium text-gray-700">Select Department</label>
+  <select id="deptSelect"
+          class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300">
+    <option value="" selected disabled>— Choose a department —</option>
+  </select>
+</div>
 
-  <!-- Table wrapper -->
-  <div class="overflow-x-auto border rounded-2xl bg-white">
-    <table class="min-w-[1000px] w-full text-sm">
-      <thead class="bg-gray-50">
-        <tr class="text-gray-800">
-          <th class="px-3 py-3 text-left w-5">No.</th>
-          <th class="px-3 py-3 text-left w-40">Role</th>
-          <th class="px-3 py-3 text-center">Succession Urgency &<br/>Internal Readiness</th>
-          <th class="px-3 py-3 text-center">Cost Efficiency</th>
-          <th class="px-3 py-3 text-center">Leadership & Culture<br/>Impact</th>
-          <th class="px-3 py-3 text-center">Strategic Impact</th>
-          <th class="px-3 py-3 text-center">Skill Scarcity & External<br/>Hiring Difficulty</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Total</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Result</th>
-          <th class="px-3 py-3 text-center w-30">Include in Succession Planning?</th>
-          <th class="px-3 py-3 text-left w-40">HoD Adjustment Rationale</th>
-        </tr>
-      </thead>
-      <tbody id="scoreRows"></tbody>
-    </table>
-  </div>
+<!-- Table wrapper -->
+<div class="overflow-x-auto border rounded-2xl bg-white">
+  <table class="min-w-[1000px] w-full text-sm">
+    <thead class="bg-gray-50">
+      <tr class="text-gray-800">
+        <th class="px-3 py-3 text-left w-5">No.</th>
+        <th class="px-3 py-3 text-left w-40">Role</th>
+        <th class="px-3 py-3 text-center">Succession Urgency &<br/>Internal Readiness</th>
+        <th class="px-3 py-3 text-center">Cost Efficiency</th>
+        <th class="px-3 py-3 text-center">Leadership & Culture<br/>Impact</th>
+        <th class="px-3 py-3 text-center">Strategic Impact</th>
+        <th class="px-3 py-3 text-center">Skill Scarcity & External<br/>Hiring Difficulty</th>
+        <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Total</th>
+        <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Result</th>
+        <th class="px-3 py-3 text-center w-30">Include in Succession Planning?</th>
+        <th class="px-3 py-3 text-left w-40">HoD Adjustment Rationale</th>
+      </tr>
+    </thead>
+    <tbody id="scoreRows"></tbody>
+  </table>
+</div>
 
-  <p class="text-xs text-gray-500 mt-3">
-    * Điểm mỗi tiêu chí: 1–5. Tổng điểm = trung bình 5 tiêu chí (20% mỗi tiêu chí).
-  </p>
-</section>
+<p class="text-xs text-gray-500 mt-3">
+  * Điểm mỗi tiêu chí: 1–5. Tổng điểm = trung bình 5 tiêu chí (20% mỗi tiêu chí).
+</p>
 
-<!-- ========== JS cho Official Scoring Table (THAY CẢ PHẦN NÀY) ========== -->
-<!-- SheetJS (xuất Excel) -->
+<!-- ========== JS cho Official Scoring Table ========== -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <script>
-  /* ===== 1) Roles theo Department ===== */
-  const departmentRoles = {
-    ahr: ["Senior Team Leader of Human Resources","Talent Development Project Leader","Senior Talent Development Specialist","Talent Development Coordinator","Talent Development Specialist"],
-    cgi: ["3D Artist","3D Material Artist","CGI Photographer"],
-    eng: ["Engineering Project Manager","Senior Team Leader of  Compliance Engineering","Senior Team Leader of Product Engineering","Team Leader of Product Engineering","Team Leader of System Process Engineering","Compliance Engineer","Engineering Assistant","Industrial Engineer","Packaging Engineer","Packaging Engineering Specialist","Process Engineer","Product Engineer","Project Engineer","Senior Compliance Engineer","Senior Industrial Engineer","Senior System Process Engineer","System Process Engineer"],
-    hradmin: ["Accountant","HR and Admin Officer","IT Specialist","Recruiting Specialist","Senior Accountant","Senior HR and Admin Officer","Senior IT Specialist"],
-    pd: ["Product Development Project Leader","Senior Team Leader of Product Development","Team Leader of Product Development","Team Leader of Product Development Material","Finishing Specialist","Finishing Technician","Product Developer","Product Development Administrator","Senior Product Developer"],
-    qa: ["Vendor Champion","Team Leader of Performance Testing","Field Testing Coordinator","Quality Assurance Administrator","Quality Assurance CI","Quality Control Inspector","Senior Quality Assurance CI"],
-    sqe: ["Sample Quality Engineer","Senior Sample Quality Engineer"],
-    sc: ["Team Leader of Material Assurance","Cost Analyst","Material Assurance Specialist","Material Sourcing Specialist"],
-    se: ["Process Integration Associate","Solutions Development Specialist","Strategy Specialist"],
-    vp: ["Team Leader of CGI","Manager of Engineering","Manager of HR and Admin","Director of Product Development, Asia","Director of Quality, Asia","Sample Quality Engineering Project Leader","Manager of Strategic Sourcing","Manager of Strategy Execution"]
-  };
+async function loadDepartments() {
+  // fetch dữ liệu JSON do workflow sinh ra
+  const res = await fetch('/data/departments.json', { cache: 'no-store' });
+  const departments = await res.json();
 
+  const deptSelect = document.getElementById("deptSelect");
+  const scoreRows = document.getElementById("scoreRows");
+
+  // render Department dropdown
+  Object.keys(departments).forEach(key => {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = departments[key].name;
+    deptSelect.appendChild(opt);
+  });
+
+  // khi chọn Department → render roles vào bảng
+  deptSelect.addEventListener("change", function() {
+    const deptKey = this.value;
+    scoreRows.innerHTML = "";
+
+    if (departments[deptKey]) {
+      departments[deptKey].roles.forEach((role, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="border-t px-3 py-2">${i+1}</td>
+          <td class="border-t px-3 py-2">${role}</td>
+          <td class="border-t px-3 py-2 text-center"><input type="number" min="1" max="5" class="w-12 text-center border rounded"></td>
+          <td class="border-t px-3 py-2 text-center"><input type="number" min="1" max="5" class="w-12 text-center border rounded"></td>
+          <td class="border-t px-3 py-2 text-center"><input type="number" min="1" max="5" class="w-12 text-center border rounded"></td>
+          <td class="border-t px-3 py-2 text-center"><input type="number" min="1" max="5" class="w-12 text-center border rounded"></td>
+          <td class="border-t px-3 py-2 text-center"><input type="number" min="1" max="5" class="w-12 text-center border rounded"></td>
+          <td class="border-t px-3 py-2 text-center text-[#F68C2C] font-semibold">–</td>
+          <td class="border-t px-3 py-2 text-center text-[#F68C2C] font-semibold">–</td>
+          <td class="border-t px-3 py-2 text-center"><input type="checkbox"></td>
+          <td class="border-t px-3 py-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+        `;
+        scoreRows.appendChild(tr);
+      });
+    }
+  });
+}
+
+loadDepartments();
+</script>
+<script>
   /* ===== 2) Phân loại ===== */
   function classify(score){
     if (score >= 4.2)  return {label:'Critical Role',       bg:'bg-red-50',    text:'text-red-800',    border:'border-red-500'};

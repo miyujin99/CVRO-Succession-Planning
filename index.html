@@ -159,17 +159,48 @@
       </ul>
     </div>
   </div>
-</div
-            <!-- Criteria Tab -->
-            <div id="s1-criteria-tab" class="step-tab-content hidden">
-              <div class="space-y-6">
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4"><div class="flex items-center gap-2"><span class="bg-ashley-orange text-white px-2 py-1 rounded text-xs font-bold">AHR RECOMMENDS</span><span class="text-yellow-800 font-medium">Option 2 - CVRO Customized</span></div></div>
-                <div class="grid md:grid-cols-2 gap-6">
-                  <div class="bg-white border-2 border-gray-200 rounded-lg p-4"><h4 class="font-semibold text-gray-900 mb-3">Option 1 – Standard Market Criteria (Weighted)</h4><div class="space-y-2 text-sm"><div class="flex justify-between"><span>Urgency</span><span class="font-medium">20%</span></div><div class="flex justify-between"><span>Impact</span><span class="font-medium">30%</span></div><div class="flex justify-between"><span>Skills</span><span class="font-medium">30%</span></div><div class="flex justify-between"><span>Internal Talent</span><span class="font-medium">15%</span></div><div class="flex justify-between"><span>External Difficulty</span><span class="font-medium">5%</span></div></div></div>
-                  <div class="bg-ashley-orange/10 border-2 border-ashley-orange rounded-lg p-4"><h4 class="font-semibold text-ashley-orange mb-3">Option 2 – CVRO Customized (Equal 20% each)</h4><div class="space-y-2 text-sm text-gray-700"><div class="flex justify-between"><span>Succession Urgency & Internal Readiness</span><span class="font-medium">20%</span></div><div class="flex justify-between"><span>Cost Efficiency</span><span class="font-medium">20%</span></div><div class="flex justify-between"><span>Leadership & Culture Impact</span><span class="font-medium">20%</span></div><div class="flex justify-between"><span>Strategic Contribution</span><span class="font-medium">20%</span></div><div class="flex justify-between"><span>Skill Scarcity & Market Competition</span><span class="font-medium">20%</span></div></div></div>
-                </div>
-              </div>
-            </div>
+</div>
+<!-- Criteria Tab -->
+<div id="s1-criteria-tab" class="step-tab-content hidden">
+  <div class="space-y-6">
+    <div>
+      <h3 class="font-semibold text-gray-900 mb-2">Part A: Identify Critical Positions</h3>
+      <p class="text-gray-700 text-base mb-4">
+        CVRO Department Heads (HOD) are responsible for evaluating positions within their teams.
+        Two options are presented for evaluation criteria:
+      </p>
+    </div>
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+      <div class="flex items-center gap-2">
+        <span class="bg-ashley-orange text-white px-2 py-1 rounded text-xs font-bold">AHR RECOMMENDS</span>
+        <span class="text-yellow-800 font-medium">Option 2 - CVRO Customized</span>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-white border-2 border-gray-200 rounded-lg p-4">
+        <h4 class="font-semibold text-gray-900 mb-3">Option 1 – Standard Market Criteria (Weighted)</h4>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between"><span>Urgency</span><span class="font-medium">20%</span></div>
+          <div class="flex justify-between"><span>Impact</span><span class="font-medium">30%</span></div>
+          <div class="flex justify-between"><span>Skills</span><span class="font-medium">30%</span></div>
+          <div class="flex justify-between"><span>Internal Talent</span><span class="font-medium">15%</span></div>
+          <div class="flex justify-between"><span>External Difficulty</span><span class="font-medium">5%</span></div>
+        </div>
+      </div>
+
+      <div class="bg-ashley-orange/10 border-2 border-ashley-orange rounded-lg p-4">
+        <h4 class="font-semibold text-ashley-orange mb-3">Option 2 – CVRO Customized (Equal 20% each)</h4>
+        <div class="space-y-2 text-sm text-gray-700">
+          <div class="flex justify-between"><span>Succession Urgency & Internal Readiness</span><span class="font-medium">20%</span></div>
+          <div class="flex justify-between"><span>Cost Efficiency</span><span class="font-medium">20%</span></div>
+          <div class="flex justify-between"><span>Leadership & Culture Impact</span><span class="font-medium">20%</span></div>
+          <div class="flex justify-between"><span>Strategic Contribution</span><span class="font-medium">20%</span></div>
+          <div class="flex justify-between"><span>Skill Scarcity & Market Competition</span><span class="font-medium">20%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
             <!-- Scoring Tab -->
 <div id="s1-scoring-tab" class="step-tab-content hidden min-h-[600px] p-6">
@@ -400,8 +431,8 @@
           <th class="px-3 py-3 text-center">Skill Scarcity & External<br/>Hiring Difficulty</th>
           <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Total</th>
           <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Result</th>
-          <th class="px-3 py-3 text-center w-30">Include in Succession Planning?</th>
-          <th class="px-3 py-3 text-left w-40">HoD Adjustment Rationale</th>
+          <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Include in Succession Planning?</th>
+          <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">HoD Adjustment Rationale</th>
         </tr>
       </thead>
       <tbody id="scoreRows"></tbody>
@@ -668,15 +699,491 @@
   });
 </script>
 </div>
-            <!-- Success Profile Tab -->
-            <div id="s1-profile-tab" class="step-tab-content hidden">
-              <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-medium text-gray-900 mb-2">Competency Criteria</h4><p class="text-sm text-gray-700">Use Performance Evaluation system; list core competency clusters & proficiency.</p></div>
-                <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-medium text-gray-900 mb-2">Job Qualifications</h4><p class="text-sm text-gray-700">Consolidate JD requirements (education, years exp, certs, tools).</p></div>
-              </div>
-            </div>
+<!-- Success Profile Tab -->
+<div id="s1-profile-tab" class="step-tab-content hidden">
+  <div class="mb-4">
+    <h3 class="font-semibold text-gray-900 mb-2">
+      Part B: Define Success Profile for Selected Positions
+    </h3>
+    <p class="text-gray-700 text-base mb-2">
+      Each department must review and finalize the Success Profile for each selected role intended for succession planning.
+    </p>
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+      <div class="flex items-center gap-2">
+        <span class="bg-ashley-orange text-white px-2 py-1 rounded text-xs font-bold">EXAMPLE</span>
+        <span class="text-yellow-800 font-medium">The content below is an example for the position of Senior Team Leader of Human Resources under the Asia Human Resources department.</span>
+      </div>
+    </div>
+  </div>
 
-            <!-- Tools Tab (Step 1 internal) -->
+  <!-- ================== Section 1 ================== -->
+  <section id="sec-competency" class="border-2 border-gray-300 rounded-xl bg-white">
+    <div class="px-5 py-4 border-b-2 border-gray-200">
+      <h3 class="text-ashley-orange font-extrabold text-lg">Section 1: Competency Requirements</h3>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-[1100px] w-full text-sm">
+        <thead class="bg-gray-50">
+          <tr class="text-gray-800">
+            <th class="px-3 py-3 text-left w-20">Areas</th>
+            <th class="px-3 py-3 text-left w-12">No.</th>
+            <th class="px-3 py-3 text-left w-20">Competency Name</th>
+            <th class="px-3 py-3 text-left w-50">Competency Description</th>
+            <th class="px-3 py-3 text-left w-30">Evaluation Item (Job Skills)</th>
+            <th class="px-3 py-3 text-left w-[22rem]">Item Description</th>
+          </tr>
+        </thead>
+
+        <tbody class="align-top">
+          <!-- ===== Business/Management Skills (3) ===== -->
+          <tr>
+            <td class="border-t px-3 py-2 font-medium area-cell" rowspan="3">Business/Management Skills</td>
+            <td class="border-t px-3 py-2">
+              <input type="text" class="border rounded px-2 py-1 w-full" value="1">
+            </td>
+            <td class="border-t px-3 py-2">
+              <input type="text" class="border rounded px-2 py-1 w-full" value="Business Knowledge">
+            </td>
+            <td class="border-t px-3 py-2">
+              <input type="text" class="border rounded px-2 py-1 w-full" value="Understands business drivers; evaluates proposals; spots data gaps that need deeper analysis.">
+            </td>
+            <td class="border-t px-3 py-2">
+              <input type="text" class="border rounded px-2 py-1 w-full" value="Analyze a proposal">
+            </td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Review a real case and identify key levers, risks, and assumptions.">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="2"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Customer Orientation"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Discovers and meets customer needs; balances cost, quality, time for win-win outcomes."></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Customer scenario"></td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Role-play handling a priority conflict while maintaining SLA.">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="3"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Operational Excellence"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Applies best practices; drives continuous improvement to efficiency and quality."></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Kaizen mini-case"></td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Map a process, propose waste reduction and measurable KPIs.">
+              </div>
+            </td>
+          </tr>
+          <!-- Add button row -->
+          <tr class="add-row">
+            <td colspan="6" class="border-t">
+              <div class="flex justify-start px-3 py-2">
+                <button type="button"
+                  class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
+                  onclick="addAreaRow(this)">+ Add Row</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ===== Interpersonal Effectiveness (3) ===== -->
+          <tr>
+            <td class="border-t px-3 py-2 font-medium area-cell" rowspan="3">Interpersonal Effectiveness</td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="1"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Stakeholder Communication"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Communicates clearly and on time; tailors messages to audience; aligns expectations."></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Executive update"></td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Deliver a 3-slide status with risk/mitigation; assess clarity & influence.">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="2"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Conflict Resolution"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Addresses disagreement constructively; seeks common ground and commitments."></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Mediation role-play"></td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Facilitate two parties to an agreed next step and timeline.">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="3"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Cross-functional Collaboration"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Builds trust with other teams; shares context; co-creates solutions."></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Joint planning"></td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Draft a RACI & sprint plan with another function; evaluate feasibility.">
+              </div>
+            </td>
+          </tr>
+          <!-- Add button row -->
+          <tr class="add-row">
+            <td colspan="6" class="border-t">
+              <div class="flex justify-start px-3 py-2">
+                <button type="button"
+                  class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
+                  onclick="addAreaRow(this)">+ Add Row</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ===== Personal Attributes (2) ===== -->
+          <tr>
+            <td class="border-t px-3 py-2 font-medium area-cell" rowspan="2">Personal Attributes</td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="1"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Ownership & Accountability"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Takes responsibility; follows through; learns from mistakes and prevents recurrence."></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Post-mortem review"></td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Write an RCA (5-Whys) and prevention actions with owners/due dates.">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="2"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Resilience"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Stays composed under pressure; adapts priorities; maintains performance."></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Stress scenario"></td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Plan workload re-prioritization and stakeholder comms for a sudden change.">
+              </div>
+            </td>
+          </tr>
+          <!-- Add button row -->
+          <tr class="add-row">
+            <td colspan="6" class="border-t">
+              <div class="flex justify-start px-3 py-2">
+                <button type="button"
+                  class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
+                  onclick="addAreaRow(this)">+ Add Row</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ===== Leadership Impact (2) ===== -->
+          <tr>
+            <td class="border-t px-3 py-2 font-medium area-cell" rowspan="2">Leadership Impact</td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="1"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Team Leadership"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Sets direction; coaches performance; builds an inclusive, high-standards culture."></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Coaching plan"></td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Create a 90-day plan: goals, feedback rhythm, growth actions.">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="2"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Strategic Thinking"></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Connects initiatives to business strategy; anticipates risks and opportunities."></td>
+            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Strategy brief"></td>
+            <td class="border-t px-3 py-2">
+              <div class="flex items-center gap-2">
+                <input type="text" class="border rounded px-2 py-1 w-full" value="Draft OKRs aligned to company priorities; outline risk mitigations.">
+              </div>
+            </td>
+          </tr>
+          <!-- Add button row -->
+          <tr class="add-row">
+            <td colspan="6" class="border-t">
+              <div class="flex justify-start px-3 py-2">
+                <button type="button"
+                  class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
+                  onclick="addAreaRow(this)">+ Add Row</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conclusion note -->
+    <div class="px-5 py-4 border-t-2 border-gray-200 bg-yellow-50 rounded-b-xl">
+      <p class="text-sm text-gray-800">
+        <span class="font-semibold">Available in the Performance Evaluation System:</span>
+        Review & finalize the competency requirements of the successor role, including both leadership competencies and technical skills.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================== Section 2 ================== -->
+  <section id="sec-qualifications" class="border-2 border-gray-300 rounded-xl bg-white mt-6">
+    <div class="px-5 py-4 border-b-2 border-gray-200">
+      <h3 class="text-blue-700 font-extrabold text-lg">Section 2: Job Qualifications</h3>
+    </div>
+
+    <div class="p-5 grid md:grid-cols-2 gap-6 text-sm">
+      <div>
+        <label class="block font-medium">Years of Experience Required</label>
+        <p class="text-xs text-gray-500 mt-1">Minimum years of relevant experience.</p>
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="3–5 years in sourcing or supplier management.">
+      </div>
+
+      <div>
+        <label class="block font-medium">Educational Background (if any)</label>
+        <p class="text-xs text-gray-500 mt-1">Required degree(s) and field(s).</p>
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Bachelor in Engineering; MBA preferred.">
+      </div>
+
+      <div>
+        <label class="block font-medium">Certifications (if any)</label>
+        <p class="text-xs text-gray-500 mt-1">Any industry or function-related certifications required.</p>
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="PMP, CFA, Six Sigma">
+      </div>
+
+      <div>
+        <label class="block font-medium">Functional/Technical Knowledge</label>
+        <p class="text-xs text-gray-500 mt-1">Systems, tools, or processes required.</p>
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="SAP, Power BI, Lean">
+      </div>
+
+      <div>
+        <label class="block font-medium">Language/Communication Skills</label>
+        <p class="text-xs text-gray-500 mt-1">Requirements for English level, reporting ability, or customer-facing communication.</p>
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="English B2+, stakeholder reporting">
+      </div>
+
+      <div>
+        <label class="block font-medium">Other Role-Specific Requirements</label>
+        <p class="text-xs text-gray-500 mt-1">Include availability to travel, shift flexibility, domain knowledge, etc.</p>
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Travel up to 20%, shift rotation">
+      </div>
+    </div>
+
+    <div class="px-5 py-4 border-t-2 border-gray-200 bg-yellow-50 rounded-b-xl">
+      <p class="text-sm text-gray-800">
+        <span class="font-semibold">Available in departmental JDs: </span>
+        Review the essential Job qualifications. This section must be reviewed and consolidated into the template
+      </p>
+    </div>
+  </section>
+
+  <!-- Download toolbar (bottom-right) -->
+  <div class="flex justify-end mt-4">
+    <button type="button" id="btn-export-excel"
+      class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
+      onclick="exportSuccessProfile()">⬇ Download Excel</button>
+  </div>
+</div>
+
+<!-- SheetJS (Excel) -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+  /* ======== Add / Remove Row for Section 1 ======== */
+  function findGroupHeaderCell(fromTr) {
+    let tr = fromTr.previousElementSibling;
+    while (tr) {
+      const cell = tr.querySelector('.area-cell');
+      if (cell) return cell;
+      tr = tr.previousElementSibling;
+    }
+    return null;
+  }
+
+  function getAddRowForGroup(fromTr) {
+    let tr = fromTr.nextElementSibling;
+    while (tr && !tr.classList.contains('add-row')) tr = tr.nextElementSibling;
+    return tr || null;
+  }
+
+  function getGroupRows(addTr) {
+    const rows = [];
+    let tr = addTr.previousElementSibling;
+    while (tr && !tr.querySelector('.area-cell')) {
+      rows.unshift(tr);
+      tr = tr.previousElementSibling;
+    }
+    if (tr) rows.unshift(tr); // include header row (has .area-cell)
+    return rows;
+  }
+
+  function renumberGroup(addTr) {
+    const groupRows = getGroupRows(addTr);
+    groupRows.forEach((row, idx) => {
+      const inputNo = row.querySelector('input');
+      if (inputNo) inputNo.value = (idx + 1).toString();
+    });
+  }
+
+  function createRemoveBtn() {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'action-remove shrink-0 px-2 py-1 text-xs rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 transition';
+    btn.title = 'Remove this row';
+    btn.textContent = '🗑';
+    btn.addEventListener('click', function () { removeAreaRow(this); });
+    return btn;
+  }
+
+  function ensureRemoveBtn(row) {
+    if (row.querySelector('.area-cell')) return; // skip header row
+    const lastTd = row.lastElementChild;
+    if (!lastTd) return;
+    const wrapper = lastTd.querySelector('.flex.items-center.gap-2') || lastTd;
+    wrapper.querySelectorAll('.action-remove').forEach(el => el.remove());
+    wrapper.appendChild(createRemoveBtn());
+  }
+
+  function refreshRemoveButtonsInGroup(addTr) {
+    const groupRows = getGroupRows(addTr);
+    groupRows.forEach(row => ensureRemoveBtn(row));
+  }
+
+  function addAreaRow(btn) {
+    const addTr = btn.closest('tr');
+    const template = addTr.previousElementSibling.cloneNode(true);
+
+    // nếu clone trùng hàng đầu nhóm, bỏ ô Areas
+    const areaCellInTemplate = template.querySelector('.area-cell');
+    if (areaCellInTemplate) areaCellInTemplate.remove();
+
+    // reset input
+    template.querySelectorAll('input').forEach((inp) => inp.value = '');
+    template.querySelectorAll('.action-remove').forEach(el => el.remove());
+
+    // chèn vào trước add-row
+    addTr.parentNode.insertBefore(template, addTr);
+
+    // tăng rowspan
+    const headerCell = findGroupHeaderCell(addTr);
+    if (headerCell) headerCell.rowSpan = (headerCell.rowSpan || 1) + 1;
+
+    // đánh số lại và thêm nút remove
+    renumberGroup(addTr);
+    refreshRemoveButtonsInGroup(addTr);
+  }
+
+  function removeAreaRow(removeBtnEl) {
+    const row = removeBtnEl.closest('tr');
+    if (!row) return;
+
+    // tìm header của nhóm
+    let headerTr = row.previousElementSibling;
+    while (headerTr && !headerTr.querySelector('.area-cell')) {
+      headerTr = headerTr.previousElementSibling;
+    }
+    const headerCell = headerTr ? headerTr.querySelector('.area-cell') : null;
+
+    // tìm add-row
+    const addTr = getAddRowForGroup(row);
+
+    if (!addTr || !headerCell) return;
+    if (row.querySelector('.area-cell')) return; // không xóa hàng đầu nhóm
+
+    row.remove();
+    headerCell.rowSpan = Math.max(1, (headerCell.rowSpan || 1) - 1);
+    renumberGroup(addTr);
+    refreshRemoveButtonsInGroup(addTr);
+  }
+
+  // init remove buttons on load
+  (function initRemoveButtons() {
+    document.querySelectorAll('#sec-competency tbody tr').forEach(tr => {
+      if (tr.classList.contains('add-row')) return;
+      if (tr.querySelector('.area-cell')) return;
+      ensureRemoveBtn(tr);
+    });
+  })();
+
+  /* ======== Export to Excel for Section 1 + Section 2 ======== */
+  function textOf(el) {
+    if (!el) return '';
+    const ip = el.querySelector('input, textarea');
+    return ip ? (ip.value ?? '').toString().trim() : (el.textContent ?? '').toString().trim();
+  }
+
+  function autoWidthForSheet(ws, aoa) {
+    const colMax = Math.max(...aoa.map(r => r.length));
+    const widths = new Array(colMax).fill(10);
+    aoa.forEach(row => {
+      row.forEach((cell, c) => {
+        const len = (cell ? String(cell).length : 0);
+        widths[c] = Math.max(widths[c], Math.min(len + 2, 60));
+      });
+    });
+    ws['!cols'] = widths.map(w => ({ wch: w }));
+  }
+
+  function exportSuccessProfile() {
+    // ----- Section 1
+    const table = document.querySelector('#sec-competency table');
+    if (!table) return alert('Section 1 not found.');
+
+    const headers = Array.from(table.tHead.rows[0].cells).map(th => textOf(th));
+    const bodyRows = Array.from(table.tBodies[0].rows).filter(tr => !tr.classList.contains('add-row'));
+
+    let currentArea = '';
+    const dataRows = bodyRows.map(tr => {
+      const areaCell = tr.querySelector('.area-cell');
+      if (areaCell) currentArea = textOf(areaCell);
+
+      const tds = Array.from(tr.cells);
+      const row = [];
+      for (let i = 0; i < tds.length; i++) {
+        const td = tds[i];
+        if (td.classList.contains('area-cell')) {
+          row.push(currentArea);
+        } else {
+          row.push(textOf(td));
+        }
+      }
+      if (row.length === headers.length - 1) row.unshift(currentArea);
+      return row;
+    });
+
+    const aoa1 = [headers, ...dataRows];
+
+    // ----- Section 2 (fixed selector)
+    const sec2 = document.querySelector('#sec-qualifications');
+    if (!sec2) return alert('Section 2 not found.');
+
+    const fieldBlocks = sec2.querySelectorAll('.p-5 > div');
+    const aoa2 = [['Field', 'Value']];
+    fieldBlocks.forEach(div => {
+      const label = textOf(div.querySelector('label')) || '';
+      const ip = div.querySelector('input, textarea');
+      const value = ip ? (ip.value ?? '').toString().trim() : '';
+      aoa2.push([label, value]);
+    });
+
+    // build workbook
+    const wb = XLSX.utils.book_new();
+    const ws1 = XLSX.utils.aoa_to_sheet(aoa1);
+    const ws2 = XLSX.utils.aoa_to_sheet(aoa2);
+
+    autoWidthForSheet(ws1, aoa1);
+    autoWidthForSheet(ws2, aoa2);
+
+    XLSX.utils.book_append_sheet(wb, ws1, 'Competency Requirements');
+    XLSX.utils.book_append_sheet(wb, ws2, 'Job Qualifications');
+
+    // filename from badge if available
+    let filename = 'Success_Profile_Export.xlsx';
+    const roleHint = document.querySelector('#s1-profile-tab .bg-yellow-50 span.text-yellow-800');
+    if (roleHint) {
+      const m = roleHint.textContent.match(/position of (.*?) under/i);
+      if (m && m[1]) filename = `Success_Profile_${m[1].replace(/\s+/g,'_')}.xlsx`;
+    }
+
+    XLSX.writeFile(wb, filename);
+  }
+</script>
+    </section>
+  
+<!-- Tools Tab (Step 1 internal) -->
             <div id="s1-tools-tab" class="step-tab-content hidden">
               <div class="grid md:grid-cols-2 gap-6">
                 <div class="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow"><div class="flex items-center mb-3"><div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3"><span class="text-green-600 text-lg">📊</span></div><div><h4 class="font-semibold text-gray-900">Critical Position Evaluation Form</h4><p class="text-sm text-gray-500">Excel template with scoring matrix</p></div></div><button class="w-full bg-ashley-orange text-white py-2 px-4 rounded-xl hover:bg-ashley-orange-dark">📥 Download .xlsx</button></div>

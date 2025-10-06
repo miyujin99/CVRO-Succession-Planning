@@ -447,255 +447,137 @@
 <!-- ========== JS cho Official Scoring Table (THAY CẢ PHẦN NÀY) ========== -->
 <!-- SheetJS (xuất Excel) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<!-- PapaParse (đọc CSV dễ dàng) -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <script>
-  /* ===== 1) Roles theo Department ===== */
-  const departmentRoles = {
-    ahr: ["Senior Team Leader of Human Resources","Talent Development Project Leader","Senior Talent Development Specialist","Talent Development Coordinator","Talent Development Specialist"],
-    cgi: ["3D Artist","3D Material Artist","CGI Photographer"],
-    eng: ["Engineering Project Manager","Senior Team Leader of  Compliance Engineering","Senior Team Leader of Product Engineering","Team Leader of Product Engineering","Team Leader of System Process Engineering","Compliance Engineer","Engineering Assistant","Industrial Engineer","Packaging Engineer","Packaging Engineering Specialist","Process Engineer","Product Engineer","Project Engineer","Senior Compliance Engineer","Senior Industrial Engineer","Senior System Process Engineer","System Process Engineer"],
-    hradmin: ["Accountant","HR and Admin Officer","IT Specialist","Recruiting Specialist","Senior Accountant","Senior HR and Admin Officer","Senior IT Specialist"],
-    pd: ["Product Development Project Leader","Senior Team Leader of Product Development","Team Leader of Product Development","Team Leader of Product Development Material","Finishing Specialist","Finishing Technician","Product Developer","Product Development Administrator","Senior Product Developer"],
-    qa: ["Vendor Champion","Team Leader of Performance Testing","Field Testing Coordinator","Quality Assurance Administrator","Quality Assurance CI","Quality Control Inspector","Senior Quality Assurance CI"],
-    sqe: ["Sample Quality Engineer","Senior Sample Quality Engineer"],
-    sc: ["Team Leader of Material Assurance","Cost Analyst","Material Assurance Specialist","Material Sourcing Specialist"],
-    se: ["Process Integration Associate","Solutions Development Specialist","Strategy Specialist"],
-    vp: ["Team Leader of CGI","Manager of Engineering","Manager of HR and Admin","Director of Product Development, Asia","Director of Quality, Asia","Sample Quality Engineering Project Leader","Manager of Strategic Sourcing","Manager of Strategy Execution"]
-  };
+  // ============== 0) Helper chung ==============
+  const $ = (sel) => document.querySelector(sel);
 
-  /* ===== 2) Phân loại ===== */
-  function classify(score){
-    if (score >= 4.2)  return {label:'Critical Role',       bg:'bg-red-50',    text:'text-red-800',    border:'border-red-500'};
-    if (score >= 3.5)  return {label:'High Importance',     bg:'bg-orange-50', text:'text-orange-800', border:'border-orange-500'};
-    if (score >= 2.8)  return {label:'Moderate Importance', bg:'bg-yellow-50', text:'text-yellow-800', border:'border-yellow-500'};
-    return               {label:'Low Importance',           bg:'bg-green-50',  text:'text-green-800',  border:'border-green-500'};
-  }
-
-  /* ===== 3) Ô Include theo Result ===== */
-  function renderIncludeCell(tr, label){
-    const cell = tr.querySelector('.include-cell');
-    if (!cell) return;
-    cell.innerHTML = '';
-
-    if (!label) return; // chưa đủ 5 điểm
-
-    // LOW: bị chặn
-    if (label === 'Low Importance'){
-      cell.innerHTML = `<span class="text-gray-400 text-base select-none">✖</span>`;
-      const rat = tr.querySelector('.rationale-input');
-      const warn = tr.querySelector('.rationale-warn');
-      if (rat){ rat.disabled = true; rat.value=''; rat.classList.remove('border-red-400','ring-1','ring-red-300'); }
-      tr.classList.remove('bg-red-50'); warn?.classList.add('hidden');
-      return;
-    }
-
-    // HIGH: auto-checked (không bắt buộc rationale)
-    const checked = (label === 'High Importance') ? 'checked' : '';
-    cell.innerHTML = `<input type="checkbox" class="include-checkbox h-4 w-4" ${checked}>`;
-
-    const rat = tr.querySelector('.rationale-input');
-    if (rat){ rat.disabled = false; }
-
-    const cb = cell.querySelector('.include-checkbox');
-    if (cb){ cb.addEventListener('change', () => requireRationaleIfIncluded(tr)); }
-  }
-
-  /* ===== 4) Rationale rule (High Importance KHÔNG bắt buộc) ===== */
-  function requireRationaleIfIncluded(tr){
-    const cb   = tr.querySelector('.include-checkbox');
-    const rat  = tr.querySelector('.rationale-input');
-    const warn = tr.querySelector('.rationale-warn');
-    const resultText = tr.querySelector('.result-pill')?.textContent.trim();
-
-    // Low (không có checkbox)
-    if (!cb){
-      tr.classList.remove('bg-red-50');
-      warn?.classList.add('hidden');
-      if (rat){ rat.disabled = true; rat.value=''; rat.classList.remove('border-red-400','ring-1','ring-red-300'); }
-      return;
-    }
-
-    if (rat) rat.disabled = false;
-
-    const exempt  = (resultText === 'High Importance'); // miễn rationale
-    const needWarn = cb.checked && !exempt && (!rat?.value || !rat.value.trim());
-
-    if (needWarn){
-      tr.classList.add('bg-red-50');
-      warn?.classList.remove('hidden');
-      rat?.classList.add('border-red-400','ring-1','ring-red-300');
-    } else {
-      tr.classList.remove('bg-red-50');
-      warn?.classList.add('hidden');
-      rat?.classList.remove('border-red-400','ring-1','ring-red-300');
-    }
-  }
-
-  /* ===== 5) Kẹp giá trị 1..5 (nguyên) ===== */
-  function clampTo1to5(inp){
-    const raw = String(inp.value).trim();
-    if (raw === '') return null; // cho phép trống
-    let n = Math.round(parseFloat(raw));
-    if (isNaN(n)) { inp.value = ''; return null; }
-    if (n < 1) n = 1;
-    if (n > 5) n = 5;
-    inp.value = n;
-    return n;
-  }
-
-  /* ===== 6) Tính lại 1 hàng ===== */
-  function recomputeRow(tr){
-    const inputs = Array.from(tr.querySelectorAll('.score-input'));
-    const values = inputs.map(inp => clampTo1to5(inp));
-    const valid  = values.every(v => v !== null);
-
-    const totalEl = tr.querySelector('.total-cell');
-    const pill    = tr.querySelector('.result-pill');
-
-    if (valid){
-      const avg = (values.reduce((a,b)=>a+b,0) / 5);
-      totalEl.textContent = avg.toFixed(2);
-      const c = classify(avg);
-      pill.textContent = c.label;
-      pill.className   = `result-pill inline-block px-2 py-1 rounded border text-xs ${c.bg} ${c.text} ${c.border}`;
-      renderIncludeCell(tr, c.label);
-    } else {
-      totalEl.textContent = '—';
-      pill.textContent    = '—';
-      pill.className      = 'result-pill inline-block px-2 py-1 rounded border text-xs';
-      renderIncludeCell(tr, null);
-      tr.classList.remove('bg-red-50');
-      tr.querySelector('.rationale-warn')?.classList.add('hidden');
-      tr.querySelector('.rationale-input')?.classList.remove('border-red-400','ring-1','ring-red-300');
-    }
-
-    // kiểm tra rule rationale ngay lập tức
-    requireRationaleIfIncluded(tr);
-  }
-
-  /* ===== 7) Delegation: tbody xử lý score/rationale/checkbox ===== */
-  function attachDelegatedHandlers(){
-    const tbody = document.getElementById('scoreRows');
-    if (!tbody) return;
-
-    tbody.addEventListener('input', e => {
-      const t = e.target;
-      if (t.classList.contains('score-input')){
-        clampTo1to5(t);
-        const tr = t.closest('tr'); if (tr) recomputeRow(tr);
-      }
-      if (t.classList.contains('rationale-input')){
-        const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
-      }
+  // Tính tổng trung bình 5 tiêu chí (20% mỗi tiêu chí)
+  function calcTotal(rowEl) {
+    const fields = rowEl.querySelectorAll('input[data-score]');
+    let sum = 0, count = 0;
+    fields.forEach(inp => {
+      const v = Number(inp.value || 0);
+      if (!isNaN(v) && v > 0) { sum += v; count++; }
     });
+    const total = count ? (sum / 5).toFixed(2) : '';
+    rowEl.querySelector('[data-total]').textContent = total;
 
-    tbody.addEventListener('change', e => {
-      const t = e.target;
-      if (t.classList.contains('score-input')){
-        clampTo1to5(t);
-        const tr = t.closest('tr'); if (tr) recomputeRow(tr);
-      }
-      if (t.classList.contains('rationale-input') || t.classList.contains('include-checkbox')){
-        const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
-      }
-    });
-
-    // chặn lăn chuột đổi số
-    tbody.addEventListener('wheel', e => {
-      if (e.target && e.target.classList.contains('score-input')) e.preventDefault();
-    }, { passive:false });
+    // Phân loại theo ngưỡng trong proposal
+    let result = '';
+    const t = Number(total);
+    if (!isNaN(t)) {
+      if (t >= 4.2) result = 'Critical Role';
+      else if (t >= 3.5) result = 'High Importance';
+      else if (t >= 2.8) result = 'Moderate';
+      else result = 'Low';
+    }
+    rowEl.querySelector('[data-result]').textContent = result;
   }
 
-  /* ===== 8) Render roles theo Department ===== */
-  function renderRoles(deptKey){
-    const roles = departmentRoles[deptKey] || [];
-    const tbody = document.getElementById('scoreRows');
-    if (!tbody) return;
+  // Tạo 1 hàng nhập liệu cho 1 role
+  function makeRow(idx, roleName) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="px-3 py-2 border-t">${idx}</td>
+      <td class="px-3 py-2 border-t font-medium">${roleName}</td>
 
-    tbody.innerHTML = '';
-
-    roles.forEach((role, idx) => {
-      const tr = document.createElement('tr');
-      tr.className = 'border-t align-top';
-      tr.innerHTML = `
-        <td class="px-3 py-2 text-gray-600">${idx + 1}</td>
-        <td class="px-3 py-2"><div class="role-cell px-2 py-1 bg-gray-50 rounded text-sm">${role}</div></td>
-        ${[1,2,3,4,5].map(() => `
-          <td class="px-2 py-2">
-            <input type="number" min="1" max="5" step="1" inputmode="numeric"
-                   class="score-input w-20 text-center border rounded-lg px-2 py-1" placeholder="1–5">
-          </td>`).join('')}
-        <td class="px-3 py-2 text-center font-semibold"><span class="total-cell">—</span></td>
-        <td class="px-3 py-2"><div class="result-pill inline-block px-2 py-1 rounded border text-xs">—</div></td>
-        <td class="px-3 py-2 text-center include-cell"></td>
-        <td class="px-3 py-2">
-          <div class="space-y-1">
-            <input type="text" class="rationale-input w-full border rounded-lg px-2 py-1"
-                   placeholder="If upgrading or including the role, please briefly explain why.">
-            <p class="rationale-warn hidden text-xs text-red-600">Rationale required when included.</p>
-          </div>
+      ${['urgency','cost','culture','strategic','scarcity'].map(k => `
+        <td class="px-3 py-2 border-t text-center">
+          <input type="number" min="1" max="5" step="1" value=""
+                 class="w-16 border rounded px-2 py-1 text-center"
+                 data-score="${k}" />
         </td>
-      `;
-      tbody.appendChild(tr);
-    });
+      `).join('')}
 
-    // Khởi tính hiển thị cho tất cả hàng mới
-    document.querySelectorAll('#scoreRows tr').forEach(tr => recomputeRow(tr));
+      <td class="px-3 py-2 border-t text-center text-[#F68C2C]" data-total></td>
+      <td class="px-3 py-2 border-t text-center text-[#F68C2C]" data-result></td>
+      <td class="px-3 py-2 border-t">
+        <select class="border rounded px-2 py-1 w-full">
+          <option value="">— Select —</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+          <option value="Consider">Consider</option>
+        </select>
+      </td>
+      <td class="px-3 py-2 border-t">
+        <input type="text" placeholder="Brief rationale..."
+               class="w-full border rounded px-2 py-1" />
+      </td>
+    `;
+    // Tự tính lại khi người dùng nhập điểm
+    tr.querySelectorAll('input[data-score]').forEach(inp => {
+      inp.addEventListener('input', () => calcTotal(tr));
+    });
+    return tr;
   }
 
-  /* ===== 9) Khởi tạo sau khi DOM sẵn sàng ===== */
-  document.addEventListener('DOMContentLoaded', () => {
-    attachDelegatedHandlers();
+  // ============== 1) Load CSV roles theo phòng ban ==============
+  let rolesByDept = {}; // { ahr: ['Role A','Role B',...], cgi:[...] }
 
-    const deptSelect = document.getElementById('deptSelect');
-    if (deptSelect){
-      deptSelect.addEventListener('change', (e) => renderRoles(e.target.value));
-      if (deptSelect.value && deptSelect.value !== '') renderRoles(deptSelect.value);
-    } else {
-      console.warn('deptSelect not found in DOM.');
+  async function loadRolesCSV() {
+    // Đọc CSV cùng domain (Netlify): không vướng CORS
+    const res = await fetch('/data/department_roles.csv?v=' + Date.now());
+    const text = await res.text();
+    const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+    const rows = parsed.data; // [{dept_code, department_name, role}, ...]
+
+    rolesByDept = rows.reduce((acc, r) => {
+      const code = String(r.dept_code || '').trim();
+      const role = String(r.role || '').trim();
+      if (!code || !role) return acc;
+      if (!acc[code]) acc[code] = [];
+      acc[code].push(role);
+      return acc;
+    }, {});
+  }
+
+  // ============== 2) Render theo phòng ban ==============
+  function renderRolesForDept(deptCode) {
+    const tbody = $('#scoreRows');
+    tbody.innerHTML = '';
+    const roles = rolesByDept[deptCode] || [];
+    if (roles.length === 0) {
+      tbody.innerHTML = `
+        <tr><td colspan="11" class="px-3 py-4 text-center text-gray-500">
+          No roles found for the selected department.
+        </td></tr>`;
+      return;
+    }
+    roles.forEach((role, i) => {
+      tbody.appendChild(makeRow(i + 1, role));
+    });
+  }
+
+  // ============== 3) Export Excel (SheetJS) ==============
+  function exportTableToExcel() {
+    const table = document.querySelector('table');
+    const wb = XLSX.utils.table_to_book(table, { sheet: 'Scoring' });
+    XLSX.writeFile(wb, 'Department_Scoring.xlsx');
+  }
+
+  // ============== 4) Khởi tạo ==============
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      await loadRolesCSV();
+    } catch (e) {
+      console.error('Cannot load /data/department_roles.csv', e);
     }
 
-    // Export Excel
-    const btnExport = document.getElementById('btnExportXLSX');
-    if (btnExport){
-      btnExport.addEventListener('click', () => {
-        const deptEl = document.getElementById('deptSelect');
-        const deptKey = deptEl?.value || 'Department';
-        const deptName = deptEl?.options[deptEl.selectedIndex]?.text || 'Department';
-
-        const rows = [];
-        document.querySelectorAll('#scoreRows tr').forEach(tr => {
-          const role = tr.querySelector('.role-cell')?.textContent.trim() || '';
-          const scores = Array.from(tr.querySelectorAll('.score-input')).map(i => i.value || '');
-          const total = tr.querySelector('.total-cell')?.textContent || '';
-          const result = tr.querySelector('.result-pill')?.textContent || '';
-          const includeCb = tr.querySelector('.include-checkbox');
-          const include = includeCb ? (includeCb.checked ? 'Yes' : 'No')
-                        : (tr.querySelector('.include-cell')?.textContent.trim() === '✖' ? 'Not allowed (Low)' : '');
-          const rationale = tr.querySelector('.rationale-input')?.value || '';
-
-          rows.push({
-            Department: deptName,
-            Role: role,
-            'Succession Urgency (1-5)': scores[0],
-            'Cost Efficiency (1-5)': scores[1],
-            'Leadership & Culture (1-5)': scores[2],
-            'Strategic Impact (1-5)': scores[3],
-            'Skill Scarcity (1-5)': scores[4],
-            Total: total,
-            Result: result,
-            'Include in Succession Planning?': include,
-            'HoD Adjustment Rationale': rationale
-          });
-        });
-
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(rows);
-        XLSX.utils.book_append_sheet(wb, ws, 'Scoring');
-        const d = new Date();
-        XLSX.writeFile(wb, `Critical_Position_Form_${deptKey || 'Dept'}_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.xlsx`);
+    // Khi chọn phòng → render danh sách role
+    const deptSelect = $('#deptSelect');
+    if (deptSelect) {
+      deptSelect.addEventListener('change', (e) => {
+        const code = e.target.value;
+        renderRolesForDept(code);
       });
     }
+
+    // Nút xuất Excel
+    const btnExport = $('#btnExportXLSX');
+    if (btnExport) btnExport.addEventListener('click', exportTableToExcel);
   });
 </script>
 </div>
@@ -1175,14 +1057,8 @@
     const roleHint = document.querySelector('#s1-profile-tab .bg-yellow-50 span.text-yellow-800');
     if (roleHint) {
       const m = roleHint.textContent.match(/position of (.*?) under/i);
-      if (m && m[1]) filename = `Success_Profile_${m[1].replace(/\s+/g,'_')}.xlsx`;
-    }
-
-    XLSX.writeFile(wb, filename);
-  }
+      if (m && m[1]) filename = `Success_Profile_${m[1].replace(/\s+/g,'_')}.xlsx`;}XLSX.writeFile(wb, filename);}
 </script>
-    </section>
-  
 <!-- Tools Tab (Step 1 internal) -->
             <div id="s1-tools-tab" class="step-tab-content hidden">
               <div class="grid md:grid-cols-2 gap-6">
@@ -1192,6 +1068,8 @@
             </div>
           </div>
         </div>
+
+	
 		
         <!-- STEP 2 CONTENT -->
         <div id="step-2" class="step-content hidden">

@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CVRO Succession Planning - Workshop Playbook</title>
   <!-- PNG fallback -->
-<link rel="icon" type="image/png" href="./assets/Favicon-32.png" sizes="32x32" />
-<link rel="icon" type="image/png" href="./assets/Favicon-16.png" sizes="16x16" />
+<link rel="icon" type="image/png" href="./assets/favicon-32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="./assets/favicon-16.png" sizes="16x16" />
 
 <!-- SVG (ưu tiên) -->
-<link rel="icon" type="image/svg+xml" href="./assets/Favicon.svg?v=4" />
+<link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=4" />
 
 <!-- Safari pinned tab (tùy chọn) -->
-<link rel="mask-icon" href="./assets/Favicon.svg" color="#F68C2C">
+<link rel="mask-icon" href="./assets/favicon.svg" color="#F68C2C">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -444,85 +444,81 @@
     }
   });
 </script>
-</div>
+
 
 <!-- ===================== Official Scoring Table (nằm dưới Calculator) ===================== -->
 <!-- SheetJS (xuất Excel + đọc CSV/XLSX) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <script>
-/* =================== CONFIG & DATA LOADER =================== */
+/* =================== CONFIG & DATA LOADER (PATCHED) =================== */
+/* Tạo URL tuyệt đối theo vị trí trang + thêm cache-bust để GH Pages không giữ bản cũ */
+function assetUrl(relPath){
+  const u = new URL(relPath, window.location.href);
+  u.searchParams.set('v', Date.now().toString());
+  return u.toString();
+}
+
 const DATA_CONFIG = {
-  // Đặt tên file bạn dùng; script sẽ thử .xlsx trước, không có thì thử .csv
-  xlsxPath: './assets/departments_roles.xlsx',
-  csvPath:  './assets/departments_roles.csv',
-  sheetName: 'Roles', // tên sheet trong .xlsx (nếu không có, sẽ lấy sheet đầu tiên)
+  xlsxUrl:  assetUrl('assets/departments_roles.xlsx'),
+  csvUrl:   assetUrl('assets/departments_roles.csv'),
+  sheetName: 'Roles'
 };
 
 // Cấu trúc lưu: { [deptKey]: { name: string, roles: string[] } }
 let deptMap = Object.create(null);
 
-async function fetchArrayBuffer(url){
-  const res = await fetch(url, {cache: 'no-store'});
-  if (!res.ok) throw new Error('HTTP ' + res.status + ' for ' + url);
-  return await res.arrayBuffer();
-}
-
-async function fetchText(url){
-  const res = await fetch(url, {cache: 'no-store'});
-  if (!res.ok) throw new Error('HTTP ' + res.status + ' for ' + url);
-  return await res.text();
-}
-
 function buildDeptMapFromAOA(aoa){
-  // Kỳ vọng header: department_key | department_name | role
-  // Bỏ dòng trống, bỏ header (dòng 1)
+  // Header: department_key | department_name | role
   const map = Object.create(null);
   const rows = aoa.slice(1).filter(r => r && r.length && (r[0] || r[1] || r[2]));
-
   rows.forEach(r => {
-    const key   = String((r[0] ?? '')).trim();
-    const name  = String((r[1] ?? '')).trim();
-    const role  = String((r[2] ?? '')).trim();
+    const key  = String((r[0] ?? '')).trim();
+    const name = String((r[1] ?? '')).trim();
+    const role = String((r[2] ?? '')).trim();
     if (!key || !name || !role) return;
-
     if (!map[key]) map[key] = { name, roles: [] };
-    // Tránh trùng role
     if (!map[key].roles.includes(role)) map[key].roles.push(role);
   });
-
-  // Sắp xếp roles theo alpha cho đẹp
-  Object.keys(map).forEach(k => map[k].roles.sort((a,b) => a.localeCompare(b)));
+  Object.keys(map).forEach(k => map[k].roles.sort((a,b)=>a.localeCompare(b)));
   return map;
 }
 
-async function loadDeptData(){
-  // Ưu tiên XLSX
+/* Load từ assets với log chi tiết để dễ debug trên GitHub Pages */
+async function tryLoadFromAssets(){
+  // 1) Thử XLSX
   try{
-    const buf = await fetchArrayBuffer(DATA_CONFIG.xlsxPath);
+    console.log('[DATA] Fetch XLSX:', DATA_CONFIG.xlsxUrl);
+    const res = await fetch(DATA_CONFIG.xlsxUrl, {cache:'no-store'});
+    if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + res.statusText);
+    const buf = await res.arrayBuffer();
     const wb  = XLSX.read(buf, {type:'array'});
     const wsName = wb.Sheets[DATA_CONFIG.sheetName] ? DATA_CONFIG.sheetName : wb.SheetNames[0];
     const ws  = wb.Sheets[wsName];
     const aoa = XLSX.utils.sheet_to_json(ws, {header:1, blankrows:false});
     const map = buildDeptMapFromAOA(aoa);
-    if (Object.keys(map).length === 0) throw new Error('No rows in XLSX');
+    if (!Object.keys(map).length) throw new Error('Parsed XLSX but no rows');
+    console.log('[DATA] XLSX loaded with', Object.keys(map).length, 'departments');
     return map;
   }catch(e){
-    console.warn('XLSX not available or invalid:', e.message);
+    console.warn('[DATA] XLSX failed:', e.message);
   }
 
-  // Fallback CSV
-  const txt = await fetchText(DATA_CONFIG.csvPath);
-  // Dùng SheetJS để parse CSV → AOA
+  // 2) Fallback CSV (không UI upload)
+  console.log('[DATA] Fetch CSV:', DATA_CONFIG.csvUrl);
+  const res = await fetch(DATA_CONFIG.csvUrl, {cache:'no-store'});
+  if (!res.ok) throw new Error('CSV HTTP ' + res.status + ' ' + res.statusText + ' @ ' + DATA_CONFIG.csvUrl);
+  const txt = await res.text();
   const wb  = XLSX.read(txt, {type:'string'});
   const ws  = wb.Sheets[wb.SheetNames[0]];
   const aoa = XLSX.utils.sheet_to_json(ws, {header:1, blankrows:false});
   const map = buildDeptMapFromAOA(aoa);
-  if (Object.keys(map).length === 0) throw new Error('No rows in CSV');
+  if (!Object.keys(map).length) throw new Error('Parsed CSV but no rows');
+  console.log('[DATA] CSV loaded with', Object.keys(map).length, 'departments');
   return map;
 }
 
-/* =================== EXISTING LOGIC (giữ nguyên, chỉ sửa nguồn dữ liệu) =================== */
+/* =================== EXISTING LOGIC (giữ nguyên) =================== */
 function classify(score){
   if (score >= 4.2)  return {label:'Critical Role',       bg:'bg-red-50',    text:'text-red-800',    border:'border-red-500'};
   if (score >= 3.5)  return {label:'High Importance',     bg:'bg-orange-50', text:'text-orange-800', border:'border-orange-500'};
@@ -690,10 +686,7 @@ function populateDeptSelect(){
   const sel = document.getElementById('deptSelect');
   if (!sel) return;
 
-  // Xoá toàn bộ option cũ & thêm placeholder
   sel.innerHTML = `<option value="" selected disabled>— Choose a department —</option>`;
-
-  // Sắp xếp theo tên hiển thị
   const entries = Object.entries(deptMap).sort((a,b) => a[1].name.localeCompare(b[1].name));
   for (const [key, val] of entries){
     const opt = document.createElement('option');
@@ -708,11 +701,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   attachDelegatedHandlers();
 
   try{
-    deptMap = await loadDeptData();
+    deptMap = await tryLoadFromAssets();   // << thay loadDeptData() bằng tryLoadFromAssets()
     populateDeptSelect();
   }catch(err){
-    console.error('Failed to load department/role data:', err);
-    alert('Cannot load departments/roles from ./assets. Please check your CSV/XLSX file.');
+    console.error('[DATA] Load failed:', err);
+    alert('Cannot load departments/roles from assets. Open DevTools → Console để xem URL & lỗi chi tiết.');
   }
 
   const deptSelect = document.getElementById('deptSelect');
@@ -1706,6 +1699,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   </script>
 </body>
-
 </html>
-

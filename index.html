@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CVRO Succession Planning - Workshop Playbook</title>
   <!-- PNG fallback -->
-<link rel="icon" type="image/png" href="./assets/favicon-32.png" sizes="32x32" />
-<link rel="icon" type="image/png" href="./assets/favicon-16.png" sizes="16x16" />
+<link rel="icon" type="image/png" href="./assets/Favicon-32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="./assets/Favicon-16.png" sizes="16x16" />
 
 <!-- SVG (ưu tiên) -->
-<link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=4" />
+<link rel="icon" type="image/svg+xml" href="./assets/Favicon.svg?v=4" />
 
 <!-- Safari pinned tab (tùy chọn) -->
-<link rel="mask-icon" href="./assets/favicon.svg" color="#F68C2C">
+<link rel="mask-icon" href="./assets/Favicon.svg" color="#F68C2C">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -1620,14 +1620,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       else { content.classList.add('hidden'); icon.textContent='▼'; }
     }
 
-    // ========== Timers ==========
-    function setDuration(minutes, e){ currentDuration=minutes; timeRemaining=minutes*60; updateTimerDisplay(); document.querySelectorAll('.duration-btn').forEach(b=>{ b.classList.remove('bg-ashley-orange','text-white'); b.classList.add('bg-gray-200','text-gray-700'); }); if(e){ e.target.classList.remove('bg-gray-200','text-gray-700'); e.target.classList.add('bg-ashley-orange','text-white'); } }
-    function startTimer(){ if(timerInterval) clearInterval(timerInterval); timerInterval=setInterval(()=>{ timeRemaining--; updateTimerDisplay(); if(timeRemaining<=0){ clearInterval(timerInterval); alert('Workshop time completed!'); } },1000); const btn=document.getElementById('timer-btn'); btn.textContent='⏸️ Running'; btn.classList.replace('bg-green-500','bg-yellow-500'); btn.classList.replace('hover:bg-green-600','hover:bg-yellow-600'); }
-    function pauseTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval=null; const btn=document.getElementById('timer-btn'); btn.textContent='▶️ Start'; btn.classList.replace('bg-yellow-500','bg-green-500'); btn.classList.replace('hover:bg-yellow-600','hover:bg-green-600'); } }
-    function resetTimer(){ if(timerInterval) clearInterval(timerInterval); timeRemaining=currentDuration*60; updateTimerDisplay(); const btn=document.getElementById('timer-btn'); btn.textContent='▶️ Start'; btn.classList.remove('bg-yellow-500','hover:bg-yellow-600'); btn.classList.add('bg-green-500','hover:bg-green-600'); }
-    function updateTimerDisplay(){ const m=Math.floor(timeRemaining/60).toString().padStart(2,'0'); const s=(timeRemaining%60).toString().padStart(2,'0'); const el=document.getElementById('timer-display'); el.textContent=`${m}:${s}`; if(timeRemaining<=300){ el.classList.add('timer-pulse','text-red-500'); } else { el.classList.remove('timer-pulse','text-red-500'); } }
-    function startMiniTimer(minutes){ if(miniTimerInterval) clearInterval(miniTimerInterval); miniTimeRemaining=minutes*60; miniTimerInterval=setInterval(()=>{ miniTimeRemaining--; const m=Math.floor(miniTimeRemaining/60); const s=(miniTimeRemaining%60).toString().padStart(2,'0'); const el=document.getElementById('mini-timer'); el.textContent=`${m}:${s}`; if(miniTimeRemaining<=0){ clearInterval(miniTimerInterval); el.textContent='Time up!'; el.classList.add('text-red-500','timer-pulse'); } },1000); }
-
     // ========== Framework Stepper ==========
     function showStep(stepNum, e){
       currentStep=stepNum;
@@ -1665,9 +1657,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     function closeQRBoard(){ const m=document.getElementById('qrModal'); m.classList.add('hidden'); m.classList.remove('flex'); }
     function copyQRLink(){ const i=document.getElementById('qrInput'); if(!i.value) return alert('Paste a link first'); navigator.clipboard.writeText(i.value).then(()=>alert('Link copied')); }
 
-    // ========== Init ==========
-    document.addEventListener('DOMContentLoaded', ()=>{
-      updateTimerDisplay();
       showStep(1);
       // Ensure Home visible and nav highlighted
       showTab('home');

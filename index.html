@@ -445,19 +445,13 @@
 
 <!-- ===================== Official Scoring Table (nằm dưới Calculator) ===================== -->
 <section class="mt-8">
-<div class="flex flex-col sm:flex-row justify-between mb-4 gap-2 sm:items-center">
-  <h2 class="text-xl font-semibold text-[#F68C2C]">Department Scoring Calculator</h2>
-  <div class="flex items-center gap-3">
-    <label class="flex items-center gap-2 text-sm text-gray-700">
-      <input id="openEmailCheckbox" type="checkbox" class="h-4 w-4 accent-[#F68C2C]" checked>
-      📧 Open Outlook after export
-    </label>
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-semibold text-[#F68C2C]">Department Scoring Calculator</h2>
     <button id="btnExportXLSX"
             class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark transition">
       Download Excel
     </button>
   </div>
-</div>
 
   <!-- Department selector (auto-load from ./assets) -->
 <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
@@ -498,6 +492,8 @@
 
 <!-- ========== JS cho Official Scoring Table (THAY CẢ PHẦN NÀY) ========== -->
 <!-- SheetJS (xuất Excel) -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 <script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
@@ -799,99 +795,51 @@
     // Tải dữ liệu phòng ban/roles từ ./assets
     loadDeptData();
 
-// Export Excel
-<script>
-  // Export Excel + mở Outlook (nếu checkbox bật)
-  (function () {
+    // Export Excel
     const btnExport = document.getElementById('btnExportXLSX');
-    if (!btnExport) return;
+    if (btnExport){
+      btnExport.addEventListener('click', () => {
+        const deptEl = document.getElementById('deptSelect');
+        const deptKey = deptEl?.value || 'Department';
+        const deptName = (DEPT_MAP[deptKey]?.name) || (deptEl?.options[deptEl.selectedIndex]?.text) || 'Department';
 
-    btnExport.addEventListener('click', () => {
-      const deptEl   = document.getElementById('deptSelect');
-      const deptKey  = deptEl?.value || 'Department';
-      const deptName = (window.DEPT_MAP?.[deptKey]?.name)
-                    || (deptEl?.options[deptEl.selectedIndex]?.text)
-                    || 'Department';
+        const rows = [];
+        document.querySelectorAll('#scoreRows tr').forEach(tr => {
+          const role = tr.querySelector('.role-cell')?.textContent.trim() || '';
+          const scores = Array.from(tr.querySelectorAll('.score-input')).map(i => i.value || '');
+          const total = tr.querySelector('.total-cell')?.textContent || '';
+          const result = tr.querySelector('.result-pill')?.textContent || '';
+          const includeCb = tr.querySelector('.include-checkbox');
+          const include = includeCb ? (includeCb.checked ? 'Yes' : 'No')
+                        : (tr.querySelector('.include-cell')?.textContent.trim() === '✖' ? 'Not allowed (Low)' : '');
+          const rationale = tr.querySelector('.rationale-input')?.value || '';
 
-      // Thu dữ liệu bảng
-      const rows = [];
-      let totalRoles = 0;
-      let includedCount = 0;
-
-      document.querySelectorAll('#scoreRows tr').forEach(tr => {
-        const role = tr.querySelector('.role-cell')?.textContent.trim() || '';
-        if (!role) return;
-        totalRoles++;
-
-        const scores = Array.from(tr.querySelectorAll('.score-input')).map(i => i.value || '');
-        const total  = tr.querySelector('.total-cell')?.textContent || '';
-        const result = tr.querySelector('.result-pill')?.textContent || '';
-        const includeCb = tr.querySelector('.include-checkbox');
-        const include = includeCb ? (includeCb.checked ? 'Yes' : 'No')
-                      : (tr.querySelector('.include-cell')?.textContent.trim() === '✖' ? 'Not allowed (Low)' : '');
-        const rationale = tr.querySelector('.rationale-input')?.value || '';
-
-        if (include === 'Yes') includedCount++;
-
-        rows.push({
-          Department: deptName,
-          Role: role,
-          'Succession Urgency (1-5)': scores[0],
-          'Cost Efficiency (1-5)':     scores[1],
-          'Leadership & Culture (1-5)':scores[2],
-          'Strategic Impact (1-5)':    scores[3],
-          'Skill Scarcity (1-5)':      scores[4],
-          Total: total,
-          Result: result,
-          'Include in Succession Planning?': include,
-          'HoD Adjustment Rationale': rationale
+          rows.push({
+            Department: deptName,
+            Role: role,
+            'Succession Urgency (1-5)': scores[0],
+            'Cost Efficiency (1-5)': scores[1],
+            'Leadership & Culture (1-5)': scores[2],
+            'Strategic Impact (1-5)': scores[3],
+            'Skill Scarcity (1-5)': scores[4],
+            Total: total,
+            Result: result,
+            'Include in Succession Planning?': include,
+            'HoD Adjustment Rationale': rationale
+          });
         });
+
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(rows);
+        XLSX.utils.book_append_sheet(wb, ws, 'Scoring');
+        const d = new Date();
+        XLSX.writeFile(
+          wb,
+          `Critical_Position_Form_${deptKey || 'Dept'}_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.xlsx`
+        );
       });
-
-      // Tạo file Excel
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet(rows);
-      XLSX.utils.book_append_sheet(wb, ws, 'Scoring');
-
-      const d  = new Date();
-      const y2 = String(d.getFullYear()).slice(-2);
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      const dateCode    = `${y2}${mm}${dd}`;               // ví dụ 251009
-      const dateDisplay = `${d.getFullYear()}-${mm}-${dd}`; // ví dụ 2025-10-09
-
-      const safeDept = deptName.replace(/\s+/g, '_');
-      const filename = `Critical_Position_Evaluation_Form_${safeDept}_${dateCode}.xlsx`;
-
-      XLSX.writeFile(wb, filename);
-
-      // Mở Outlook nếu được tick
-      const openMail = document.getElementById('openEmailCheckbox')?.checked;
-      if (!openMail) return;
-
-      setTimeout(() => {
-        const to = 'anguyen@ashleyfurniture.com;hphamhong@ashleyfurniture.com';
-        const subject = `CVRO – Critical Position Scoring (${deptName}, ${dateDisplay})`;
-
-        // Body HTML -> encode để dùng với mailto:
-        const bodyHtml =
-          `Dear team,<br><br>` +
-          `The Critical Position Scoring form for <b>${deptName}</b> has just been exported on ${dateDisplay}.<br><br>` +
-          `• Total roles evaluated: ${totalRoles}<br>` +
-          `• Roles included in succession planning: ${includedCount}<br><br>` +
-          `<b><span style="color:red">Important:</span></b> ` +
-          `<span style="color:red">Please attach the file: ${filename} (downloaded automatically) before sending.</span><br><br>` +
-          `Thank you,<br>${deptName}`;
-
-        const mailto =
-          `mailto:${encodeURIComponent(to)}`
-          + `?subject=${encodeURIComponent(subject)}`
-          + `&body=${encodeURIComponent(bodyHtml.replace(/<br>/g, '\n'))}`;
-
-        window.location.href = mailto;
-      }, 500);
-    });
-  })();
+    }
+  });
 </script>
 </div>
 <!-- Success Profile Tab -->

@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CVRO Succession Planning - Workshop Playbook</title>
   <!-- PNG fallback -->
-<link rel="icon" type="image/png" href="./assets/favicon-32.png" sizes="32x32" />
-<link rel="icon" type="image/png" href="./assets/favicon-16.png" sizes="16x16" />
+<link rel="icon" type="image/png" href="./assets/Favicon-32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="./assets/Favicon-16.png" sizes="16x16" />
 
 <!-- SVG (ưu tiên) -->
-<link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=4" />
+<link rel="icon" type="image/svg+xml" href="./assets/Favicon.svg?v=4" />
 
 <!-- Safari pinned tab (tùy chọn) -->
-<link rel="mask-icon" href="./assets/favicon.svg" color="#F68C2C">
+<link rel="mask-icon" href="./assets/Favicon.svg" color="#F68C2C">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -795,51 +795,86 @@
     // Tải dữ liệu phòng ban/roles từ ./assets
     loadDeptData();
 
-    // Export Excel
-    const btnExport = document.getElementById('btnExportXLSX');
-    if (btnExport){
-      btnExport.addEventListener('click', () => {
-        const deptEl = document.getElementById('deptSelect');
-        const deptKey = deptEl?.value || 'Department';
-        const deptName = (DEPT_MAP[deptKey]?.name) || (deptEl?.options[deptEl.selectedIndex]?.text) || 'Department';
+// Export Excel
+const btnExport = document.getElementById('btnExportXLSX');
+if (btnExport){
+  btnExport.addEventListener('click', () => {
+    const deptEl = document.getElementById('deptSelect');
+    const deptKey = deptEl?.value || 'Department';
+    const deptName = (DEPT_MAP[deptKey]?.name) || (deptEl?.options[deptEl.selectedIndex]?.text) || 'Department';
 
-        const rows = [];
-        document.querySelectorAll('#scoreRows tr').forEach(tr => {
-          const role = tr.querySelector('.role-cell')?.textContent.trim() || '';
-          const scores = Array.from(tr.querySelectorAll('.score-input')).map(i => i.value || '');
-          const total = tr.querySelector('.total-cell')?.textContent || '';
-          const result = tr.querySelector('.result-pill')?.textContent || '';
-          const includeCb = tr.querySelector('.include-checkbox');
-          const include = includeCb ? (includeCb.checked ? 'Yes' : 'No')
-                        : (tr.querySelector('.include-cell')?.textContent.trim() === '✖' ? 'Not allowed (Low)' : '');
-          const rationale = tr.querySelector('.rationale-input')?.value || '';
+    const rows = [];
+    let totalRoles = 0;
+    let includedCount = 0;
 
-          rows.push({
-            Department: deptName,
-            Role: role,
-            'Succession Urgency (1-5)': scores[0],
-            'Cost Efficiency (1-5)': scores[1],
-            'Leadership & Culture (1-5)': scores[2],
-            'Strategic Impact (1-5)': scores[3],
-            'Skill Scarcity (1-5)': scores[4],
-            Total: total,
-            Result: result,
-            'Include in Succession Planning?': include,
-            'HoD Adjustment Rationale': rationale
-          });
-        });
+    document.querySelectorAll('#scoreRows tr').forEach(tr => {
+      const role = tr.querySelector('.role-cell')?.textContent.trim() || '';
+      if (!role) return;
+      totalRoles++;
 
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(rows);
-        XLSX.utils.book_append_sheet(wb, ws, 'Scoring');
-        const d = new Date();
-        XLSX.writeFile(
-          wb,
-          `Critical_Position_Form_${deptKey || 'Dept'}_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.xlsx`
-        );
+      const scores = Array.from(tr.querySelectorAll('.score-input')).map(i => i.value || '');
+      const total = tr.querySelector('.total-cell')?.textContent || '';
+      const result = tr.querySelector('.result-pill')?.textContent || '';
+      const includeCb = tr.querySelector('.include-checkbox');
+      const include = includeCb ? (includeCb.checked ? 'Yes' : 'No')
+                    : (tr.querySelector('.include-cell')?.textContent.trim() === '✖' ? 'Not allowed (Low)' : '');
+      const rationale = tr.querySelector('.rationale-input')?.value || '';
+
+      if (include === 'Yes') includedCount++;
+
+      rows.push({
+        Department: deptName,
+        Role: role,
+        'Succession Urgency (1-5)': scores[0],
+        'Cost Efficiency (1-5)': scores[1],
+        'Leadership & Culture (1-5)': scores[2],
+        'Strategic Impact (1-5)': scores[3],
+        'Skill Scarcity (1-5)': scores[4],
+        Total: total,
+        Result: result,
+        'Include in Succession Planning?': include,
+        'HoD Adjustment Rationale': rationale
       });
-    }
+    });
+
+    // ===== Create Excel workbook =====
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb, ws, 'Scoring');
+
+    const d = new Date();
+    const y = String(d.getFullYear()).slice(-2);
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    const dateCode = `${y}${m}${day}`; // 251009
+    const dateDisplay = `${d.getFullYear()}-${m}-${day}`;
+
+    const safeDept = deptName.replace(/\s+/g,'_');
+    const filename = `Critical_Position_Evaluation_Form_${safeDept}_${dateCode}.xlsx`;
+
+    XLSX.writeFile(wb, filename);
+
+    // ===== Auto-open Outlook email =====
+    setTimeout(() => {
+      const to = "anguyen@ashleyfurniture.com;hphamhong@ashleyfurniture.com";
+      const subject = encodeURIComponent(`CVRO – Critical Position Scoring (${deptName}, ${d.getFullYear()}-${m}-${day})`);
+
+      // Email body (HTML, with bold red line)
+      const bodyHTML =
+        `Dear team,%0D%0A%0D%0A` +
+        `The Critical Position Scoring form for ${deptName} has just been exported on ${dateDisplay}.%0D%0A%0D%0A` +
+        `• Total roles evaluated: ${totalRoles}%0D%0A` +
+        `• Roles included in succession planning: ${includedCount}%0D%0A%0D%0A` +
+        `%3Cstrong%3E%3Cspan style='color:red'%3EImportant:%3C/span%3E%3C/strong%3E ` +
+        `%3Cspan style='color:red'%3EPlease attach the file: ${filename} (downloaded automatically) before sending.%3C/span%3E%0D%0A%0D%0A` +
+        `Thank you,%0D%0A${deptName}`;
+
+      // Open Outlook (default mail client)
+      window.location.href = `mailto:${to}?subject=${subject}&body=${bodyHTML}`;
+    }, 600);
   });
+}
+
 </script>
 </div>
 <!-- Success Profile Tab -->

@@ -43,9 +43,7 @@
             <button data-tab="metrics" onclick="showTab('metrics', event)" class="nav-tab text-gray-700 hover:text-ashley-orange px-3 py-2 text-sm font-medium">Metrics & Governance</button>
             <button data-tab="faq" onclick="showTab('faq', event)" class="nav-tab text-gray-700 hover:text-ashley-orange px-3 py-2 text-sm font-medium">FAQ</button>
           </nav>
-          </label>
           <button onclick="openSearchModal()"class="hidden md:inline-flex bg-white border px-3 py-2 rounded-xl text-sm hover:bg-gray-100">🔎 Search</button>
-
         </div>
       </div>
     </div>
@@ -213,7 +211,7 @@
 </div>
 <!-- Scoped styles for chevron rotation (no impact to other tabs) -->
 <style>
-  #s1-purpose-tab details[open] > summary svg { transform: rotate(180deg); }
+  #s1-overview-tab details[open] > summary svg { transform: rotate(180deg); }
 </style>
 </div>
 <!-- Criteria Tab -->
@@ -445,14 +443,23 @@
 
 <!-- ===================== Official Scoring Table (nằm dưới Calculator) ===================== -->
 <section class="mt-8">
-  <div class="flex items-center justify-between mb-4">
-    <h2 class="text-xl font-semibold text-[#F68C2C]">Department Scoring Calculator</h2>
+<div class="flex flex-col sm:flex-row justify-between mb-4 gap-2 sm:items-center">
+  <h2 class="text-xl font-semibold text-[#F68C2C]">Department Scoring Calculator</h2>
+  <div class="flex items-center gap-3 flex-wrap">
+    <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+      <input id="openEmailCheckbox" type="checkbox" class="h-4 w-4 rounded border-gray-300" checked>
+      📧 Open email draft after export
+    </label>
     <button id="btnExportXLSX"
             class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark transition">
-      Download Excel
+      ⬇ Download Excel
+    </button>
+    <button id="btnEmailAHR"
+            class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
+      ✉️ Email AHR
     </button>
   </div>
-
+</div>
   <!-- Department selector (auto-load from ./assets) -->
 <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
   <label class="text-sm font-medium text-gray-700">Select Department</label>
@@ -492,9 +499,6 @@
 
 <!-- ========== JS cho Official Scoring Table (THAY CẢ PHẦN NÀY) ========== -->
 <!-- SheetJS (xuất Excel) -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-<script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
   /* ========= 1) Data model (auto-load from ./assets) ========= */
@@ -784,7 +788,7 @@
     document.querySelectorAll('#scoreRows tr').forEach(tr => recomputeRow(tr));
   }
 
-  /* ========= 3) Init ========= */
+ // ========= Init =========
   document.addEventListener('DOMContentLoaded', () => {
     attachDelegatedHandlers();
 
@@ -792,56 +796,101 @@
     if (deptSelect){
       deptSelect.addEventListener('change', (e) => renderRoles(e.target.value));
     }
-    // Tải dữ liệu phòng ban/roles từ ./assets
-    loadDeptData();
+    loadDeptData(); // nạp dữ liệu phòng ban
 
-    // Export Excel
+  // Export Excel + mở Outlook (nếu checkbox bật)
+  (function () {
     const btnExport = document.getElementById('btnExportXLSX');
-    if (btnExport){
-      btnExport.addEventListener('click', () => {
-        const deptEl = document.getElementById('deptSelect');
-        const deptKey = deptEl?.value || 'Department';
-        const deptName = (DEPT_MAP[deptKey]?.name) || (deptEl?.options[deptEl.selectedIndex]?.text) || 'Department';
+    if (!btnExport) return;
 
-        const rows = [];
-        document.querySelectorAll('#scoreRows tr').forEach(tr => {
-          const role = tr.querySelector('.role-cell')?.textContent.trim() || '';
-          const scores = Array.from(tr.querySelectorAll('.score-input')).map(i => i.value || '');
-          const total = tr.querySelector('.total-cell')?.textContent || '';
-          const result = tr.querySelector('.result-pill')?.textContent || '';
-          const includeCb = tr.querySelector('.include-checkbox');
-          const include = includeCb ? (includeCb.checked ? 'Yes' : 'No')
-                        : (tr.querySelector('.include-cell')?.textContent.trim() === '✖' ? 'Not allowed (Low)' : '');
-          const rationale = tr.querySelector('.rationale-input')?.value || '';
+    btnExport.addEventListener('click', () => {
+      const deptEl   = document.getElementById('deptSelect');
+      const deptKey  = deptEl?.value || 'Department';
+      const deptName = (window.DEPT_MAP?.[deptKey]?.name)
+                    || (deptEl?.options[deptEl.selectedIndex]?.text)
+                    || 'Department';
 
-          rows.push({
-            Department: deptName,
-            Role: role,
-            'Succession Urgency (1-5)': scores[0],
-            'Cost Efficiency (1-5)': scores[1],
-            'Leadership & Culture (1-5)': scores[2],
-            'Strategic Impact (1-5)': scores[3],
-            'Skill Scarcity (1-5)': scores[4],
-            Total: total,
-            Result: result,
-            'Include in Succession Planning?': include,
-            'HoD Adjustment Rationale': rationale
-          });
+      // Thu dữ liệu bảng
+      const rows = [];
+      let totalRoles = 0;
+      let includedCount = 0;
+
+      document.querySelectorAll('#scoreRows tr').forEach(tr => {
+        const role = tr.querySelector('.role-cell')?.textContent.trim() || '';
+        if (!role) return;
+        totalRoles++;
+
+        const scores = Array.from(tr.querySelectorAll('.score-input')).map(i => i.value || '');
+        const total  = tr.querySelector('.total-cell')?.textContent || '';
+        const result = tr.querySelector('.result-pill')?.textContent || '';
+        const includeCb = tr.querySelector('.include-checkbox');
+        const include = includeCb ? (includeCb.checked ? 'Yes' : 'No')
+                      : (tr.querySelector('.include-cell')?.textContent.trim() === '✖' ? 'Not allowed (Low)' : '');
+        const rationale = tr.querySelector('.rationale-input')?.value || '';
+
+        if (include === 'Yes') includedCount++;
+
+        rows.push({
+          Department: deptName,
+          Role: role,
+          'Succession Urgency (1-5)': scores[0],
+          'Cost Efficiency (1-5)':     scores[1],
+          'Leadership & Culture (1-5)':scores[2],
+          'Strategic Impact (1-5)':    scores[3],
+          'Skill Scarcity (1-5)':      scores[4],
+          Total: total,
+          Result: result,
+          'Include in Succession Planning?': include,
+          'HoD Adjustment Rationale': rationale
         });
-
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(rows);
-        XLSX.utils.book_append_sheet(wb, ws, 'Scoring');
-        const d = new Date();
-        XLSX.writeFile(
-          wb,
-          `Critical_Position_Form_${deptKey || 'Dept'}_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.xlsx`
-        );
       });
-    }
+
+      // Tạo file Excel
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(rows);
+      XLSX.utils.book_append_sheet(wb, ws, 'Scoring');
+
+      const d  = new Date();
+      const y2 = String(d.getFullYear()).slice(-2);
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      const dateCode    = `${y2}${mm}${dd}`;               // ví dụ 251009
+      const dateDisplay = `${d.getFullYear()}-${mm}-${dd}`; // ví dụ 2025-10-09
+
+      const safeDept = deptName.replace(/\s+/g, '_');
+      const filename = `Critical_Position_Evaluation_Form_${safeDept}_${dateCode}.xlsx`;
+
+      XLSX.writeFile(wb, filename);
+
+      // Mở Outlook nếu được tick
+      const openMail = document.getElementById('openEmailCheckbox')?.checked;
+      if (!openMail) return;
+
+      setTimeout(() => {
+        const to = 'anguyen@ashleyfurniture.com;hphamhong@ashleyfurniture.com';
+        const subject = `CVRO – Critical Position Scoring (${deptName}, ${dateDisplay})`;
+
+        // Body HTML -> encode để dùng với mailto:
+        const bodyHtml =
+          `Dear team,<br><br>` +
+          `The Critical Position Scoring form for <b>${deptName}</b> has just been exported on ${dateDisplay}.<br><br>` +
+          `• Total roles evaluated: ${totalRoles}<br>` +
+          `• Roles included in succession planning: ${includedCount}<br><br>` +
+          `<b><span style="color:red">Important:</span></b> ` +
+          `<span style="color:red">Please attach the file: ${filename} (downloaded automatically) before sending.</span><br><br>` +
+          `Thank you,<br>${deptName}`;
+
+        const mailto =
+          `mailto:${encodeURIComponent(to)}`
+          + `?subject=${encodeURIComponent(subject)}`
+          + `&body=${encodeURIComponent(bodyHtml.replace(/<br>/g, '\n'))}`;
+
+        window.location.href = mailto;
+      }, 500);
+    });
+  })();
   });
 </script>
-</div>
 <!-- Success Profile Tab -->
 <div id="s1-profile-tab" class="step-tab-content hidden">
   <div class="mb-4">
@@ -1120,10 +1169,6 @@
       onclick="exportSuccessProfile()">⬇ Download Excel</button>
   </div>
 </div>
-
-<!-- SheetJS (Excel) -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
 <script>
   /* ======== Add / Remove Row for Section 1 ======== */
   function findGroupHeaderCell(fromTr) {
@@ -1318,7 +1363,8 @@
     const roleHint = document.querySelector('#s1-profile-tab .bg-yellow-50 span.text-yellow-800');
     if (roleHint) {
       const m = roleHint.textContent.match(/position of (.*?) under/i);
-      if (m && m[1]) filename = `Success_Profile_${m[1].replace(/\s+/g,'_')}.xlsx`;}XLSX.writeFile(wb, filename);}
+      if (m && m[1]) {
+  filename = `Success_Profile_${m[1].replace(/\s+/g,'_')}.xlsx`;}XLSX.writeFile(wb, filename);}
 </script>
 <!-- Tools Tab (Step 1 internal) -->
             <div id="s1-tools-tab" class="step-tab-content hidden">
@@ -1703,13 +1749,10 @@ let facilitatorMode = false;
     function copyQRLink(){ const i=document.getElementById('qrInput'); if(!i.value) return alert('Paste a link first'); navigator.clipboard.writeText(i.value).then(()=>alert('Link copied')); }
 
  // ========== Init ==========
-document.addEventListener('DOMContentLoaded', ()=>{
-  // Vào Home trước, highlight nav đúng
-  showTab('home');
-});
+  document.addEventListener('DOMContentLoaded', ()=>{ showTab('home'); });
+</script>
 
-  </script>
-  <!-- =================== SEARCH MODAL =================== -->
+<!-- =================== SEARCH MODAL (HTML) =================== -->
 <div id="searchModal" 
      class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-[100]">
   <div class="bg-white w-full max-w-lg rounded-2xl p-6 shadow-xl">
@@ -1724,8 +1767,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
     <div id="searchResults" class="max-h-64 overflow-y-auto text-sm space-y-2 text-gray-700"></div>
   </div>
 </div>
+
+<!-- =================== SEARCH MODAL (JS) =================== -->
 <script>
-  /* ====== Open / Close ====== */
+  /* Open / Close */
   function openSearchModal() {
     const m = document.getElementById('searchModal');
     m.classList.remove('hidden'); m.classList.add('flex');
@@ -1739,7 +1784,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     m.classList.add('hidden'); m.classList.remove('flex');
     clearHighlights();
   }
-
   /* ====== Utils ====== */
   function escReg(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
 

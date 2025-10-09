@@ -874,12 +874,12 @@
         const bodyLines = [
   'Dear team,',
   '',
-  `The Critical Position Scoring form for ${deptName} has just been exported on ${dateDisplay}.`,
+  `The Critical Position Scoring form for ${deptName} department has just been finalized exported on ${dateDisplay}.`,
   '',
   `• Total roles evaluated: ${totalRoles}`,
   `• Roles included in succession planning: ${includedCount}`,
   '',
-  `⚠️ **IMPORTANT:** Please attach the file below (downloaded automatically) before sending.`,
+  `⚠️ IMPORTANT⚠️: Please attach the file below (downloaded automatically) before sending.`,
   `File: ${filename}`,
   '',
   'Thank you,',
@@ -898,6 +898,63 @@ window.location.href = mailto;
       }, 500);
     });
   })();
+  // ====== Nút Email AHR (mở soạn email tự động) ======
+const btnEmail = document.getElementById('btnEmailAHR');
+if (btnEmail){
+  btnEmail.addEventListener('click', () => {
+    const deptEl   = document.getElementById('deptSelect');
+    const deptKey  = deptEl?.value || 'Department';
+    const deptName = (window.DEPT_MAP?.[deptKey]?.name)
+                  || (deptEl?.options[deptEl.selectedIndex]?.text)
+                  || 'Department';
+
+    // Đếm tổng roles & số role được tick include
+    let totalRoles = 0, includedCount = 0;
+    document.querySelectorAll('#scoreRows tr').forEach(tr => {
+      const role = tr.querySelector('.role-cell')?.textContent.trim();
+      if (!role) return;
+      totalRoles++;
+      const cb = tr.querySelector('.include-checkbox');
+      if (cb && cb.checked) includedCount++;
+    });
+
+    // Tạo các biến ngày & tên file (trùng với export)
+    const d  = new Date();
+    const y2 = String(d.getFullYear()).slice(-2);
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const dateDisplay = `${d.getFullYear()}-${mm}-${dd}`;
+    const safeDept = deptName.replace(/\s+/g, '_');
+    const filename = `Critical_Position_Evaluation_Form_${safeDept}_${y2}${mm}${dd}.xlsx`;
+
+    // Mailto
+    const to = 'anguyen@ashleyfurniture.com, hphamhong@ashleyfurniture.com';
+    const subject = `CVRO – Critical Position Scoring (${deptName}, ${dateDisplay})`;
+
+    // Lưu ý: mailto thường là plain text; bold HTML có thể bị bỏ qua trong Outlook.
+    const body = [
+      'Dear team,',
+      '',
+      `The Critical Position Scoring form for ${deptName} department has just been finalized exported on ${dateDisplay}.`,
+      '',
+      `• Total roles evaluated: ${totalRoles}`,
+      `• Roles included in succession planning: ${includedCount}`,
+      '',
+      '⚠️IMPORTANT⚠️: Please attach the file below before sending. (You may remove this line after attaching.)',
+      `File: ${filename}`,
+      '',
+      'Thank you,',
+      deptName
+    ].join('\r\n');
+
+    const mailto =
+      `mailto:${encodeURIComponent(to)}`
+      + `?subject=${encodeURIComponent(subject)}`
+      + `&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailto;
+  });
+}
   });
 </script>
 </div>

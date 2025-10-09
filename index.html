@@ -445,13 +445,19 @@
 
 <!-- ===================== Official Scoring Table (nằm dưới Calculator) ===================== -->
 <section class="mt-8">
-  <div class="flex items-center justify-between mb-4">
-    <h2 class="text-xl font-semibold text-[#F68C2C]">Department Scoring Calculator</h2>
+<div class="flex flex-col sm:flex-row justify-between mb-4 gap-2 sm:items-center">
+  <h2 class="text-xl font-semibold text-[#F68C2C]">Department Scoring Calculator</h2>
+  <div class="flex items-center gap-3">
+    <label class="flex items-center gap-2 text-sm text-gray-700">
+      <input id="openEmailCheckbox" type="checkbox" class="h-4 w-4 accent-[#F68C2C]" checked>
+      📧 Open Outlook after export
+    </label>
     <button id="btnExportXLSX"
             class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark transition">
       Download Excel
     </button>
   </div>
+</div>
 
   <!-- Department selector (auto-load from ./assets) -->
 <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
@@ -846,7 +852,7 @@ if (btnExport){
     const y = String(d.getFullYear()).slice(-2);
     const m = String(d.getMonth()+1).padStart(2,'0');
     const day = String(d.getDate()).padStart(2,'0');
-    const dateCode = `${y}${m}${day}`; // 251009
+    const dateCode = `${y}${m}${day}`; // e.g., 251009
     const dateDisplay = `${d.getFullYear()}-${m}-${day}`;
 
     const safeDept = deptName.replace(/\s+/g,'_');
@@ -854,12 +860,15 @@ if (btnExport){
 
     XLSX.writeFile(wb, filename);
 
-    // ===== Auto-open Outlook email =====
+    // ===== Only open Outlook if checkbox is ticked =====
+    const openMail = document.getElementById('openEmailCheckbox')?.checked;
+    if (!openMail) return;
+
     setTimeout(() => {
       const to = "anguyen@ashleyfurniture.com;hphamhong@ashleyfurniture.com";
       const subject = encodeURIComponent(`CVRO – Critical Position Scoring (${deptName}, ${d.getFullYear()}-${m}-${day})`);
 
-      // Email body (HTML, with bold red line)
+      // Email body with bold & red highlight (HTML inside mailto)
       const bodyHTML =
         `Dear team,%0D%0A%0D%0A` +
         `The Critical Position Scoring form for ${deptName} has just been exported on ${dateDisplay}.%0D%0A%0D%0A` +
@@ -869,12 +878,10 @@ if (btnExport){
         `%3Cspan style='color:red'%3EPlease attach the file: ${filename} (downloaded automatically) before sending.%3C/span%3E%0D%0A%0D%0A` +
         `Thank you,%0D%0A${deptName}`;
 
-      // Open Outlook (default mail client)
       window.location.href = `mailto:${to}?subject=${subject}&body=${bodyHTML}`;
     }, 600);
   });
 }
-
 </script>
 </div>
 <!-- Success Profile Tab -->

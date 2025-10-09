@@ -867,25 +867,34 @@
       if (!openMail) return;
 
       setTimeout(() => {
-        const to = 'anguyen@ashleyfurniture.com;hphamhong@ashleyfurniture.com';
+        const to = 'anguyen@ashleyfurniture.com, hphamhong@ashleyfurniture.com';
         const subject = `CVRO – Critical Position Scoring (${deptName}, ${dateDisplay})`;
 
-        // Body HTML -> encode để dùng với mailto:
-        const bodyHtml =
-          `Dear team,<br><br>` +
-          `The Critical Position Scoring form for <b>${deptName}</b> has just been exported on ${dateDisplay}.<br><br>` +
-          `• Total roles evaluated: ${totalRoles}<br>` +
-          `• Roles included in succession planning: ${includedCount}<br><br>` +
-          `<b><span style="color:red">Important:</span></b> ` +
-          `<span style="color:red">Please attach the file: ${filename} (downloaded automatically) before sending.</span><br><br>` +
-          `Thank you,<br>${deptName}`;
+        // Soạn email body (plain text nhưng vẫn có “in đậm” giả lập)
+        const bodyLines = [
+  'Dear team,',
+  '',
+  `The Critical Position Scoring form for ${deptName} has just been exported on ${dateDisplay}.`,
+  '',
+  `• Total roles evaluated: ${totalRoles}`,
+  `• Roles included in succession planning: ${includedCount}`,
+  '',
+  `⚠️ **IMPORTANT:** Please attach the file below (downloaded automatically) before sending.`,
+  `File: ${filename}`,
+  '',
+  'Thank you,',
+  deptName
+];
 
-        const mailto =
-          `mailto:${encodeURIComponent(to)}`
-          + `?subject=${encodeURIComponent(subject)}`
-          + `&body=${encodeURIComponent(bodyHtml.replace(/<br>/g, '\n'))}`;
+const bodyPlain = bodyLines.join('\r\n');
 
-        window.location.href = mailto;
+// Tạo mailto URL
+const mailto =
+  `mailto:${encodeURIComponent(to)}`
+  + `?subject=${encodeURIComponent(subject)}`
+  + `&body=${encodeURIComponent(bodyPlain)}`;
+
+window.location.href = mailto;
       }, 500);
     });
   })();

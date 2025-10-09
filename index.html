@@ -871,20 +871,14 @@
         const subject = `CVRO – Critical Position Scoring (${deptName}, ${dateDisplay})`;
 
         // Body HTML -> encode để dùng với mailto:
-        const bodyLines = [
-  'Dear team,',
-  '',
-  `The Critical Position Scoring form for ${deptName} has just been exported on ${dateDisplay}.`,
-  '',
-  `• Total roles evaluated: ${totalRoles}`,
-  `• Roles included in succession planning: ${includedCount}`,
-  '',
-  `**IMPORTANT:** Please attach the file (downloaded automatically) before sending.`,
-  `File: ${filename}`,
-  '',
-  'Thank you,',
-  deptName
-];
+        const bodyHtml =
+          `Dear team,<br><br>` +
+          `The Critical Position Scoring form for <b>${deptName}</b> has just been exported on ${dateDisplay}.<br><br>` +
+          `• Total roles evaluated: ${totalRoles}<br>` +
+          `• Roles included in succession planning: ${includedCount}<br><br>` +
+          `<b><span style="color:red">Important:</span></b> ` +
+          `<span style="color:red">Please attach the file: ${filename} (downloaded automatically) before sending.</span><br><br>` +
+          `Thank you,<br>${deptName}`;
 
         const mailto =
           `mailto:${encodeURIComponent(to)}`
@@ -897,6 +891,7 @@
   })();
   });
 </script>
+</div>
 <!-- Success Profile Tab -->
 <div id="s1-profile-tab" class="step-tab-content hidden">
   <div class="mb-4">

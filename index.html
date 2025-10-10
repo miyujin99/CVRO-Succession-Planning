@@ -1432,6 +1432,7 @@ if (btnEmail){
       const m = roleHint.textContent.match(/position of (.*?) under/i);
       if (m && m[1]) {
   filename = `Success_Profile_${m[1].replace(/\s+/g,'_')}.xlsx`;}XLSX.writeFile(wb, filename);}
+  }
 </script>
 <!-- Tools Tab (Step 1 internal) -->
             <div id="s1-tools-tab" class="step-tab-content hidden">
@@ -1446,48 +1447,871 @@ if (btnEmail){
 	
 		
         <!-- STEP 2 CONTENT -->
-        <div id="step-2" class="step-content hidden">
-          <div class="bg-white rounded-xl border p-6 mb-6">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">STEP 2: Identify Talent Pool (5‑Stage Filtering)</h3>
-            <p class="text-gray-600 mb-6">Đề cử HoD · Ứng tuyển · Matching</p>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Round 1 – HoD Nomination</h4>
-                <ul class="text-sm text-gray-700 space-y-1">
-                  <li>• Use 9‑Box (latest year): Green Zone priority; Center Blue optional.</li>
-                  <li>• Provide written rationale (no discriminatory reasons).</li>
-                  <li>• Files: Candidate_9Box_Roster_2025.xlsx; Pre_NominationChecklist_HoD.docx</li>
-                </ul>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Round 2 – Candidate Self‑Application</h4>
-                <ul class="text-sm text-gray-700 space-y-1">
-                  <li>• Basic Info; Preferences (≥1 in current dept; cross‑dept if relevant).</li>
-                  <li>• Reasons per choice; Role‑specific Qs (Mgr vs Non‑mgr + SBI).</li>
-                  <li>• Mobility & Availability; Aspirations (1–3y) & Motivation.</li>
-                </ul>
-                <div class="mt-3 flex gap-2"><button class="bg-ashley-orange text-white px-3 py-2 rounded-lg">Open Application Form</button><button class="bg-white border px-3 py-2 rounded-lg" onclick="question()">QR to Apply</button></div>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Round 3 – HoD Review & Role Matching</h4>
-                <ul class="text-sm text-gray-700 space-y-1">
-                  <li>• Segment lists: Internal · Incoming · Outgoing</li>
-                  <li>• Endorse per role aligned with requirements; consider support capacity.</li>
-                  <li>• Not selected → Thank‑you + encouragement.</li>
-                </ul>
-              </div>
-              <div class="bg-ashley-orange/10 p-4 rounded-lg">
-                <h4 class="font-semibold text-ashley-orange mb-2">Quick Exercise (8’)</h4>
-                <ol class="text-sm text-gray-700 space-y-1 list-decimal list-inside">
-                  <li>Pick role & desired pool size</li>
-                  <li>Check follow‑up capacity</li>
-                  <li>Draft shortlist rules</li>
-                </ol>
-              </div>
+<!-- ================== STEP 2 CONTENT (Definitions + Interactive, revised) ================== -->
+<div id="step-2" class="step-content hidden">
+  <div class="bg-white rounded-xl border p-6 mb-6">
+    <h3 class="text-2xl font-bold text-gray-900 mb-2">STEP 2: Identify Talent Pool (5-Stage Filtering)</h3>
+    <p class="text-gray-600 mb-6">Round 1 · Round 2 · Round 3</p>
+
+    <!-- Inner tabs (match Step 1 style) -->
+    <div class="border-b mb-6">
+      <nav class="flex flex-wrap gap-6">
+        <button onclick="showStep2Tab('def', event)" class="s2-tab-btn border-b-2 border-ashley-orange text-ashley-orange py-2 px-1 text-sm font-medium">Definitions</button>
+        <button onclick="showStep2Tab('sim', event)" class="s2-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Interactive</button>
+      </nav>
+    </div>
+
+    <!-- =============== Definitions Tab =============== -->
+    <section id="s2-def-tab" class="s2-tab-content">
+      <div class="space-y-6">
+        <div class="bg-white rounded-xl border p-5">
+          <h4 class="text-lg font-semibold text-gray-900 mb-2">Purpose & Rounds</h4>
+          <p class="text-sm text-gray-700 mb-3">
+            Step 2 consists of three <span class="font-semibold">rounds</span> to form a fair, development-oriented talent pool before Gap Assessment (Step 3).
+          </p>
+          <ol class="list-decimal list-inside text-sm text-gray-700 space-y-1">
+            <li><span class="font-medium">Round 1 — HoD Nomination:</span> screen via 9-Box (latest year), complete a pre-nomination checklist, and provide a short written rationale.</li>
+            <li><span class="font-medium">Round 2 — Candidate Application:</span> review self-applications that meet the preference rules below.</li>
+            <li><span class="font-medium">Round 3 — Review & Matching:</span> set realistic candidate slots per role (1–5) and match candidates accordingly.</li>
+          </ol>
+        </div>
+
+        <div class="bg-white rounded-xl border p-5">
+          <h4 class="text-lg font-semibold text-gray-900 mb-2">Preference Rules (who appears in your Round 2 list?)</h4>
+          <ul class="list-disc pl-6 text-sm text-gray-700 space-y-1">
+            <li><span class="font-medium">Internal applicants (from your department A):</span> among the 1st and 2nd preferences, <span class="font-semibold">at least one</span> must be a role in department A. (The 2nd preference may be left blank.)</li>
+            <li><span class="font-medium">Cross-department applicants (from department B to A):</span> to appear in A’s case, candidates must have <span class="font-semibold">at least one</span> preference for department A <span class="italic">and</span> <span class="font-semibold">at least one</span> preference for their current department B. (Order not required.)</li>
+          </ul>
+          <p class="text-xs text-gray-600 mt-2">This ensures motivation and realism for both home-team progression and cross-functional mobility.</p>
+        </div>
+
+        <div class="bg-white rounded-xl border p-5">
+          <h4 class="text-lg font-semibold text-gray-900 mb-2">Pre-Nomination (Round 1)</h4>
+          <ul class="list-disc pl-6 text-sm text-gray-700 space-y-1">
+            <li>To <span class="font-semibold">Nominate</span>, all checklist items must be ticked (including “Readiness gaps”).</li>
+            <li><span class="font-semibold">Green zone</span> employees must be reviewed. Action buttons offer: 
+              <span class="font-medium">Nominate to Step 2</span> or <span class="font-medium">Not prioritized for Step 2</span> (requires a written reason).</li>
+            <li>Use <span class="font-semibold">Submit Round 1</span> to continue; any unreviewed Greens will be listed and must be addressed before Round 2 opens.</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl border p-5">
+          <h4 class="text-lg font-semibold text-gray-900 mb-2">Cross-department Sensitivity</h4>
+          <p class="text-sm text-gray-700">
+            Treat cross-department interest with sensitivity and clarity. Candidates should explain alignment with their capabilities and long-term direction. HoDs are encouraged to view such applications as development opportunities rather than signals of dissatisfaction.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- =============== Interactive Tab =============== -->
+    <section id="s2-sim-tab" class="s2-tab-content hidden">
+      <!-- Case header -->
+      <div class="rounded-xl border p-5 mb-6 bg-gradient-to-r from-orange-50 to-white">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div>
+            <h4 class="text-lg font-semibold text-gray-900">Interactive Simulator</h4>
+            <p class="text-sm text-gray-600">Pick a department and walk through the three rounds. Mock data only; saved locally in your browser.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-gray-700">Department</label>
+            <select id="s2-dept" class="border rounded-lg px-3 py-2 text-sm">
+              <option>Engineering</option>
+              <option>Product Development</option>
+              <option>Asia Human Resources</option>
+            </select>
+          </div>
+        </div>
+        <div id="s2-case" class="mt-3 text-sm">
+          <div class="text-gray-800"><span class="font-semibold">Case Context:</span> <span id="s2-case-context">—</span></div>
+          <div class="text-gray-800"><span class="font-semibold">Goal:</span> <span id="s2-case-goal">—</span></div>
+        </div>
+      </div>
+
+      <!-- Progress + actions -->
+      <div class="bg-white rounded-xl border p-5 mb-6">
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <div class="w-full md:w-[520px] grow">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm text-gray-700">Progress</span>
+              <span id="s2-progress-label" class="text-sm font-medium">Round 1 of 3</span>
             </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div id="s2-progress-bar" class="bg-ashley-orange h-2 rounded-full" style="width:33%"></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="s2-reset" class="px-3 py-2 rounded-xl bg-white border hover:bg-gray-50" title="Clear saved state">↺ Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ROUND 1 ===== -->
+      <div class="bg-white rounded-xl border-2 border-orange-200 p-5 mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <h5 class="text-lg font-semibold text-ashley-orange">Round 1 — HoD Nomination</h5>
+          <div class="flex items-center gap-2">
+            <button id="s2-submit-r1" class="px-4 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700">Submit Round 1</button>
+          </div>
+        </div>
+        <p class="text-xs text-gray-600 mb-4" id="s2-tip-r1">Prioritise Greens; include Blues with clear learning potential and a written rationale.</p>
+
+        <!-- 9-box simplified grid -->
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="rounded-xl p-3" style="background:#DFF6EF">
+            <h6 class="font-semibold mb-2">Green 1 — Superstar</h6>
+            <div id="s2-zone-g1" class="space-y-2"></div>
+          </div>
+          <div class="rounded-xl p-3" style="background:#E5F7F4">
+            <h6 class="font-semibold mb-2">Green 2 — High Professional</h6>
+            <div id="s2-zone-g2" class="space-y-2"></div>
+          </div>
+          <div class="rounded-xl p-3" style="background:#DFF6EF">
+            <h6 class="font-semibold mb-2">Green 3 — Rising Star</h6>
+            <div id="s2-zone-g3" class="space-y-2"></div>
+          </div>
+          <div class="rounded-xl p-3 md:col-span-3" style="background:#E7F0FB">
+            <h6 class="font-semibold mb-2">Blue — Valued Contributor</h6>
+            <div id="s2-zone-blue" class="grid md:grid-cols-3 gap-2"></div>
           </div>
         </div>
 
+        <!-- Nominated summary -->
+        <div class="mt-5 grid md:grid-cols-2 gap-4">
+          <div>
+            <h6 class="font-semibold">HoD-Nominated Candidates</h6>
+            <div id="s2-nom-list" class="mt-2 border rounded-xl p-3 bg-gray-50 min-h-[64px] text-sm"></div>
+            <div id="s2-nom-stats" class="text-xs text-gray-600 mt-1"></div>
+          </div>
+          <div>
+            <h6 class="font-semibold">HoD-No Nominated List (Green zone)</h6>
+            <div id="s2-no-nom-list" class="mt-2 border rounded-xl p-3 bg-gray-50 min-h-[64px] text-sm"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ROUND 2 ===== -->
+      <div id="s2-round2-block" class="bg-white rounded-xl border-2 border-blue-200 p-5 mb-6 hidden">
+        <div class="flex items-center justify-between mb-3">
+          <h5 class="text-lg font-semibold text-blue-700">Round 2 — Candidate Application (Simulation Preview)</h5>
+          <button id="s2-submit-r2" class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">Submit Round 2</button>
+        </div>
+        <p class="text-xs text-gray-600 mb-4" id="s2-tip-r2">
+          Lists include only candidates who meet the preference rules. View profiles only; no actions here.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="border rounded-xl p-3">
+            <h6 class="font-semibold mb-2">Internal Applicants</h6>
+            <div id="s2-r2-internal" class="space-y-2"></div>
+          </div>
+          <div class="border rounded-xl p-3">
+            <h6 class="font-semibold mb-2">Incoming (from other departments)</h6>
+            <div id="s2-r2-incoming" class="space-y-2"></div>
+          </div>
+          <div class="border rounded-xl p-3">
+            <h6 class="font-semibold mb-2">Outgoing</h6>
+            <div id="s2-r2-outgoing" class="space-y-2"></div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <button class="bg-white border px-3 py-2 rounded-xl text-sm hover:bg-gray-50"
+                  onclick="window.open('https://forms.office.com/r/E7J5syLsjD','_blank')">
+            Open Sample Application Form
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== ROUND 3 ===== -->
+      <div id="s2-round3-block" class="bg-white rounded-xl border-2 border-green-200 p-5 hidden">
+        <div class="flex items-center justify-between mb-3">
+          <h5 class="text-lg font-semibold text-green-700">Round 3 — Review & Matching</h5>
+          <button id="s2-finish" class="px-4 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-700">Finish & Summary</button>
+        </div>
+        <p class="text-xs text-gray-600 mb-4" id="s2-tip-r3">
+          Choose 1–5 candidate slots per role. Select candidates from the dropdown; options show 1️⃣ (1st) or 2️⃣ (2nd) where relevant. Reorder within a role with ↑ / ↓.
+        </p>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-[900px] w-full text-sm border">
+            <thead class="bg-gray-50 text-gray-800">
+              <tr>
+                <th class="p-2 border text-left w-72">Critical Position</th>
+                <th class="p-2 border w-48 text-center">Candidate Slots (1–5)</th>
+                <th class="p-2 border text-left">Position Matching (per slot)</th>
+              </tr>
+            </thead>
+            <tbody id="s2-match-tbody" class="align-top"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div id="s2-summary" class="hidden bg-white rounded-xl border p-5 mt-6">
+        <h5 class="text-lg font-semibold mb-2">Summary</h5>
+        <div id="s2-summary-body" class="text-sm space-y-3"></div>
+        <div id="s2-summary-note" class="text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-lg p-3 hidden"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ===== Drawer: Nomination (Round 1) ===== -->
+<aside id="s2-drawer" class="fixed top-0 right-0 w-full sm:w-[460px] h-full bg-white border-l p-4 transition-transform translate-x-full z-50">
+  <div class="flex items-center justify-between mb-3">
+    <h6 class="font-semibold">Pre-Nomination</h6>
+    <button id="s2-drawer-close" class="text-gray-500 hover:text-gray-800">✕</button>
+  </div>
+  <div id="s2-drawer-body" class="space-y-3 text-sm"></div>
+  <div class="mt-4 grid gap-2" id="s2-drawer-actions"></div>
+</aside>
+
+<!-- ===== Modal: Application (Round 2) ===== -->
+<div id="s2-app-modal" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
+  <div class="bg-white rounded-2xl w-[min(760px,92vw)] p-4">
+    <div class="flex items-center justify-between mb-2">
+      <h6 class="font-semibold">Candidate Application Summary</h6>
+      <button id="s2-app-close" class="text-gray-500 hover:text-gray-800">✕</button>
+    </div>
+    <div id="s2-app-body" class="text-sm space-y-2"></div>
+  </div>
+</div>
+
+<!-- ===== Modal: Finish confirm (Round 3) ===== -->
+<div id="s2-confirm" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
+  <div class="bg-white rounded-2xl w-[min(640px,92vw)] p-4">
+    <h6 class="font-semibold mb-2">Confirm submission?</h6>
+    <p class="text-sm text-gray-700">The following nominated candidates are <span class="font-semibold">not matched</span> and will exit at Round 3. AHR will send a thank-you letter.</p>
+    <div id="s2-confirm-list" class="mt-2 text-sm bg-gray-50 border rounded p-2">—</div>
+    <div class="flex justify-end gap-2 mt-3">
+      <button id="s2-confirm-cancel" class="px-3 py-2 rounded-xl bg-white border hover:bg-gray-50">Continue matching</button>
+      <button id="s2-confirm-submit" class="px-3 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-700">Submit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================================
+   STEP 2 – Data & Logic (fits your format)
+   ============================================================================ */
+(function(){
+  // ---------- Mock data ----------
+  const CASES = {
+    "Engineering": {
+      context: "Strong internal Greens while several candidates from PD/SS request to move into Engineering.",
+      goal: "Balance internal fairness with cross-department fit and motivation."
+    },
+    "Product Development": {
+      context: "A hot role attracts many applications; demand exceeds available slots.",
+      goal: "Prioritise portfolio, collaboration evidence, and mobility readiness."
+    },
+    "Asia Human Resources": {
+      context: "Thin internal pipeline; several Blues and cross-functional candidates show interest.",
+      goal: "Open the pool for promising Blues with solid behavioural evidence."
+    }
+  };
+
+  // ---------- Roles ----------
+  const ROLES = [
+    { department:"Engineering", role_name:"Team Leader of Product Engineering" },
+    { department:"Engineering", role_name:"Senior Quality Engineer" },
+    { department:"Engineering", role_name:"Manufacturing Improvement Lead" },
+
+    { department:"Product Development", role_name:"Senior Designer" },
+    { department:"Product Development", role_name:"Design Operations Lead" },
+    { department:"Product Development", role_name:"Material Innovation Specialist" },
+
+    { department:"Asia Human Resources", role_name:"Senior Team Leader of HR" },
+    { department:"Asia Human Resources", role_name:"Talent Development Project Lead" },
+    { department:"Asia Human Resources", role_name:"HR Business Partner (Junior)" }
+  ];
+  const roleDept = (r)=> (ROLES.find(x=>x.role_name===r)?.department || '');
+
+  // ---------- Employees (same as trước, đủ cho 3 depts) ----------
+  const EMPLOYEES = [
+    // Engineering (9)
+    { id:"E101", name:"Hoang Le", dept:"Engineering", role:"Product Engineer", perf:4, comp:5, zone:"Green 1" },
+    { id:"E102", name:"Nhi Pham", dept:"Engineering", role:"Compliance Engineer", perf:3, comp:4, zone:"Green 2" },
+    { id:"E103", name:"Linh Tran", dept:"Engineering", role:"Quality Engineer", perf:4, comp:4, zone:"Green 3" },
+    { id:"E104", name:"An Nguyen", dept:"Engineering", role:"Manufacturing Engineer", perf:3, comp:3, zone:"Blue" },
+    { id:"E105", name:"Kiet Vo", dept:"Engineering", role:"Automation Engineer", perf:5, comp:4, zone:"Green 1" },
+    { id:"E106", name:"Quynh Dang", dept:"Engineering", role:"Process Engineer", perf:3, comp:4, zone:"Green 2" },
+    { id:"E107", name:"Bao Do", dept:"Engineering", role:"Tooling Engineer", perf:3, comp:3, zone:"Blue" },
+    { id:"E108", name:"Trang Phan", dept:"Engineering", role:"NPI Engineer", perf:4, comp:3, zone:"Green 3" },
+    { id:"E109", name:"Nam Truong", dept:"Engineering", role:"IE Engineer", perf:4, comp:4, zone:"Green 2" },
+
+    // Product Development (8)
+    { id:"P201", name:"My Vo", dept:"Product Development", role:"Designer", perf:5, comp:4, zone:"Green 1" },
+    { id:"P202", name:"Trang Ho", dept:"Product Development", role:"CMF Designer", perf:4, comp:3, zone:"Green 3" },
+    { id:"P203", name:"Huy Le", dept:"Product Development", role:"Design Ops", perf:3, comp:4, zone:"Green 2" },
+    { id:"P204", name:"Ha Nguyen", dept:"Product Development", role:"Prototype Coordinator", perf:3, comp:3, zone:"Blue" },
+    { id:"P205", name:"Vu Bui", dept:"Product Development", role:"Senior Designer", perf:4, comp:5, zone:"Green 1" },
+    { id:"P206", name:"Tung Dao", dept:"Product Development", role:"Junior Designer", perf:3, comp:3, zone:"Blue" },
+    { id:"P207", name:"Quang Lam", dept:"Product Development", role:"Material Research", perf:4, comp:4, zone:"Green 2" },
+    { id:"P208", name:"Yen Mai", dept:"Product Development", role:"Design Program", perf:3, comp:4, zone:"Green 2" },
+
+    // Asia HR (7)
+    { id:"H303", name:"Khoa Truong", dept:"Asia Human Resources", role:"People Analyst", perf:4, comp:3, zone:"Green 3" },
+    { id:"H302", name:"Hanh Nguyen", dept:"Asia Human Resources", role:"HR Generalist", perf:4, comp:4, zone:"Green 2" },
+    { id:"H304", name:"Linh Pham", dept:"Asia Human Resources", role:"TA Specialist", perf:3, comp:4, zone:"Green 2" },
+    { id:"H301", name:"Vu Nguyen", dept:"Asia Human Resources", role:"HR & Admin Officer", perf:3, comp:3, zone:"Blue" },
+    { id:"H305", name:"An Do", dept:"Asia Human Resources", role:"Learning Coordinator", perf:3, comp:3, zone:"Blue" },
+    { id:"H306", name:"Ha Le", dept:"Asia Human Resources", role:"HRBP Assistant", perf:4, comp:4, zone:"Green 2" },
+    { id:"H307", name:"Tam Vo", dept:"Asia Human Resources", role:"C&B Specialist", perf:3, comp:3, zone:"Blue" }
+  ];
+
+  // ---------- Applications (expanded to ensure 3 buckets appear for any dept) ----------
+  // Rules satisfied: cross applicants include at least one preference in their current dept + target dept.
+  const APPS = [
+    // ===== Target: Engineering =====
+    { id:"E101", first:"Team Leader of Product Engineering", second:"Senior Quality Engineer", cross:"no",
+      leadership:"Servant leadership; clarity & standards.", motivate:"Quality stand-up cut rework by 18%.",
+      tech:"—", self:"—", mobility:"yes", goals:"Lead cross-functional Kaizen; ready in 18–24m.", aspiration:"Grow in cross-team execution." },
+    { id:"E102", first:"Team Leader of Product Engineering", second:"Senior Quality Engineer", cross:"no",
+      leadership:"—", motivate:"—", tech:"Automated spec checks; ~40% less manual review.",
+      self:"Learning log for discipline.", mobility:"yes", goals:"Scale checker; TL or Sr QA in 2y.", aspiration:"Systems thinking for sustainable quality." },
+    { id:"P202", first:"Senior Quality Engineer", second:"Team Leader of Product Engineering", cross:"yes",
+      leadership:"—", motivate:"—", tech:"Collaborated on DFM; improved tolerance hand-offs.",
+      self:"—", mobility:"yes", goals:"Bridge PD–ENG processes.", aspiration:"Impact manufacturing decisions earlier." },
+    { id:"E104", first:"Manufacturing Improvement Lead", second:"Senior Quality Engineer", cross:"no",
+      leadership:"—", motivate:"—", tech:"Kaizen mini-case ownership.", self:"—", mobility:"yes", goals:"Acting role in 6–12m.", aspiration:"Lean excellence." },
+    { id:"P207", first:"Material Innovation Specialist", second:"Design Operations Lead", cross:"no",
+      leadership:"—", motivate:"—", tech:"Supplier material pilots delivered.", self:"—", mobility:"yes", goals:"Scale learnings region-wide.", aspiration:"Better sustainability decisions." },
+    // cross ENG -> PD (also keeps an ENG option for rule)
+    { id:"E106", first:"Senior Designer", second:"Senior Quality Engineer", cross:"yes",
+      leadership:"—", motivate:"—", tech:"Process-to-product collaboration case.", self:"—", mobility:"yes", goals:"Shadow PD discovery; pivot in 18–24m.", aspiration:"Bridge process & product." },
+
+    // ===== Target: Product Development =====
+    { id:"P201", first:"Senior Designer", second:"Design Operations Lead", cross:"no",
+      leadership:"—", motivate:"—", tech:"DFM iteration cut 7% material cost with better aesthetics.",
+      self:"Weekly reflection practice.", mobility:"no", goals:"Publish design playbook; lead rituals in 2y.", aspiration:"Customer impact via design leadership." },
+    { id:"P205", first:"Design Operations Lead", second:"Senior Designer", cross:"no",
+      leadership:"Coaching stance; clear cadences.", motivate:"Implemented critique ritual; cycle time improved.",
+      tech:"—", self:"—", mobility:"yes", goals:"Ops excellence; readiness in 12–18m.", aspiration:"Predictable concept-to-launch flow." },
+    { id:"H306", first:"Material Innovation Specialist", second:"Senior Designer", cross:"yes",
+      leadership:"—", motivate:"—", tech:"Ran L&D sprint on materials; research habit.",
+      self:"—", mobility:"yes", goals:"Shadow PD discovery; pivot in 2y.", aspiration:"Faster decisions with better visuals." },
+    // outgoing from PD (first choice outside PD)
+    { id:"P208", first:"Senior Quality Engineer", second:"Design Operations Lead", cross:"yes",
+      leadership:"—", motivate:"—", tech:"Design-to-quality interfaces.", self:"—", mobility:"yes", goals:"Try ENG path.", aspiration:"Quality systems mindset." },
+
+    // ===== Target: Asia HR =====
+    { id:"H303", first:"Senior Team Leader of HR", second:"Talent Development Project Lead", cross:"no",
+      leadership:"Coach-like leadership; psychological safety.", motivate:"Convinced TLs to adopt retros; removed blockers.",
+      tech:"—", self:"Facilitation stance: coach/consult/teach.", mobility:"yes", goals:"Co-facilitate HR roundtables; ready 18–24m.", aspiration:"Build people systems & cadence." },
+    { id:"E109", first:"Talent Development Project Lead", second:"HR Business Partner (Junior)", cross:"yes",
+      leadership:"—", motivate:"Mentored interns on lean basics.", tech:"—", self:"—",
+      mobility:"yes", goals:"Rotate into HRD projects.", aspiration:"Spread CI mindset across functions." },
+    { id:"P204", first:"HR Business Partner (Junior)", second:"Talent Development Project Lead", cross:"yes",
+      leadership:"—", motivate:"—", tech:"Stakeholder comms from prototype coordination.",
+      self:"—", mobility:"yes", goals:"People side of product work.", aspiration:"Partner with teams on growth." },
+    // extra cross HR -> PD but still listed under HR buckets correctly when needed
+    { id:"H304", first:"Design Operations Lead", second:"Senior Team Leader of HR", cross:"yes",
+      leadership:"—", motivate:"—", tech:"TA <> PD collaboration.", self:"—", mobility:"yes", goals:"Broaden to PD ops.", aspiration:"Ops visibility." }
+  ];
+
+  // ---------- Utilities & State ----------
+  const $ = s => document.querySelector(s);
+  const el = (t, c='') => { const n=document.createElement(t); if(c) n.className=c; return n; };
+  const byDept = (arr, dept) => arr.filter(x => (x.dept||x.department) === dept);
+  const empById = Object.fromEntries(EMPLOYEES.map(e=>[e.id,e]));
+  const rolesOfDept = (dept)=> ROLES.filter(r=>r.department===dept).map(r=>r.role_name);
+  const hasPrefIn = (app, roleNames)=> (!!app.first && roleNames.includes(app.first)) || (!!app.second && roleNames.includes(app.second));
+
+  const STORE = 'sp_step2_state_v4';
+  const S = { dept:"Product Development", reviewed:{}, decision:{}, note:{},
+              slots:{}, matches:{}, r1Submitted:false, r2Submitted:false };
+  Object.assign(S, JSON.parse(localStorage.getItem(STORE) || '{}'));
+  const persist = ()=> localStorage.setItem(STORE, JSON.stringify(S));
+
+  // ---------- Tabs ----------
+  window.showStep2Tab = function(key, e){
+    ["def","sim"].forEach(k=>{
+      const tab = document.getElementById(`s2-${k}-tab`);
+      tab.classList.toggle('hidden', k!==key);
+    });
+    document.querySelectorAll('.s2-tab-btn').forEach(btn=>{
+      btn.classList.remove('border-ashley-orange','text-ashley-orange');
+      btn.classList.add('border-transparent','text-gray-500');
+    });
+    if(e){ e.target.classList.remove('border-transparent','text-gray-500'); e.target.classList.add('border-ashley-orange','text-ashley-orange'); }
+  };
+
+  // ---------- Case header ----------
+  function hydrateCase(){
+    const c = CASES[S.dept] || {};
+    $('#s2-case-context').textContent = c.context || '—';
+    $('#s2-case-goal').textContent = c.goal || '—';
+
+    if(S.dept==="Engineering"){
+      $('#s2-tip-r1').textContent = "All Greens must be reviewed. Include Blues with clear value (e.g., automation/cross-functional leverage).";
+      $('#s2-tip-r2').textContent = "Check SBI on compliance/line transfer; watch motivation clarity.";
+      $('#s2-tip-r3').textContent = "Start with 2–3 slots for TL; weigh collaboration evidence.";
+    } else if(S.dept==="Product Development"){
+      $('#s2-tip-r1').textContent = "Hot role: avoid bias; allow one Blue with strong learning agility (with rationale).";
+      $('#s2-tip-r2').textContent = "Scan portfolio and cross-team collaboration signals.";
+      $('#s2-tip-r3').textContent = "Oversubscription likely; prioritise portfolio + collaboration + mobility.";
+    } else {
+      $('#s2-tip-r1').textContent = "Thin pipeline: consider promising Blues with facilitation evidence.";
+      $('#s2-tip-r2').textContent = "Focus on leadership style and stakeholder management (⚠️ cross-dept).";
+      $('#s2-tip-r3').textContent = "Start with 1–2 slots to match current follow-up capacity.";
+    }
+  }
+
+  // ---------- Round 1 ----------
+  function renderR1(){
+    ['#s2-zone-g1','#s2-zone-g2','#s2-zone-g3','#s2-zone-blue'].forEach(id=>$(id).innerHTML='');
+    const list = byDept(EMPLOYEES, S.dept);
+    const zones = { "Green 1":"#s2-zone-g1", "Green 2":"#s2-zone-g2", "Green 3":"#s2-zone-g3", "Blue":"#s2-zone-blue" };
+
+    list.forEach(emp=>{
+      const card = el('div','bg-white/80 border rounded-lg p-2 hover:shadow-sm');
+      card.title = `Role: ${emp.role} • Performance: ${emp.perf} • Competency: ${emp.comp}`;
+      card.innerHTML = `
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <div class="font-medium">${emp.name}</div>
+            <div class="text-xs text-gray-600">${emp.role} • <span class="${emp.zone.startsWith('Green')?'text-green-700':'text-blue-700'}">${emp.zone}</span></div>
+          </div>
+          <button class="px-2 py-1 text-xs rounded-lg bg-ashley-orange text-white hover:bg-ashley-orange-dark">Review</button>
+        </div>`;
+      card.querySelector('button').onclick = ()=> openDrawer(emp);
+      $(zones[emp.zone] || '#s2-zone-blue').appendChild(card);
+    });
+
+    updateNomSummary();
+    // gate R2/R3
+    $('#s2-round2-block').classList.toggle('hidden', !S.r1Submitted);
+    $('#s2-round3-block').classList.toggle('hidden', !S.r1Submitted);
+  }
+
+  function openDrawer(emp){
+    const wrap = $('#s2-drawer-body'); wrap.innerHTML='';
+    const title = el('div','text-sm'); title.innerHTML = `<span class="font-medium">${emp.name}</span> — <span class="text-gray-600">${emp.role}</span> <span class="ml-1 text-xs ${emp.zone.startsWith('Green')?'text-green-700':'text-blue-700'}">(${emp.zone})</span>`;
+    const list = el('div','space-y-2 mt-2');
+    const items = [
+      ['consistent','✅ Consistent performance'],
+      ['learning','✅ Learning agility'],
+      ['behavior','✅ Behavioral alignment'],
+      ['gaps','❌ Readiness gaps (acknowledged)']
+    ].map(([k,label])=>{
+      const L = el('label','flex items-center gap-2');
+      const I = el('input'); I.type='checkbox'; I.dataset.key=k; L.append(I, document.createTextNode(label)); return L;
+    });
+    items.forEach(x=>list.appendChild(x));
+    const ta = el('textarea','w-full border rounded-lg p-2 text-sm'); ta.rows=4; ta.placeholder='Justification (required when choosing "Not prioritized for Step 2").';
+
+    // restore
+    const chkSaved = (S.reviewed[emp.id]||{});
+    list.querySelectorAll('input').forEach(i=> i.checked = !!chkSaved[i.dataset.key]);
+    ta.value = S.note[emp.id] || '';
+
+    $('#s2-drawer-actions').innerHTML='';
+
+    // Green: two actions (require note if "not prioritized")
+    if(emp.zone.startsWith('Green')){
+      const a1 = el('button','w-full px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark'); a1.textContent='Nominate to Step 2';
+      const a2 = el('button','w-full px-4 py-2 rounded-xl bg-white border hover:bg-gray-50'); a2.textContent='Not prioritized for Step 2';
+      $('#s2-drawer-actions').append(a1,a2);
+
+      a1.onclick = ()=> finalizeDecision('yes');
+      a2.onclick = ()=>{ if(!ta.value.trim()){ alert('Please provide a reason before choosing "Not prioritized for Step 2".'); return; } finalizeDecision('no'); };
+    } else {
+      const a = el('button','w-full px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark'); a.textContent='Nominate to Step 2';
+      $('#s2-drawer-actions').append(a);
+      a.onclick = ()=> finalizeDecision('yes');
+    }
+
+function finalizeDecision(type) {
+  // ✅ No need to tick all checklist items anymore
+  const chk = {};
+  list.querySelectorAll('input').forEach(i => chk[i.dataset.key] = !!i.checked);
+
+  // ⚠️ Require justification in two cases:
+  // 1) Green zone + Not prioritized
+  // 2) Blue zone + Nominate to Step 2
+  if (emp.zone.startsWith('Green') && type === 'no' && !ta.value.trim()) {
+    alert('Please provide a reason before choosing "Not prioritized for Step 2".');
+    return;
+  }
+  if (emp.zone === 'Blue' && type === 'yes' && !ta.value.trim()) {
+    alert('Please provide a reason when nominating a Blue-zone employee to Step 2.');
+    return;
+  }
+
+  // Save review data
+  S.reviewed[emp.id] = chk;
+  S.decision[emp.id] = type; // 'yes' or 'no'
+  S.note[emp.id] = ta.value.trim();
+  persist();
+  updateNomSummary();
+  closeDrawer();
+}
+
+
+    wrap.append(title,list,ta);
+    $('#s2-drawer').style.transform='translateX(0)';
+  }
+  const closeDrawer = ()=> { $('#s2-drawer').style.transform='translateX(100%)'; };
+  $('#s2-drawer-close').addEventListener('click', closeDrawer);
+
+ function updateNomSummary(){
+  const yesWrap = $('#s2-nom-list');      // HoD-Nominated Candidates
+  const noWrap  = $('#s2-no-nom-list');   // HoD-No Nominated List (Green zone)
+  yesWrap.innerHTML = '';
+  if (noWrap) noWrap.innerHTML = '';
+
+  const deptEmps = byDept(EMPLOYEES, S.dept);
+  const greens = deptEmps.filter(e => e.zone.startsWith('Green'));
+
+  let reviewed = 0, reviewedGreens = 0, yesCount = 0, noGreens = 0;
+
+  deptEmps.forEach(emp => {
+    const decision = S.decision[emp.id];
+    if (!decision) return;
+
+    reviewed++;
+    if (emp.zone.startsWith('Green')) reviewedGreens++;
+
+    const card = el('div','flex items-start justify-between bg-white border rounded-lg p-2 text-sm');
+    const tag = decision === 'yes'
+      ? '<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded">Nominated</span>'
+      : '<span class="ml-2 text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Not prioritized</span>';
+
+    card.innerHTML =
+      `<div>
+         <div class="font-medium">${emp.name}${tag}</div>
+         <div class="text-xs text-gray-600">${emp.role} • ${emp.zone}</div>
+       </div>
+       <div class="text-xs max-w-[52%] text-gray-700">
+         ${(S.note[emp.id]||'').slice(0,160)}${(S.note[emp.id]||'').length>160?'…':''}
+       </div>`;
+
+    if (decision === 'yes') {
+      yesWrap.appendChild(card);
+      yesCount++;
+    } else if (emp.zone.startsWith('Green') && noWrap) {
+      // chỉ Green zone mới vào box No-Nominated
+      noWrap.appendChild(card);
+      noGreens++;
+    }
+  });
+
+  if (!yesWrap.children.length) yesWrap.textContent = 'No reviews yet.';
+  if (noWrap && !noWrap.children.length) noWrap.textContent = '—';
+
+  $('#s2-nom-stats').textContent =
+    `Reviewed: ${reviewed} (Greens: ${reviewedGreens}/${greens.length}) • ` +
+    `Nominated: ${yesCount}` +
+    (noWrap ? ` • Green – Not prioritized: ${noGreens}` : '');
+}
+
+
+  // Submit Round 1 gate
+  $('#s2-submit-r1').addEventListener('click', ()=>{
+    const greens = byDept(EMPLOYEES, S.dept).filter(e=>e.zone.startsWith('Green'));
+    const missing = greens.filter(e => !S.decision[e.id]);
+    if(missing.length){
+      const names = missing.map(m=>`• ${m.name} (${m.role})`).join('\n');
+      alert('Please review all Green zone employees before continuing:\n\n' + names);
+      return;
+    }
+    S.r1Submitted = true; persist();
+    $('#s2-round2-block').classList.remove('hidden');
+    $('#s2-round3-block').classList.remove('hidden');
+    setProgress(2);
+    renderR2(); renderR3(); window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  // ---------- Round 2 ----------
+  function openApp(emp, app){
+    const body = $('#s2-app-body'); body.innerHTML='';
+    const add = (label, text)=>{
+      if(!text || !String(text).trim()) return;
+      const row = el('div',''); row.innerHTML = `<div class="text-gray-500">${label}</div><div class="mt-0.5">${text}</div>`;
+      body.appendChild(row);
+    };
+    add('Basic Info', `${emp.name} — ${emp.role} (Current: ${emp.dept})`);
+    const choice = [app.first?`1st: ${app.first}`:null, app.second?`2nd: ${app.second}`:null].filter(Boolean).join(' • ');
+    add('Role Preference', choice || '—');
+    add('Leadership Style', app.leadership);
+    add('Motivate Others Example', app.motivate);
+    add('Technical Contribution', app.tech);
+    add('Self-Leadership Reflection (optional)', app.self);
+    add('Mobility', (app.mobility||'').toLowerCase()==='yes' ? 'Willing to move' : 'Not indicated');
+    add('Short / Mid-term Goals (1–3y)', app.goals);
+    add('Career Aspiration & Motivation', app.aspiration);
+    $('#s2-app-modal').classList.remove('hidden'); $('#s2-app-modal').classList.add('flex');
+  }
+  $('#s2-app-close').addEventListener('click', ()=>{ $('#s2-app-modal').classList.add('hidden'); $('#s2-app-modal').classList.remove('flex'); });
+
+  function cardFor(app, emp, bucketSel, emphasize1stInDept=false, showCrossTag=false){
+    const card = el('div','bg-white border rounded-lg p-2 hover:shadow-sm');
+    const isCross = showCrossTag && emp.dept !== S.dept && hasPrefIn(app, rolesOfDept(S.dept));
+    const crossTag = isCross ? '<span class="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">Cross-Department Application ⚠️</span>' : '';
+    const prefs = [app.first?`1st: ${app.first}`:'', app.second?`2nd: ${app.second}`:''].filter(Boolean).join(' · ');
+    card.innerHTML = `
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium">${emp.name}${crossTag}</div>
+          <div class="text-xs text-gray-600">${emp.role} • Current: <span class="font-medium">${emp.dept}</span></div>
+        </div>
+        <button class="text-xs px-2 py-1 rounded bg-ashley-orange text-white">View</button>
+      </div>
+      <div class="text-xs text-gray-700 mt-1"><span class="font-medium">Preferences:</span> ${prefs || '—'}</div>`;
+    card.querySelector('button').onclick = ()=>openApp(emp, app);
+    $(bucketSel).appendChild(card);
+  }
+
+  function renderR2(){
+    ['#s2-r2-internal','#s2-r2-incoming','#s2-r2-outgoing'].forEach(id=>$(id).innerHTML='');
+
+    if(!S.r1Submitted) return;
+
+    const deptRoles = rolesOfDept(S.dept);
+    const internal = [];
+    const incoming = [];
+    const outgoing = [];
+
+    APPS.forEach(app=>{
+      const emp = empById[app.id]; if(!emp) return;
+      const hasInDept = hasPrefIn(app, deptRoles);
+      const empDeptRoles = rolesOfDept(emp.dept);
+      const hasInEmpDept = hasPrefIn(app, empDeptRoles);
+
+      if(emp.dept === S.dept){
+        // Internal & Outgoing
+        if(hasInDept) internal.push({emp, app});
+        // Outgoing if any choice targets other departments
+        const firstOut = app.first && roleDept(app.first) && roleDept(app.first)!==S.dept;
+        const secondOut = app.second && roleDept(app.second) && roleDept(app.second)!==S.dept;
+        if(firstOut || secondOut) outgoing.push({emp, app, firstOut});
+      } else {
+        // Incoming must have at least one pref in current dept (B) and one in target dept (A)
+        if(hasInDept && hasInEmpDept) incoming.push({emp, app});
+      }
+    });
+
+    // Sort rules
+    const firstInDept = (x)=> (x.app.first && roleDept(x.app.first)===S.dept);
+    internal.sort((a,b)=> (firstInDept(b)-firstInDept(a)) || a.emp.name.localeCompare(b.emp.name));
+    incoming.sort((a,b)=> (firstInDept(b)-firstInDept(a)) || a.emp.name.localeCompare(b.emp.name));
+    outgoing.sort((a,b)=> ((b.firstOut?1:0)-(a.firstOut?1:0)) || a.emp.name.localeCompare(b.emp.name));
+
+    internal.forEach(x=>cardFor(x.app, x.emp, '#s2-r2-internal', true, false));
+    incoming.forEach(x=>cardFor(x.app, x.emp, '#s2-r2-incoming', true, true));
+    outgoing.forEach(x=>cardFor(x.app, x.emp, '#s2-r2-outgoing', false, false));
+  }
+
+  // Submit Round 2 → progress to 3
+  const btnR2 = document.getElementById('s2-next-r3') || document.getElementById('s2-submit-r2');
+  if(btnR2){
+    btnR2.id = 's2-submit-r2';
+    btnR2.textContent = 'Submit Round 2';
+    btnR2.addEventListener('click', ()=>{ S.r2Submitted = true; persist(); setProgress(3); window.scrollTo({top:0,behavior:'smooth'}); });
+  }
+
+  // ---------- Round 3 (unique candidate across roles) ----------
+  function ensureRoleState(role){
+    S.slots[S.dept] = S.slots[S.dept] || {};
+    S.matches[S.dept] = S.matches[S.dept] || {};
+    if(!S.slots[S.dept][role]) S.slots[S.dept][role] = 2; // default 2
+    if(!Array.isArray(S.matches[S.dept][role])) S.matches[S.dept][role] = [];
+  }
+  function deptRoleObjs(){ return ROLES.filter(r=>r.department===S.dept).slice(0,5); }
+
+  // set candidate uniquely: remove from other roles in the same dept then assign here
+  function placeCandidateUnique(candidateId, role, slotIdx){
+    // remove from all roles
+    Object.keys(S.matches[S.dept]||{}).forEach(r=>{
+      const arr = S.matches[S.dept][r];
+      if(!Array.isArray(arr)) return;
+      S.matches[S.dept][r] = arr.map((id,i)=> (r===role && i===slotIdx) ? id : (id===candidateId ? null : id));
+    });
+    // ensure array length
+    const n = S.slots[S.dept][role];
+    const arr = S.matches[S.dept][role] || [];
+    while(arr.length < n) arr.push(null);
+    arr[slotIdx] = candidateId || null;
+    S.matches[S.dept][role] = arr;
+    persist(); renderR3();
+  }
+
+  function selectedIdsInDept(){
+    const out = new Set();
+    const roles = S.matches[S.dept] || {};
+    Object.values(roles).forEach(arr=>{
+      (arr||[]).forEach(id=>{ if(id) out.add(id); });
+    });
+    return out;
+  }
+
+  function eligibleForRole(roleName){
+    return APPS
+      .filter(a => a.first===roleName || a.second===roleName)
+      .map(a => ({ app:a, emp: empById[a.id] }))
+      .filter(x => !!x.emp);
+  }
+
+  function optionLabel(x, roleName){
+    const isFirst = x.app.first===roleName;
+    const isSecond = x.app.second===roleName && !isFirst;
+    const badge = isFirst ? '1' : (isSecond ? '2' : '');
+    const source = x.emp.dept===S.dept ? 'INT' : 'INC';
+    return `${badge?badge+' ':''}${x.emp.name} · ${source}`;
+  }
+
+  function trimOver(role){
+    const n = S.slots[S.dept][role];
+    const arr = S.matches[S.dept][role] || [];
+    if(arr.length > n) S.matches[S.dept][role] = arr.slice(0,n);
+  }
+
+  function drawMatchRow(tbody, roleObj){
+    ensureRoleState(roleObj.role_name);
+    const role = roleObj.role_name;
+
+    const tr = el('tr','');
+    const tdRole = el('td','p-2 border align-top font-semibold text-ashley-orange'); tdRole.textContent = role;
+
+    // slots selector
+    const tdSlot = el('td','p-2 border align-top');
+    tdSlot.innerHTML = `
+      <div class="flex items-center justify-center gap-2">
+        <button class="px-2 py-1 border rounded" data-d="-1">−</button>
+        <span class="w-6 text-center" data-val>${S.slots[S.dept][role]}</span>
+        <button class="px-2 py-1 border rounded" data-d="1">+</button>
+      </div>`;
+    const minus = tdSlot.querySelector('[data-d="-1"]');
+    const plus  = tdSlot.querySelector('[data-d="1"]');
+    minus.onclick = ()=>{ let v=S.slots[S.dept][role]; v=Math.max(1,v-1); S.slots[S.dept][role]=v; trimOver(role); persist(); renderR3(); };
+    plus.onclick  = ()=>{ let v=S.slots[S.dept][role]; v=Math.min(5,v+1); S.slots[S.dept][role]=v; persist(); renderR3(); };
+
+    // slot selects
+    const tdMatch = el('td','p-2 border');
+    const container = el('div','space-y-2');
+    const options = eligibleForRole(role);
+    const taken = selectedIdsInDept();
+
+    const n = S.slots[S.dept][role];
+    const arr = S.matches[S.dept][role];
+    while(arr.length < n) arr.push(null);
+    if(arr.length > n) arr.length = n;
+
+    for(let i=0;i<n;i++){
+      const row = el('div','flex items-center gap-2');
+      const sel = el('select','border rounded-lg px-2 py-1 text-sm min-w-[260px]');
+      const empty = el('option',''); empty.value=''; empty.textContent='— Select candidate —';
+      sel.appendChild(empty);
+
+      options.forEach(x=>{
+        // allow current selection even if already taken elsewhere (we will move on change)
+        if(taken.has(x.emp.id) && arr[i]!==x.emp.id) return;
+        const op = el('option','');
+        op.value = x.emp.id; op.textContent = optionLabel(x, role);
+        sel.appendChild(op);
+      });
+
+      sel.value = arr[i] || '';
+      sel.onchange = ()=> placeCandidateUnique(sel.value || null, role, i);
+
+      // up/down/release
+      const up = el('button','px-2 py-1 border rounded text-xs'); up.textContent='↑';
+      const dn = el('button','px-2 py-1 border rounded text-xs'); dn.textContent='↓';
+      const rm = el('button','px-2 py-1 border rounded text-xs'); rm.textContent='✕';
+      up.onclick = ()=>{ if(i===0) return; const tmp=arr[i-1]; arr[i-1]=arr[i]; arr[i]=tmp; persist(); renderR3(); };
+      dn.onclick = ()=>{ if(i===n-1) return; const tmp=arr[i+1]; arr[i+1]=arr[i]; arr[i]=tmp; persist(); renderR3(); };
+      rm.onclick = ()=>{ placeCandidateUnique(null, role, i); };
+
+      row.append(sel, up, dn, rm);
+      container.appendChild(row);
+    }
+
+    tdMatch.appendChild(container);
+    tr.append(tdRole, tdSlot, tdMatch);
+    tbody.appendChild(tr);
+  }
+
+  function renderR3(){
+    const tbody = $('#s2-match-tbody'); if(!tbody) return;
+    tbody.innerHTML='';
+    if(!S.r1Submitted){ $('#s2-round3-block').classList.add('hidden'); return; }
+    const roles = deptRoleObjs();
+    roles.forEach(r=> drawMatchRow(tbody, r));
+  }
+
+  // ---------- Finish & Summary ----------
+  $('#s2-finish').addEventListener('click', ()=>{
+    // Confirmation about unmatched
+    const roles = deptRoleObjs();
+    const chosen = new Set();
+    (S.matches[S.dept] ? Object.values(S.matches[S.dept]) : []).forEach(arr=> (arr||[]).forEach(id=>{ if(id) chosen.add(id); }));
+    const deptRoleNames = roles.map(r=>r.role_name);
+    const eligible = APPS.filter(a=> deptRoleNames.includes(a.first) || deptRoleNames.includes(a.second)).map(a=>a.id);
+    const notPicked = eligible.filter(id=> !chosen.has(id));
+
+    if(notPicked.length){
+      const names = notPicked.map(id=> (empById[id]?.name || id)).join(', ');
+      const ok = confirm(`The following candidates are not matched and will be excluded at this round (AHR will send a thank-you):\n\n${names}\n\nSubmit now?`);
+      if(!ok) return;
+    }
+
+    const body = $('#s2-summary-body'); body.innerHTML='';
+    roles.forEach(r=>{
+      const arr = (S.matches[S.dept][r.role_name]||[]).filter(Boolean);
+      const line = arr.map((id,idx)=> `${idx+1}. ${empById[id]?.name||id}`).join(' | ') || '—';
+      const row = el('div',''); row.innerHTML = `<span class="font-semibold text-ashley-orange">${r.role_name}:</span> ${line}`;
+      body.appendChild(row);
+    });
+
+    const note = $('#s2-summary-note');
+    if(notPicked.length){
+      note.classList.remove('hidden');
+      note.innerHTML = `<strong>Notice:</strong> Unmatched candidates will be excluded from this step and receive a thank-you message from AHR.`;
+    } else {
+      note.classList.add('hidden'); note.textContent='';
+    }
+
+    $('#s2-summary').classList.remove('hidden');
+    window.scrollTo({ top: document.getElementById('s2-summary').offsetTop - 80, behavior:'smooth' });
+  });
+
+  // ---------- Progress, Reset, Init ----------
+  function setProgress(round){
+    const pct = round===1?33:(round===2?66:100);
+    $('#s2-progress-bar').style.width = pct + '%';
+    $('#s2-progress-label').textContent = `Round ${round} of 3`;
+  }
+  window.setProgress = setProgress; // keep accessible
+
+  $('#s2-reset').addEventListener('click', ()=>{
+    if(!confirm('Clear your saved simulator state for Step 2?')) return;
+    Object.assign(S, { dept:S.dept, reviewed:{}, decision:{}, note:{}, slots:{}, matches:{}, r1Submitted:false, r2Submitted:false });
+    persist();
+    hydrateCase(); renderR1();
+    $('#s2-round2-block').classList.add('hidden');
+    $('#s2-round3-block').classList.add('hidden');
+    $('#s2-summary').classList.add('hidden');
+    $('#s2-summary-body').innerHTML='';
+    $('#s2-summary-note').classList.add('hidden'); $('#s2-summary-note').textContent='';
+    setProgress(1);
+  });
+
+  // Init
+  $('#s2-dept').value = S.dept;
+  $('#s2-dept').addEventListener('change', e=>{
+    S.dept=e.target.value; persist();
+    hydrateCase(); renderR1();
+    if(S.r1Submitted){ renderR2(); renderR3(); setProgress(S.r2Submitted?3:2); }
+  });
+
+  showStep2Tab('def');
+  setProgress(S.r2Submitted?3:(S.r1Submitted?2:1));
+  hydrateCase(); renderR1();
+  if(S.r1Submitted){ renderR2(); renderR3(); }
+})();
+</script>
+</div>
         <!-- STEP 3 CONTENT -->
         <div id="step-3" class="step-content hidden">
           <div class="bg-white rounded-xl border p-6 mb-6">

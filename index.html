@@ -1503,7 +1503,6 @@ if (btnEmail){
         </div>
       </div>
     </section>
-
     <!-- =============== Interactive Tab =============== -->
     <section id="s2-sim-tab" class="s2-tab-content hidden">
       <!-- Case header -->
@@ -1542,7 +1541,6 @@ if (btnEmail){
           </div>
           <div class="flex items-center gap-2">
             <button id="s2-reset" class="px-3 py-2 rounded-xl bg-white border hover:bg-gray-50" title="Clear saved state">↺ Reset</button>
-            <button id="s2-export" class="px-3 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark">⬇ Export Matching (Excel)</button>
           </div>
         </div>
       </div>
@@ -1552,7 +1550,7 @@ if (btnEmail){
         <div class="flex items-center justify-between mb-3">
           <h5 class="text-lg font-semibold text-ashley-orange">Round 1 — HoD Nomination</h5>
           <div class="flex items-center gap-2">
-            <button id="s2-submit-r1" class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark">Submit Round 1</button>
+            <button id="s2-submit-r1" class="px-4 py-2 rounded-xl bg-green-600 text-white hover:bg-green-700">Submit Round 1</button>
           </div>
         </div>
         <p class="text-xs text-gray-600 mb-4" id="s2-tip-r1">Prioritise Greens; include Blues with clear learning potential and a written rationale.</p>
@@ -1578,10 +1576,16 @@ if (btnEmail){
         </div>
 
         <!-- Nominated summary -->
-        <div class="mt-5">
-          <h6 class="font-semibold">HoD-Nominated Candidates</h6>
-          <div id="s2-nom-list" class="mt-2 border rounded-xl p-3 bg-gray-50 min-h-[64px] text-sm"></div>
-          <div id="s2-nom-stats" class="text-xs text-gray-600 mt-1"></div>
+        <div class="mt-5 grid md:grid-cols-2 gap-4">
+          <div>
+            <h6 class="font-semibold">HoD-Nominated Candidates</h6>
+            <div id="s2-nom-list" class="mt-2 border rounded-xl p-3 bg-gray-50 min-h-[64px] text-sm"></div>
+            <div id="s2-nom-stats" class="text-xs text-gray-600 mt-1"></div>
+          </div>
+          <div>
+            <h6 class="font-semibold">HoD-No Nominated List (Green zone)</h6>
+            <div id="s2-no-nom-list" class="mt-2 border rounded-xl p-3 bg-gray-50 min-h-[64px] text-sm"></div>
+          </div>
         </div>
       </div>
 
@@ -1589,7 +1593,7 @@ if (btnEmail){
       <div id="s2-round2-block" class="bg-white rounded-xl border-2 border-blue-200 p-5 mb-6 hidden">
         <div class="flex items-center justify-between mb-3">
           <h5 class="text-lg font-semibold text-blue-700">Round 2 — Candidate Application (Simulation Preview)</h5>
-          <button id="s2-next-r3" class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark">Continue to Round 3</button>
+          <button id="s2-submit-r2" class="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700">Submit Round 2</button>
         </div>
         <p class="text-xs text-gray-600 mb-4" id="s2-tip-r2">
           Lists include only candidates who meet the preference rules. View profiles only; no actions here.
@@ -1622,10 +1626,10 @@ if (btnEmail){
       <div id="s2-round3-block" class="bg-white rounded-xl border-2 border-green-200 p-5 hidden">
         <div class="flex items-center justify-between mb-3">
           <h5 class="text-lg font-semibold text-green-700">Round 3 — Review & Matching</h5>
-          <button id="s2-finish" class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark">Finish & Summary</button>
+          <button id="s2-finish" class="px-4 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-700">Finish & Summary</button>
         </div>
         <p class="text-xs text-gray-600 mb-4" id="s2-tip-r3">
-          Choose 1–5 candidate slots per role. Select candidates from the dropdown; options show ⭐ (1st) or ② (2nd) where relevant. Reorder within a role with ↑ / ↓.
+          Choose 1–5 candidate slots per role. Select candidates from the dropdown; options show 1️⃣ (1st) or 2️⃣ (2nd) where relevant. Reorder within a role with ↑ / ↓.
         </p>
 
         <div class="overflow-x-auto">
@@ -1673,15 +1677,25 @@ if (btnEmail){
   </div>
 </div>
 
-<!-- Fallback SheetJS -->
-<script>(function(){ if(!window.XLSX){ var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js'; document.head.appendChild(s); } })();</script>
+<!-- ===== Modal: Finish confirm (Round 3) ===== -->
+<div id="s2-confirm" class="fixed inset-0 hidden items-center justify-center bg-black/40 z-50">
+  <div class="bg-white rounded-2xl w-[min(640px,92vw)] p-4">
+    <h6 class="font-semibold mb-2">Confirm submission?</h6>
+    <p class="text-sm text-gray-700">The following nominated candidates are <span class="font-semibold">not matched</span> and will exit at Round 3. AHR will send a thank-you letter.</p>
+    <div id="s2-confirm-list" class="mt-2 text-sm bg-gray-50 border rounded p-2">—</div>
+    <div class="flex justify-end gap-2 mt-3">
+      <button id="s2-confirm-cancel" class="px-3 py-2 rounded-xl bg-white border hover:bg-gray-50">Continue matching</button>
+      <button id="s2-confirm-submit" class="px-3 py-2 rounded-xl bg-purple-600 text-white hover:bg-purple-700">Submit</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ============================================================================
-   STEP 2 – Data & Logic (revised): checklist enforcement, R2 gating, dropdown matching
+   STEP 2 – Data & Logic (fits your format)
    ============================================================================ */
 (function(){
-  // ---------- Mock data (unchanged from previous answer, trimmed for brevity) ----------
+  // ---------- Mock data ----------
   const CASES = {
     "Engineering": {
       context: "Strong internal Greens while several candidates from PD/SS request to move into Engineering.",
@@ -1697,18 +1711,23 @@ if (btnEmail){
     }
   };
 
+  // ---------- Roles ----------
   const ROLES = [
     { department:"Engineering", role_name:"Team Leader of Product Engineering" },
     { department:"Engineering", role_name:"Senior Quality Engineer" },
     { department:"Engineering", role_name:"Manufacturing Improvement Lead" },
+
     { department:"Product Development", role_name:"Senior Designer" },
     { department:"Product Development", role_name:"Design Operations Lead" },
     { department:"Product Development", role_name:"Material Innovation Specialist" },
+
     { department:"Asia Human Resources", role_name:"Senior Team Leader of HR" },
     { department:"Asia Human Resources", role_name:"Talent Development Project Lead" },
     { department:"Asia Human Resources", role_name:"HR Business Partner (Junior)" }
   ];
+  const roleDept = (r)=> (ROLES.find(x=>x.role_name===r)?.department || '');
 
+  // ---------- Employees (same as trước, đủ cho 3 depts) ----------
   const EMPLOYEES = [
     // Engineering (9)
     { id:"E101", name:"Hoang Le", dept:"Engineering", role:"Product Engineer", perf:4, comp:5, zone:"Green 1" },
@@ -1741,9 +1760,10 @@ if (btnEmail){
     { id:"H307", name:"Tam Vo", dept:"Asia Human Resources", role:"C&B Specialist", perf:3, comp:3, zone:"Blue" }
   ];
 
-  // Round 2 Applications (sample 11)
+  // ---------- Applications (expanded to ensure 3 buckets appear for any dept) ----------
+  // Rules satisfied: cross applicants include at least one preference in their current dept + target dept.
   const APPS = [
-    // To Engineering
+    // ===== Target: Engineering =====
     { id:"E101", first:"Team Leader of Product Engineering", second:"Senior Quality Engineer", cross:"no",
       leadership:"Servant leadership; clarity & standards.", motivate:"Quality stand-up cut rework by 18%.",
       tech:"—", self:"—", mobility:"yes", goals:"Lead cross-functional Kaizen; ready in 18–24m.", aspiration:"Grow in cross-team execution." },
@@ -1753,8 +1773,15 @@ if (btnEmail){
     { id:"P202", first:"Senior Quality Engineer", second:"Team Leader of Product Engineering", cross:"yes",
       leadership:"—", motivate:"—", tech:"Collaborated on DFM; improved tolerance hand-offs.",
       self:"—", mobility:"yes", goals:"Bridge PD–ENG processes.", aspiration:"Impact manufacturing decisions earlier." },
+    { id:"E104", first:"Manufacturing Improvement Lead", second:"Senior Quality Engineer", cross:"no",
+      leadership:"—", motivate:"—", tech:"Kaizen mini-case ownership.", self:"—", mobility:"yes", goals:"Acting role in 6–12m.", aspiration:"Lean excellence." },
+    { id:"P207", first:"Material Innovation Specialist", second:"Design Operations Lead", cross:"no",
+      leadership:"—", motivate:"—", tech:"Supplier material pilots delivered.", self:"—", mobility:"yes", goals:"Scale learnings region-wide.", aspiration:"Better sustainability decisions." },
+    // cross ENG -> PD (also keeps an ENG option for rule)
+    { id:"E106", first:"Senior Designer", second:"Senior Quality Engineer", cross:"yes",
+      leadership:"—", motivate:"—", tech:"Process-to-product collaboration case.", self:"—", mobility:"yes", goals:"Shadow PD discovery; pivot in 18–24m.", aspiration:"Bridge process & product." },
 
-    // To PD
+    // ===== Target: Product Development =====
     { id:"P201", first:"Senior Designer", second:"Design Operations Lead", cross:"no",
       leadership:"—", motivate:"—", tech:"DFM iteration cut 7% material cost with better aesthetics.",
       self:"Weekly reflection practice.", mobility:"no", goals:"Publish design playbook; lead rituals in 2y.", aspiration:"Customer impact via design leadership." },
@@ -1764,8 +1791,11 @@ if (btnEmail){
     { id:"H306", first:"Material Innovation Specialist", second:"Senior Designer", cross:"yes",
       leadership:"—", motivate:"—", tech:"Ran L&D sprint on materials; research habit.",
       self:"—", mobility:"yes", goals:"Shadow PD discovery; pivot in 2y.", aspiration:"Faster decisions with better visuals." },
+    // outgoing from PD (first choice outside PD)
+    { id:"P208", first:"Senior Quality Engineer", second:"Design Operations Lead", cross:"yes",
+      leadership:"—", motivate:"—", tech:"Design-to-quality interfaces.", self:"—", mobility:"yes", goals:"Try ENG path.", aspiration:"Quality systems mindset." },
 
-    // To HR
+    // ===== Target: Asia HR =====
     { id:"H303", first:"Senior Team Leader of HR", second:"Talent Development Project Lead", cross:"no",
       leadership:"Coach-like leadership; psychological safety.", motivate:"Convinced TLs to adopt retros; removed blockers.",
       tech:"—", self:"Facilitation stance: coach/consult/teach.", mobility:"yes", goals:"Co-facilitate HR roundtables; ready 18–24m.", aspiration:"Build people systems & cadence." },
@@ -1775,22 +1805,22 @@ if (btnEmail){
     { id:"P204", first:"HR Business Partner (Junior)", second:"Talent Development Project Lead", cross:"yes",
       leadership:"—", motivate:"—", tech:"Stakeholder comms from prototype coordination.",
       self:"—", mobility:"yes", goals:"People side of product work.", aspiration:"Partner with teams on growth." },
-
-    // Misc to ENG
-    { id:"E104", first:"Manufacturing Improvement Lead", second:"Senior Quality Engineer", cross:"no",
-      leadership:"—", motivate:"—", tech:"Kaizen mini-case ownership.", self:"—", mobility:"yes", goals:"Acting role in 6–12m.", aspiration:"Lean excellence." },
-    { id:"P207", first:"Material Innovation Specialist", second:"Design Operations Lead", cross:"no",
-      leadership:"—", motivate:"—", tech:"Supplier material pilots delivered.", self:"—", mobility:"yes", goals:"Scale learnings region-wide.", aspiration:"Better sustainability decisions." }
+    // extra cross HR -> PD but still listed under HR buckets correctly when needed
+    { id:"H304", first:"Design Operations Lead", second:"Senior Team Leader of HR", cross:"yes",
+      leadership:"—", motivate:"—", tech:"TA <> PD collaboration.", self:"—", mobility:"yes", goals:"Broaden to PD ops.", aspiration:"Ops visibility." }
   ];
 
   // ---------- Utilities & State ----------
   const $ = s => document.querySelector(s);
   const el = (t, c='') => { const n=document.createElement(t); if(c) n.className=c; return n; };
   const byDept = (arr, dept) => arr.filter(x => (x.dept||x.department) === dept);
+  const empById = Object.fromEntries(EMPLOYEES.map(e=>[e.id,e]));
+  const rolesOfDept = (dept)=> ROLES.filter(r=>r.department===dept).map(r=>r.role_name);
+  const hasPrefIn = (app, roleNames)=> (!!app.first && roleNames.includes(app.first)) || (!!app.second && roleNames.includes(app.second));
 
-  const STORE = 'sp_step2_state_v3';
-  const S = { dept:"Engineering", reviewed:{}, decision:{}, // decision: 'yes'|'no'
-              note:{}, slots:{}, matches:{}, r1Submitted:false };
+  const STORE = 'sp_step2_state_v4';
+  const S = { dept:"Product Development", reviewed:{}, decision:{}, note:{},
+              slots:{}, matches:{}, r1Submitted:false, r2Submitted:false };
   Object.assign(S, JSON.parse(localStorage.getItem(STORE) || '{}'));
   const persist = ()=> localStorage.setItem(STORE, JSON.stringify(S));
 
@@ -1850,7 +1880,7 @@ if (btnEmail){
     });
 
     updateNomSummary();
-    // gate R2 visibility
+    // gate R2/R3
     $('#s2-round2-block').classList.toggle('hidden', !S.r1Submitted);
     $('#s2-round3-block').classList.toggle('hidden', !S.r1Submitted);
   }
@@ -1878,34 +1908,46 @@ if (btnEmail){
 
     $('#s2-drawer-actions').innerHTML='';
 
-    // For Green: two actions (require note if "not prioritized")
+    // Green: two actions (require note if "not prioritized")
     if(emp.zone.startsWith('Green')){
       const a1 = el('button','w-full px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark'); a1.textContent='Nominate to Step 2';
       const a2 = el('button','w-full px-4 py-2 rounded-xl bg-white border hover:bg-gray-50'); a2.textContent='Not prioritized for Step 2';
       $('#s2-drawer-actions').append(a1,a2);
 
       a1.onclick = ()=> finalizeDecision('yes');
-      a2.onclick = ()=>{
-        if(!ta.value.trim()){ alert('Please provide a reason before choosing "Not prioritized for Step 2".'); return; }
-        finalizeDecision('no');
-      };
+      a2.onclick = ()=>{ if(!ta.value.trim()){ alert('Please provide a reason before choosing "Not prioritized for Step 2".'); return; } finalizeDecision('no'); };
     } else {
       const a = el('button','w-full px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark'); a.textContent='Nominate to Step 2';
       $('#s2-drawer-actions').append(a);
       a.onclick = ()=> finalizeDecision('yes');
     }
 
-    function finalizeDecision(type){
-      // must tick all
-      const allTicked = Array.from(list.querySelectorAll('input')).every(i=>i.checked);
-      if(!allTicked){ alert('Please tick all checklist items to proceed.'); return; }
-      // save
-      const chk = {}; list.querySelectorAll('input').forEach(i=> chk[i.dataset.key]=i.checked );
-      S.reviewed[emp.id] = chk;
-      S.decision[emp.id] = type; // 'yes' or 'no'
-      S.note[emp.id] = ta.value.trim();
-      persist(); updateNomSummary(); closeDrawer();
-    }
+function finalizeDecision(type) {
+  // ✅ No need to tick all checklist items anymore
+  const chk = {};
+  list.querySelectorAll('input').forEach(i => chk[i.dataset.key] = !!i.checked);
+
+  // ⚠️ Require justification in two cases:
+  // 1) Green zone + Not prioritized
+  // 2) Blue zone + Nominate to Step 2
+  if (emp.zone.startsWith('Green') && type === 'no' && !ta.value.trim()) {
+    alert('Please provide a reason before choosing "Not prioritized for Step 2".');
+    return;
+  }
+  if (emp.zone === 'Blue' && type === 'yes' && !ta.value.trim()) {
+    alert('Please provide a reason when nominating a Blue-zone employee to Step 2.');
+    return;
+  }
+
+  // Save review data
+  S.reviewed[emp.id] = chk;
+  S.decision[emp.id] = type; // 'yes' or 'no'
+  S.note[emp.id] = ta.value.trim();
+  persist();
+  updateNomSummary();
+  closeDrawer();
+}
+
 
     wrap.append(title,list,ta);
     $('#s2-drawer').style.transform='translateX(0)';
@@ -1913,29 +1955,57 @@ if (btnEmail){
   const closeDrawer = ()=> { $('#s2-drawer').style.transform='translateX(100%)'; };
   $('#s2-drawer-close').addEventListener('click', closeDrawer);
 
-  function updateNomSummary(){
-    const wrap = $('#s2-nom-list'); wrap.innerHTML='';
-    const deptEmps = byDept(EMPLOYEES, S.dept);
-    const entries = deptEmps
-      .filter(e => S.decision[e.id])
-      .map(e => ({ emp:e, decision:S.decision[e.id], note:S.note[e.id]||'' }));
+ function updateNomSummary(){
+  const yesWrap = $('#s2-nom-list');      // HoD-Nominated Candidates
+  const noWrap  = $('#s2-no-nom-list');   // HoD-No Nominated List (Green zone)
+  yesWrap.innerHTML = '';
+  if (noWrap) noWrap.innerHTML = '';
 
-    if(!entries.length){ wrap.textContent='No reviews yet.'; $('#s2-nom-stats').textContent=''; return; }
+  const deptEmps = byDept(EMPLOYEES, S.dept);
+  const greens = deptEmps.filter(e => e.zone.startsWith('Green'));
 
-    entries.forEach(v=>{
-      const d = el('div','flex items-start justify-between bg-white border rounded-lg p-2 text-sm');
-      const tag = v.decision==='yes'
-        ? '<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded">Nominated</span>'
-        : '<span class="ml-2 text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Not prioritized</span>';
-      d.innerHTML = `<div><div class="font-medium">${v.emp.name}${tag}</div><div class="text-xs text-gray-600">${v.emp.role} • ${v.emp.zone}</div></div>
-                     <div class="text-xs max-w-[52%] text-gray-700">${(v.note||'').slice(0,160)}${(v.note||'').length>160?'…':''}</div>`;
-      wrap.appendChild(d);
-    });
-    const greens = deptEmps.filter(e=>e.zone.startsWith('Green'));
-    const reviewedGreens = greens.filter(e=>S.decision[e.id]);
-    const yesCount = entries.filter(v=>v.decision==='yes').length;
-    $('#s2-nom-stats').textContent = `Reviewed: ${entries.length} (Greens: ${reviewedGreens.length}/${greens.length}) • Nominated: ${yesCount}`;
-  }
+  let reviewed = 0, reviewedGreens = 0, yesCount = 0, noGreens = 0;
+
+  deptEmps.forEach(emp => {
+    const decision = S.decision[emp.id];
+    if (!decision) return;
+
+    reviewed++;
+    if (emp.zone.startsWith('Green')) reviewedGreens++;
+
+    const card = el('div','flex items-start justify-between bg-white border rounded-lg p-2 text-sm');
+    const tag = decision === 'yes'
+      ? '<span class="ml-2 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded">Nominated</span>'
+      : '<span class="ml-2 text-[10px] bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Not prioritized</span>';
+
+    card.innerHTML =
+      `<div>
+         <div class="font-medium">${emp.name}${tag}</div>
+         <div class="text-xs text-gray-600">${emp.role} • ${emp.zone}</div>
+       </div>
+       <div class="text-xs max-w-[52%] text-gray-700">
+         ${(S.note[emp.id]||'').slice(0,160)}${(S.note[emp.id]||'').length>160?'…':''}
+       </div>`;
+
+    if (decision === 'yes') {
+      yesWrap.appendChild(card);
+      yesCount++;
+    } else if (emp.zone.startsWith('Green') && noWrap) {
+      // chỉ Green zone mới vào box No-Nominated
+      noWrap.appendChild(card);
+      noGreens++;
+    }
+  });
+
+  if (!yesWrap.children.length) yesWrap.textContent = 'No reviews yet.';
+  if (noWrap && !noWrap.children.length) noWrap.textContent = '—';
+
+  $('#s2-nom-stats').textContent =
+    `Reviewed: ${reviewed} (Greens: ${reviewedGreens}/${greens.length}) • ` +
+    `Nominated: ${yesCount}` +
+    (noWrap ? ` • Green – Not prioritized: ${noGreens}` : '');
+}
+
 
   // Submit Round 1 gate
   $('#s2-submit-r1').addEventListener('click', ()=>{
@@ -1975,81 +2045,108 @@ if (btnEmail){
   }
   $('#s2-app-close').addEventListener('click', ()=>{ $('#s2-app-modal').classList.add('hidden'); $('#s2-app-modal').classList.remove('flex'); });
 
-  function rolesOfDept(dept){ return ROLES.filter(r=>r.department===dept).map(r=>r.role_name); }
-
-  // preference rule helpers
-  function hasPrefIn(app, roleNames){ return !!(app.first && roleNames.includes(app.first)) || !!(app.second && roleNames.includes(app.second)); }
+  function cardFor(app, emp, bucketSel, emphasize1stInDept=false, showCrossTag=false){
+    const card = el('div','bg-white border rounded-lg p-2 hover:shadow-sm');
+    const isCross = showCrossTag && emp.dept !== S.dept && hasPrefIn(app, rolesOfDept(S.dept));
+    const crossTag = isCross ? '<span class="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">Cross-Department Application ⚠️</span>' : '';
+    const prefs = [app.first?`1st: ${app.first}`:'', app.second?`2nd: ${app.second}`:''].filter(Boolean).join(' · ');
+    card.innerHTML = `
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium">${emp.name}${crossTag}</div>
+          <div class="text-xs text-gray-600">${emp.role} • Current: <span class="font-medium">${emp.dept}</span></div>
+        </div>
+        <button class="text-xs px-2 py-1 rounded bg-ashley-orange text-white">View</button>
+      </div>
+      <div class="text-xs text-gray-700 mt-1"><span class="font-medium">Preferences:</span> ${prefs || '—'}</div>`;
+    card.querySelector('button').onclick = ()=>openApp(emp, app);
+    $(bucketSel).appendChild(card);
+  }
 
   function renderR2(){
     ['#s2-r2-internal','#s2-r2-incoming','#s2-r2-outgoing'].forEach(id=>$(id).innerHTML='');
 
-    const empById = Object.fromEntries(EMPLOYEES.map(e=>[e.id,e]));
-    const deptRoles = rolesOfDept(S.dept);
-
-    // Only after R1 submit
     if(!S.r1Submitted) return;
 
-    // Build buckets
+    const deptRoles = rolesOfDept(S.dept);
+    const internal = [];
+    const incoming = [];
+    const outgoing = [];
+
     APPS.forEach(app=>{
       const emp = empById[app.id]; if(!emp) return;
-      // must have at least one preference in THIS dept
-      if(!hasPrefIn(app, deptRoles)) return;
+      const hasInDept = hasPrefIn(app, deptRoles);
+      const empDeptRoles = rolesOfDept(emp.dept);
+      const hasInEmpDept = hasPrefIn(app, empDeptRoles);
 
-      const internal = emp.dept===S.dept;
-      let pass = false, bucketSel = null;
-
-      if(internal){
-        // internal rule: at least one pref in current dept (which is also S.dept) — already checked above
-        pass = true;
-        bucketSel = '#s2-r2-internal';
+      if(emp.dept === S.dept){
+        // Internal & Outgoing
+        if(hasInDept) internal.push({emp, app});
+        // Outgoing if any choice targets other departments
+        const firstOut = app.first && roleDept(app.first) && roleDept(app.first)!==S.dept;
+        const secondOut = app.second && roleDept(app.second) && roleDept(app.second)!==S.dept;
+        if(firstOut || secondOut) outgoing.push({emp, app, firstOut});
       } else {
-        // cross-dept rule: at least one pref in employee's current dept
-        const empDeptRoles = rolesOfDept(emp.dept);
-        if(hasPrefIn(app, empDeptRoles)){
-          pass = true;
-          bucketSel = '#s2-r2-incoming';
-        }
+        // Incoming must have at least one pref in current dept (B) and one in target dept (A)
+        if(hasInDept && hasInEmpDept) incoming.push({emp, app});
       }
-
-      // Outgoing list = employees of S.dept who prefer any role outside S.dept
-      if(emp.dept===S.dept){
-        const out = hasPrefIn(app, deptRoles) && (
-          (app.first && !deptRoles.includes(app.first)) ||
-          (app.second && !deptRoles.includes(app.second))
-        );
-        if(out) bucketSel = '#s2-r2-outgoing';
-      }
-
-      if(!pass && bucketSel!=='#s2-r2-outgoing') return;
-
-      const card = el('div','bg-white border rounded-lg p-2 hover:shadow-sm');
-      const cross = (app.cross||'').toLowerCase()==='yes' ? '<span class="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">Cross-Department ⚠️</span>' : '';
-      const ch = [app.first?`1st: ${app.first}`:'', app.second?`2nd: ${app.second}`:''].filter(Boolean).join(' · ');
-      card.innerHTML = `
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="font-medium">${emp.name}${cross}</div>
-            <div class="text-xs text-gray-600">${emp.role} • Current: ${emp.dept}</div>
-          </div>
-          <button class="text-xs px-2 py-1 rounded bg-ashley-orange text-white">View</button>
-        </div>
-        <div class="text-xs text-gray-700 mt-1"><span class="font-medium">Preferences:</span> ${ch || '—'}</div>`;
-      card.querySelector('button').onclick = ()=>openApp(emp, app);
-      $(bucketSel).appendChild(card);
     });
+
+    // Sort rules
+    const firstInDept = (x)=> (x.app.first && roleDept(x.app.first)===S.dept);
+    internal.sort((a,b)=> (firstInDept(b)-firstInDept(a)) || a.emp.name.localeCompare(b.emp.name));
+    incoming.sort((a,b)=> (firstInDept(b)-firstInDept(a)) || a.emp.name.localeCompare(b.emp.name));
+    outgoing.sort((a,b)=> ((b.firstOut?1:0)-(a.firstOut?1:0)) || a.emp.name.localeCompare(b.emp.name));
+
+    internal.forEach(x=>cardFor(x.app, x.emp, '#s2-r2-internal', true, false));
+    incoming.forEach(x=>cardFor(x.app, x.emp, '#s2-r2-incoming', true, true));
+    outgoing.forEach(x=>cardFor(x.app, x.emp, '#s2-r2-outgoing', false, false));
   }
 
-  // ---------- Round 3 (dropdown matching with re-order) ----------
+  // Submit Round 2 → progress to 3
+  const btnR2 = document.getElementById('s2-next-r3') || document.getElementById('s2-submit-r2');
+  if(btnR2){
+    btnR2.id = 's2-submit-r2';
+    btnR2.textContent = 'Submit Round 2';
+    btnR2.addEventListener('click', ()=>{ S.r2Submitted = true; persist(); setProgress(3); window.scrollTo({top:0,behavior:'smooth'}); });
+  }
+
+  // ---------- Round 3 (unique candidate across roles) ----------
   function ensureRoleState(role){
     S.slots[S.dept] = S.slots[S.dept] || {};
     S.matches[S.dept] = S.matches[S.dept] || {};
-    if(!S.slots[S.dept][role]) S.slots[S.dept][role] = 2;             // default 2
+    if(!S.slots[S.dept][role]) S.slots[S.dept][role] = 2; // default 2
     if(!Array.isArray(S.matches[S.dept][role])) S.matches[S.dept][role] = [];
   }
   function deptRoleObjs(){ return ROLES.filter(r=>r.department===S.dept).slice(0,5); }
 
+  // set candidate uniquely: remove from other roles in the same dept then assign here
+  function placeCandidateUnique(candidateId, role, slotIdx){
+    // remove from all roles
+    Object.keys(S.matches[S.dept]||{}).forEach(r=>{
+      const arr = S.matches[S.dept][r];
+      if(!Array.isArray(arr)) return;
+      S.matches[S.dept][r] = arr.map((id,i)=> (r===role && i===slotIdx) ? id : (id===candidateId ? null : id));
+    });
+    // ensure array length
+    const n = S.slots[S.dept][role];
+    const arr = S.matches[S.dept][role] || [];
+    while(arr.length < n) arr.push(null);
+    arr[slotIdx] = candidateId || null;
+    S.matches[S.dept][role] = arr;
+    persist(); renderR3();
+  }
+
+  function selectedIdsInDept(){
+    const out = new Set();
+    const roles = S.matches[S.dept] || {};
+    Object.values(roles).forEach(arr=>{
+      (arr||[]).forEach(id=>{ if(id) out.add(id); });
+    });
+    return out;
+  }
+
   function eligibleForRole(roleName){
-    const empById = Object.fromEntries(EMPLOYEES.map(e=>[e.id,e]));
     return APPS
       .filter(a => a.first===roleName || a.second===roleName)
       .map(a => ({ app:a, emp: empById[a.id] }))
@@ -2059,9 +2156,15 @@ if (btnEmail){
   function optionLabel(x, roleName){
     const isFirst = x.app.first===roleName;
     const isSecond = x.app.second===roleName && !isFirst;
-    const emoji = isFirst ? '⭐ ' : (isSecond ? '② ' : '');
+    const badge = isFirst ? '1' : (isSecond ? '2' : '');
     const source = x.emp.dept===S.dept ? 'INT' : 'INC';
-    return `${emoji}${x.emp.name} · ${source}`;
+    return `${badge?badge+' ':''}${x.emp.name} · ${source}`;
+  }
+
+  function trimOver(role){
+    const n = S.slots[S.dept][role];
+    const arr = S.matches[S.dept][role] || [];
+    if(arr.length > n) S.matches[S.dept][role] = arr.slice(0,n);
   }
 
   function drawMatchRow(tbody, roleObj){
@@ -2081,7 +2184,6 @@ if (btnEmail){
       </div>`;
     const minus = tdSlot.querySelector('[data-d="-1"]');
     const plus  = tdSlot.querySelector('[data-d="1"]');
-    const valEl = tdSlot.querySelector('[data-val]');
     minus.onclick = ()=>{ let v=S.slots[S.dept][role]; v=Math.max(1,v-1); S.slots[S.dept][role]=v; trimOver(role); persist(); renderR3(); };
     plus.onclick  = ()=>{ let v=S.slots[S.dept][role]; v=Math.min(5,v+1); S.slots[S.dept][role]=v; persist(); renderR3(); };
 
@@ -2089,8 +2191,8 @@ if (btnEmail){
     const tdMatch = el('td','p-2 border');
     const container = el('div','space-y-2');
     const options = eligibleForRole(role);
+    const taken = selectedIdsInDept();
 
-    // ensure array length equals slots
     const n = S.slots[S.dept][role];
     const arr = S.matches[S.dept][role];
     while(arr.length < n) arr.push(null);
@@ -2098,34 +2200,28 @@ if (btnEmail){
 
     for(let i=0;i<n;i++){
       const row = el('div','flex items-center gap-2');
-      const sel = el('select','border rounded-lg px-2 py-1 text-sm min-w-[240px]');
+      const sel = el('select','border rounded-lg px-2 py-1 text-sm min-w-[260px]');
       const empty = el('option',''); empty.value=''; empty.textContent='— Select candidate —';
       sel.appendChild(empty);
 
       options.forEach(x=>{
-        // prevent picking same candidate twice in same role
-        if(arr.includes(x.emp.id) && arr[i]!==x.emp.id) return;
+        // allow current selection even if already taken elsewhere (we will move on change)
+        if(taken.has(x.emp.id) && arr[i]!==x.emp.id) return;
         const op = el('option','');
         op.value = x.emp.id; op.textContent = optionLabel(x, role);
         sel.appendChild(op);
       });
 
       sel.value = arr[i] || '';
-      sel.onchange = ()=>{
-        const val = sel.value || null;
-        // remove from other slots of same role
-        S.matches[S.dept][role] = arr.map((id,idx)=> idx===i ? val : (id===val ? null : id));
-        persist(); renderR3();
-      };
+      sel.onchange = ()=> placeCandidateUnique(sel.value || null, role, i);
 
-      // up/down
+      // up/down/release
       const up = el('button','px-2 py-1 border rounded text-xs'); up.textContent='↑';
       const dn = el('button','px-2 py-1 border rounded text-xs'); dn.textContent='↓';
+      const rm = el('button','px-2 py-1 border rounded text-xs'); rm.textContent='✕';
       up.onclick = ()=>{ if(i===0) return; const tmp=arr[i-1]; arr[i-1]=arr[i]; arr[i]=tmp; persist(); renderR3(); };
       dn.onclick = ()=>{ if(i===n-1) return; const tmp=arr[i+1]; arr[i+1]=arr[i]; arr[i]=tmp; persist(); renderR3(); };
-
-      const rm = el('button','px-2 py-1 border rounded text-xs'); rm.textContent='✕';
-      rm.onclick = ()=>{ arr[i]=null; persist(); renderR3(); };
+      rm.onclick = ()=>{ placeCandidateUnique(null, role, i); };
 
       row.append(sel, up, dn, rm);
       container.appendChild(row);
@@ -2134,12 +2230,6 @@ if (btnEmail){
     tdMatch.appendChild(container);
     tr.append(tdRole, tdSlot, tdMatch);
     tbody.appendChild(tr);
-  }
-
-  function trimOver(role){
-    const n = S.slots[S.dept][role];
-    const arr = S.matches[S.dept][role] || [];
-    if(arr.length > n) S.matches[S.dept][role] = arr.slice(0,n);
   }
 
   function renderR3(){
@@ -2152,31 +2242,32 @@ if (btnEmail){
 
   // ---------- Finish & Summary ----------
   $('#s2-finish').addEventListener('click', ()=>{
-    const body = $('#s2-summary-body'); body.innerHTML='';
+    // Confirmation about unmatched
     const roles = deptRoleObjs();
     const chosen = new Set();
+    (S.matches[S.dept] ? Object.values(S.matches[S.dept]) : []).forEach(arr=> (arr||[]).forEach(id=>{ if(id) chosen.add(id); }));
+    const deptRoleNames = roles.map(r=>r.role_name);
+    const eligible = APPS.filter(a=> deptRoleNames.includes(a.first) || deptRoleNames.includes(a.second)).map(a=>a.id);
+    const notPicked = eligible.filter(id=> !chosen.has(id));
 
+    if(notPicked.length){
+      const names = notPicked.map(id=> (empById[id]?.name || id)).join(', ');
+      const ok = confirm(`The following candidates are not matched and will be excluded at this round (AHR will send a thank-you):\n\n${names}\n\nSubmit now?`);
+      if(!ok) return;
+    }
+
+    const body = $('#s2-summary-body'); body.innerHTML='';
     roles.forEach(r=>{
       const arr = (S.matches[S.dept][r.role_name]||[]).filter(Boolean);
-      const list = arr.map((id,idx)=>{
-        const emp = EMPLOYEES.find(e=>e.id===id); if(!emp) return null;
-        chosen.add(id);
-        return `${idx+1}. ${emp.name}`;
-      }).filter(Boolean).join(' | ') || '—';
-      const row = el('div',''); row.innerHTML = `<span class="font-semibold text-ashley-orange">${r.role_name}:</span> ${list}`;
+      const line = arr.map((id,idx)=> `${idx+1}. ${empById[id]?.name||id}`).join(' | ') || '—';
+      const row = el('div',''); row.innerHTML = `<span class="font-semibold text-ashley-orange">${r.role_name}:</span> ${line}`;
       body.appendChild(row);
     });
 
-    // highlight not matched (eligible to your dept but left unselected)
-    const deptRoleNames = roles.map(r=>r.role_name);
-    const empById = Object.fromEntries(EMPLOYEES.map(e=>[e.id,e]));
-    const eligible = APPS.filter(a=> deptRoleNames.includes(a.first) || deptRoleNames.includes(a.second)).map(a=>a.id);
-    const notPicked = eligible.filter(id=> !chosen.has(id));
     const note = $('#s2-summary-note');
     if(notPicked.length){
-      const names = notPicked.map(id=> (empById[id]?.name || id)).join(', ');
       note.classList.remove('hidden');
-      note.innerHTML = `<strong>Notice:</strong> The following candidates were <em>not matched</em> in Round 3 and will be excluded from this step: <span class="font-medium">${names}</span>.<br/>AHR will send a thank-you letter to acknowledge their participation.`;
+      note.innerHTML = `<strong>Notice:</strong> Unmatched candidates will be excluded from this step and receive a thank-you message from AHR.`;
     } else {
       note.classList.add('hidden'); note.textContent='';
     }
@@ -2185,44 +2276,39 @@ if (btnEmail){
     window.scrollTo({ top: document.getElementById('s2-summary').offsetTop - 80, behavior:'smooth' });
   });
 
-  // ---------- Export Matching ----------
-  $('#s2-export').addEventListener('click', ()=>{
-    const rows = [];
-    const roles = deptRoleObjs();
-    roles.forEach(r=>{
-      const picks = (S.matches[S.dept][r.role_name]||[]).filter(Boolean).map((id, idx)=>{
-        const emp = EMPLOYEES.find(e=>e.id===id); return emp ? `${idx+1}. ${emp.name}` : null;
-      }).filter(Boolean);
-      rows.push({
-        Department: S.dept,
-        Role: r.role_name,
-        'Slots Planned': S.slots[S.dept][r.role_name] || 0,
-        'Selected Candidates (ordered)': picks.join(' | ')
-      });
-    });
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(rows);
-    XLSX.utils.book_append_sheet(wb, ws, 'Matching');
-    const d = new Date(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
-    XLSX.writeFile(wb, `Succession_Matching_${S.dept}_${d.getFullYear()}-${mm}-${dd}.xlsx`);
-  });
-
   // ---------- Progress, Reset, Init ----------
   function setProgress(round){
     const pct = round===1?33:(round===2?66:100);
     $('#s2-progress-bar').style.width = pct + '%';
     $('#s2-progress-label').textContent = `Round ${round} of 3`;
   }
+  window.setProgress = setProgress; // keep accessible
+
   $('#s2-reset').addEventListener('click', ()=>{
     if(!confirm('Clear your saved simulator state for Step 2?')) return;
-    Object.assign(S, { dept:S.dept, reviewed:{}, decision:{}, note:{}, slots:{}, matches:{}, r1Submitted:false });
-    persist(); hydrateCase(); renderR1(); $('#s2-round2-block').classList.add('hidden'); $('#s2-round3-block').classList.add('hidden'); setProgress(1);
+    Object.assign(S, { dept:S.dept, reviewed:{}, decision:{}, note:{}, slots:{}, matches:{}, r1Submitted:false, r2Submitted:false });
+    persist();
+    hydrateCase(); renderR1();
+    $('#s2-round2-block').classList.add('hidden');
+    $('#s2-round3-block').classList.add('hidden');
+    $('#s2-summary').classList.add('hidden');
+    $('#s2-summary-body').innerHTML='';
+    $('#s2-summary-note').classList.add('hidden'); $('#s2-summary-note').textContent='';
+    setProgress(1);
   });
 
   // Init
   $('#s2-dept').value = S.dept;
-  $('#s2-dept').addEventListener('change', e=>{ S.dept=e.target.value; persist(); hydrateCase(); renderR1(); if(S.r1Submitted){ renderR2(); renderR3(); setProgress(2);} });
-  showStep2Tab('def'); setProgress(S.r1Submitted?2:1); hydrateCase(); renderR1(); if(S.r1Submitted){ renderR2(); renderR3(); }
+  $('#s2-dept').addEventListener('change', e=>{
+    S.dept=e.target.value; persist();
+    hydrateCase(); renderR1();
+    if(S.r1Submitted){ renderR2(); renderR3(); setProgress(S.r2Submitted?3:2); }
+  });
+
+  showStep2Tab('def');
+  setProgress(S.r2Submitted?3:(S.r1Submitted?2:1));
+  hydrateCase(); renderR1();
+  if(S.r1Submitted){ renderR2(); renderR3(); }
 })();
 </script>
 </div>

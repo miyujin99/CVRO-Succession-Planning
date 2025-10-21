@@ -725,13 +725,19 @@
     }
     requireRationaleIfIncluded(tr);
   }
-
+function autosizeRole(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
 function attachDelegatedHandlers(){
   const tbody = document.getElementById('scoreRows');
   if (!tbody) return;
 
   tbody.addEventListener('input', e => {
     const t = e.target;
+	 if (t.classList.contains('role-input')) {
+    autosizeRole(t);
+  }
     if (t.classList.contains('score-input')){
       clampTo1to5(t);
       const tr = t.closest('tr'); if (tr) recomputeRow(tr);
@@ -774,10 +780,11 @@ function createRow(role = '', index = 0) {
   tr.className = 'border-t align-top';
   tr.innerHTML = `
     <td class="px-3 py-2 text-gray-600 row-index">${index}</td>
-    <td class="px-3 py-2">
-      <input type="text" class="role-input w-full border rounded-lg px-2 py-1"
-             placeholder="Enter position name..." value="${role}">
-    </td>
+<td class="px-3 py-2 align-top">
+  <textarea class="role-input w-full border rounded-lg px-2 py-1 resize-none overflow-hidden"
+            rows="1"
+            placeholder="Enter position name...">${role}</textarea>
+</td>
     ${[1,2,3,4,5].map(() => `
       <td class="px-2 py-2">
         <input type="number" min="1" max="5" step="1" inputmode="numeric"

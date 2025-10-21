@@ -726,37 +726,37 @@
     requireRationaleIfIncluded(tr);
   }
 
-  function attachDelegatedHandlers(){
-    const tbody = document.getElementById('scoreRows');
-    if (!tbody) return;
+function attachDelegatedHandlers(){
+  const tbody = document.getElementById('scoreRows');
+  if (!tbody) return;
 
-    tbody.addEventListener('input', e => {
-      const t = e.target;
-      if (t.classList.contains('score-input')){
-        clampTo1to5(t);
-        const tr = t.closest('tr'); if (tr) recomputeRow(tr);
-      }
-      if (t.classList.contains('rationale-input')){
-        const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
-      }
-    });
+  tbody.addEventListener('input', e => {
+    const t = e.target;
+    if (t.classList.contains('score-input')){
+      clampTo1to5(t);
+      const tr = t.closest('tr'); if (tr) recomputeRow(tr);
+    }
+    if (t.classList.contains('rationale-input')){
+      const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
+    }
+  });
 
-    tbody.addEventListener('change', e => {
-      const t = e.target;
-      if (t.classList.contains('score-input')){
-        clampTo1to5(t);
-        const tr = t.closest('tr'); if (tr) recomputeRow(tr);
-      }
-      if (t.classList.contains('rationale-input') || t.classList.contains('include-checkbox')){
-        const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
-      }
-    });
+  tbody.addEventListener('change', e => {
+    const t = e.target;
+    if (t.classList.contains('score-input')){
+      clampTo1to5(t);
+      const tr = t.closest('tr'); if (tr) recomputeRow(tr);
+    }
+    if (t.classList.contains('rationale-input') || t.classList.contains('include-checkbox')){
+      const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
+    }
+  });
 
-    tbody.addEventListener('wheel', e => {
-      if (e.target && e.target.classList.contains('score-input')) e.preventDefault();
-    }, { passive:false });
-  }
-  // ===== NEW: Click thùng rác xoá dòng =====
+  tbody.addEventListener('wheel', e => {
+    if (e.target && e.target.classList.contains('score-input')) e.preventDefault();
+  }, { passive:false });
+
+  // ===== NEW: Click thùng rác xoá dòng (đặt ĐÚNG CHỖ) =====
   tbody.addEventListener('click', e => {
     const btn = e.target.closest('.btn-del-row');
     if (!btn) return;
@@ -767,6 +767,7 @@
     }
   });
 }
+
   // ===== NEW: Helpers tạo/xoá/đánh số dòng =====
 function createRow(role = '', index = 0) {
   const tr = document.createElement('tr');
@@ -957,12 +958,14 @@ if (btnEmail){
     // Đếm tổng roles & số role được tick include
     let totalRoles = 0, includedCount = 0;
     document.querySelectorAll('#scoreRows tr').forEach(tr => {
-      const role = tr.querySelector('.role-cell')?.textContent.trim();
-      if (!role) return;
-      totalRoles++;
-      const cb = tr.querySelector('.include-checkbox');
-      if (cb && cb.checked) includedCount++;
-    });
+  const role = tr.querySelector('.role-input')?.value.trim()
+              || tr.querySelector('.role-cell')?.textContent.trim()
+              || '';
+  if (!role) return;
+  totalRoles++;
+  const cb = tr.querySelector('.include-checkbox');
+  if (cb && cb.checked) includedCount++;
+});
 
     // Tạo các biến ngày & tên file (trùng với export)
     const d  = new Date();

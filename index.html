@@ -729,6 +729,10 @@ function autosizeRole(el) {
   el.style.height = 'auto';
   el.style.height = el.scrollHeight + 'px';
 }
+function autosizeAllRoles(){
+  document.querySelectorAll('#scoreRows .role-input').forEach(ta => autosizeRole(ta));
+}
+
 function attachDelegatedHandlers(){
   const tbody = document.getElementById('scoreRows');
   if (!tbody) return;
@@ -781,9 +785,11 @@ function createRow(role = '', index = 0) {
   tr.innerHTML = `
     <td class="px-3 py-2 text-gray-600 row-index">${index}</td>
 <td class="px-3 py-2 align-top">
-  <textarea class="role-input w-full border rounded-lg px-2 py-1 resize-none overflow-hidden"
-            rows="1"
-            placeholder="Enter position name...">${role}</textarea>
+  <textarea
+  class="role-input w-full border rounded-lg px-2 py-1 leading-snug whitespace-pre-wrap break-words resize-none overflow-hidden min-h-[38px]"
+  rows="1"
+  placeholder="Enter position name...">${role}</textarea>
+
 </td>
     ${[1,2,3,4,5].map(() => `
       <td class="px-2 py-2">
@@ -818,8 +824,11 @@ function addRoleRow(roleName = '') {
   const tbody = document.getElementById('scoreRows');
   const tr = createRow(roleName, (tbody.children.length + 1));
   tbody.appendChild(tr);
+  const ta = tr.querySelector('.role-input');
+  if (ta) requestAnimationFrame(() => autosizeRole(ta));
   renumberRows();
 }
+
 function renderRoles(deptCode){
   const dept = DEPT_MAP[deptCode];
   const roles = dept?.roles || [];
@@ -830,9 +839,13 @@ function renderRoles(deptCode){
   roles.forEach((role, idx) => {
     const tr = createRow(role, idx + 1);
     tbody.appendChild(tr);
+    const ta = tr.querySelector('.role-input');
+    if (ta) requestAnimationFrame(() => autosizeRole(ta));
   });
   renumberRows();
+  requestAnimationFrame(autosizeAllRoles);
 }
+
 
  // ========= Init =========
   document.addEventListener('DOMContentLoaded', () => {
@@ -845,8 +858,12 @@ if (btnAdd) {
 
     const deptSelect = document.getElementById('deptSelect');
     if (deptSelect){
-      deptSelect.addEventListener('change', (e) => renderRoles(e.target.value));
-    }
+  deptSelect.addEventListener('change', (e) => {
+    renderRoles(e.target.value);
+    requestAnimationFrame(autosizeAllRoles);
+  });
+}
+
     loadDeptData(); // nạp dữ liệu phòng ban
 
   // Export Excel + mở Outlook (nếu checkbox bật)
@@ -1011,7 +1028,10 @@ if (btnEmail){
     window.location.href = mailto;
   });
 }
-  });
+  // gọi autosize khi toàn trang load xong (chắc chắn hiển thị đủ)
+  window.addEventListener('load', autosizeAllRoles);
+
+});
 </script>
 </div>
 <!-- Success Profile Tab -->

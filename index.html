@@ -454,10 +454,6 @@
             class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark transition">
       ⬇ Download Excel
     </button>
-	<button id="btnAddRow"
-        class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
-  ➕ Add Role
-</button>
     <button id="btnEmailAHR"
             class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
       ✉️ Email AHR
@@ -471,8 +467,18 @@
           class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300 min-w-64">
     <option value="" selected disabled>— Loading departments… —</option>
   </select>
+  <!-- NEW: Add Role + Reset ngay sau Select -->
+  <div class="flex items-center gap-2">
+    <button id="btnAddRow"
+            class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
+      ➕ Add Role
+    </button>
+    <button id="btnReset"
+            class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
+      ♻ Reset
+    </button>
+  </div>
 </div>
-
 
   <!-- Table wrapper -->
   <div class="overflow-x-auto border rounded-2xl bg-white">
@@ -737,30 +743,36 @@ function attachDelegatedHandlers(){
   const tbody = document.getElementById('scoreRows');
   if (!tbody) return;
 
-  tbody.addEventListener('input', e => {
-    const t = e.target;
-	 if (t.classList.contains('role-input')) {
+tbody.addEventListener('input', e => {
+  const t = e.target;
+  if (t.classList.contains('role-input')) {
     autosizeRole(t);
+    saveDebounced();
   }
-    if (t.classList.contains('score-input')){
-      clampTo1to5(t);
-      const tr = t.closest('tr'); if (tr) recomputeRow(tr);
-    }
-    if (t.classList.contains('rationale-input')){
-      const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
-    }
-  });
+  if (t.classList.contains('score-input')){
+    clampTo1to5(t);
+    const tr = t.closest('tr'); if (tr) recomputeRow(tr);
+    saveDebounced();
+  }
+  if (t.classList.contains('rationale-input')){
+    const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
+    saveDebounced();
+  }
+});
 
   tbody.addEventListener('change', e => {
-    const t = e.target;
-    if (t.classList.contains('score-input')){
-      clampTo1to5(t);
-      const tr = t.closest('tr'); if (tr) recomputeRow(tr);
-    }
-    if (t.classList.contains('rationale-input') || t.classList.contains('include-checkbox')){
-      const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
-    }
-  });
+  const t = e.target;
+  if (t.classList.contains('score-input')){
+    clampTo1to5(t);
+    const tr = t.closest('tr'); if (tr) recomputeRow(tr);
+    saveDebounced();
+  }
+  if (t.classList.contains('rationale-input') || t.classList.contains('include-checkbox')){
+    const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
+    saveDebounced();
+  }
+});
+
 
   tbody.addEventListener('wheel', e => {
     if (e.target && e.target.classList.contains('score-input')) e.preventDefault();
@@ -768,14 +780,15 @@ function attachDelegatedHandlers(){
 
   // ===== NEW: Click thùng rác xoá dòng (đặt ĐÚNG CHỖ) =====
   tbody.addEventListener('click', e => {
-    const btn = e.target.closest('.btn-del-row');
-    if (!btn) return;
-    const tr = btn.closest('tr');
-    if (tr) {
-      tr.remove();
-      renumberRows();
-    }
-  });
+  const btn = e.target.closest('.btn-del-row');
+  if (!btn) return;
+  const tr = btn.closest('tr');
+  if (tr) {
+    tr.remove();
+    renumberRows();
+    saveDebounced();
+  }
+});
 }
 
   // ===== NEW: Helpers tạo/xoá/đánh số dòng =====
@@ -819,6 +832,48 @@ function renumberRows() {
     td.textContent = i + 1;
   });
 }
+// ===== NEW: LocalStorage helpers =====
+const STORAGE_PREFIX = 'SP_CALC_V1_';
+const getKey = (code) => STORAGE_PREFIX + (code || 'unknown');
+
+function saveState(deptCode){
+  const data = [];
+  document.querySelectorAll('#scoreRows tr').forEach(tr => {
+    const role = tr.querySelector('.role-input')?.value.trim() || '';
+    if (!role) return;
+    const scores = Array.from(tr.querySelectorAll('.score-input'))
+                    .map(i => i.value === '' ? null : Number(i.value));
+    const includeCb = tr.querySelector('.include-checkbox');
+    const include = includeCb ? !!includeCb.checked : null;
+    const rationale = tr.querySelector('.rationale-input')?.value || '';
+    data.push({ role, scores, include, rationale });
+  });
+  try { localStorage.setItem(getKey(document.getElementById('deptSelect')?.value), JSON.stringify(data)); } catch(e){}
+}
+
+function loadState(deptCode){
+  try {
+    const raw = localStorage.getItem(getKey(deptCode));
+    if (!raw) return null;
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : null;
+  } catch(e){ return null; }
+}
+
+function clearState(deptCode){
+  try { localStorage.removeItem(getKey(deptCode)); } catch(e){}
+}
+
+// Debounce để tránh ghi liên tục
+let __saveTimer = null;
+function saveDebounced(){
+  const code = document.getElementById('deptSelect')?.value;
+  if (!code) return;
+  clearTimeout(__saveTimer);
+  __saveTimer = setTimeout(() => saveState(code), 300);
+}
+// ===== NEW: Nhớ phòng ban lần cuối =====
+const LAST_DEPT_KEY = 'SP_CALC_LAST_DEPT';
 
 function addRoleRow(roleName = '') {
   const tbody = document.getElementById('scoreRows');
@@ -827,44 +882,112 @@ function addRoleRow(roleName = '') {
   const ta = tr.querySelector('.role-input');
   if (ta) requestAnimationFrame(() => autosizeRole(ta));
   renumberRows();
+  saveDebounced();
 }
 
 function renderRoles(deptCode){
   const dept = DEPT_MAP[deptCode];
-  const roles = dept?.roles || [];
+  const rolesFromCSV = dept?.roles || [];
   const tbody = document.getElementById('scoreRows');
   if (!tbody) return;
 
+  const saved = loadState(deptCode);
   tbody.innerHTML = '';
-  roles.forEach((role, idx) => {
-    const tr = createRow(role, idx + 1);
+
+  const rowsToRender = (saved && saved.length) ? saved
+                     : rolesFromCSV.map(r => ({ role: r, scores:[null,null,null,null,null], include:null, rationale:'' }));
+
+  rowsToRender.forEach((item, idx) => {
+    const tr = createRow(item.role, idx + 1);
     tbody.appendChild(tr);
+
+    // Gán điểm đã lưu
+    const scoreInputs = tr.querySelectorAll('.score-input');
+    (item.scores || []).forEach((v, i) => {
+      if (v !== null && scoreInputs[i]) scoreInputs[i].value = v;
+    });
+
+    // Tính lại để hiện Total & Result
+    recomputeRow(tr);
+
+    // Gán include đã lưu (nếu có)
+    if (item.include === true) {
+      const cb = tr.querySelector('.include-checkbox');
+      if (cb) cb.checked = true;
+    }
+
+    // Gán rationale đã lưu
+    const rat = tr.querySelector('.rationale-input');
+    if (rat && item.rationale) rat.value = item.rationale;
+
+    // Autosize Role textarea
     const ta = tr.querySelector('.role-input');
     if (ta) requestAnimationFrame(() => autosizeRole(ta));
   });
+
   renumberRows();
   requestAnimationFrame(autosizeAllRoles);
 }
 
-
  // ========= Init =========
   document.addEventListener('DOMContentLoaded', () => {
     attachDelegatedHandlers();
-	// ===== NEW: Add Role
+// ===== Add Role + Reset + Dept change
 const btnAdd = document.getElementById('btnAddRow');
 if (btnAdd) {
   btnAdd.addEventListener('click', () => addRoleRow(''));
 }
 
-    const deptSelect = document.getElementById('deptSelect');
-    if (deptSelect){
-  deptSelect.addEventListener('change', (e) => {
-    renderRoles(e.target.value);
+const btnReset = document.getElementById('btnReset');
+if (btnReset){
+  btnReset.addEventListener('click', () => {
+    const code = document.getElementById('deptSelect')?.value;
+    if (!code) return;
+    clearState(code);          // xoá dữ liệu đã lưu
+    renderRoles(code);         // render lại từ CSV/JSON gốc
     requestAnimationFrame(autosizeAllRoles);
   });
 }
 
+
+const deptSelect = document.getElementById('deptSelect');
+if (deptSelect){
+  deptSelect.addEventListener('change', (e) => {
+    const code = e.target.value;
+    try { localStorage.setItem(LAST_DEPT_KEY, code); } catch(e){}
+    renderRoles(code);                  // ưu tiên load từ LocalStorage nếu có
+    requestAnimationFrame(autosizeAllRoles);
+  });
+}
+
+
+
     loadDeptData(); // nạp dữ liệu phòng ban
+// Khi load xong danh sách dept (hydrateDeptSelect đã điền options),
+// tự chọn lại phòng ban cuối cùng nếu có và render ngay.
+const tryRestoreDept = () => {
+  const sel = document.getElementById('deptSelect');
+  if (!sel || !Object.keys(DEPT_MAP).length) return;
+
+  // 1) lấy dept lần cuối
+  let code = null;
+  try { code = localStorage.getItem(LAST_DEPT_KEY) || null; } catch(e){}
+
+  // 2) nếu có và tồn tại trong DEPT_MAP -> set select + render
+  if (code && DEPT_MAP[code]) {
+    sel.value = code;
+    renderRoles(code);
+    requestAnimationFrame(autosizeAllRoles);
+    return;
+  }
+
+  // (tùy chọn) nếu muốn auto chọn dept đầu tiên khi chưa có lựa chọn trước đó:
+  // const first = Object.keys(DEPT_MAP)[0];
+  // if (first) { sel.value = first; renderRoles(first); requestAnimationFrame(autosizeAllRoles); }
+};
+
+// Vì loadDeptData() là async (fetch JSON/CSV), ta đợi một "tick" để hydrate xong select:
+setTimeout(tryRestoreDept, 0);
 
   // Export Excel + mở Outlook (nếu checkbox bật)
   (function () {

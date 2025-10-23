@@ -736,7 +736,8 @@ function autosizeRole(el) {
   el.style.height = el.scrollHeight + 'px';
 }
 function autosizeAllRoles(){
-  document.querySelectorAll('#scoreRows .role-input').forEach(ta => autosizeRole(ta));
+  document.querySelectorAll('#scoreRows .role-input, #scoreRows .rationale-input')
+    .forEach(ta => autosizeRole(ta));
 }
 
 function attachDelegatedHandlers(){
@@ -755,9 +756,10 @@ tbody.addEventListener('input', e => {
     saveDebounced();
   }
   if (t.classList.contains('rationale-input')){
-    const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
-    saveDebounced();
-  }
+  autosizeRole(t);  // NEW: tự giãn
+  const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
+  saveDebounced();
+}
 });
 
   tbody.addEventListener('change', e => {
@@ -814,8 +816,10 @@ function createRow(role = '', index = 0) {
     <td class="px-3 py-2 text-center include-cell"></td>
     <td class="px-3 py-2">
       <div class="space-y-1">
-        <input type="text" class="rationale-input w-full border rounded-lg px-2 py-1"
-               placeholder="If upgrading or including the role, please briefly explain why.">
+        <textarea
+  class="rationale-input w-full border rounded-lg px-2 py-1 leading-snug whitespace-pre-wrap break-words resize-none overflow-hidden min-h-[38px]"
+  rows="2"
+  placeholder="If upgrading or including the role, please briefly explain why."></textarea>
         <p class="rationale-warn hidden text-xs text-red-600">Rationale required when included.</p>
       </div>
     </td>
@@ -880,9 +884,11 @@ function addRoleRow(roleName = '') {
   const tr = createRow(roleName, (tbody.children.length + 1));
   tbody.appendChild(tr);
   const ta = tr.querySelector('.role-input');
-  if (ta) requestAnimationFrame(() => autosizeRole(ta));
-  renumberRows();
-  saveDebounced();
+if (ta) requestAnimationFrame(() => autosizeRole(ta));
+const rat = tr.querySelector('.rationale-input');              // NEW
+if (rat) requestAnimationFrame(() => autosizeRole(rat));       // NEW
+renumberRows();
+saveDebounced();
 }
 
 function renderRoles(deptCode){
@@ -917,8 +923,11 @@ function renderRoles(deptCode){
     }
 
     // Gán rationale đã lưu
-    const rat = tr.querySelector('.rationale-input');
-    if (rat && item.rationale) rat.value = item.rationale;
+const rat = tr.querySelector('.rationale-input');
+if (rat && item.rationale) rat.value = item.rationale;
+// autosize ngay sau khi set value
+if (rat) requestAnimationFrame(() => autosizeRole(rat));
+
 
     // Autosize Role textarea
     const ta = tr.querySelector('.role-input');

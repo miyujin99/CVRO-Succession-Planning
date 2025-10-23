@@ -133,12 +133,11 @@
             <h3 class="text-2xl font-bold text-gray-900 mb-2">STEP 1: Identify Critical Positions & Define Success Profile</h3>
             <p class="text-gray-600 mb-6">To ensure organizational continuity <strong>by identifying the most business-critical positions for succession planning</strong> and clearly <strong>defining the expectations</strong> for successors.</p>
             <div class="border-b mb-6">
-              <nav class="flex flex-wrap gap-6">
+              <nav class="flex flex-wrap gap-5">
                 <button onclick="showStepTab('overview', event)" class="step-tab-btn border-b-2 border-ashley-orange text-ashley-orange py-2 px-1 text-sm font-medium">Overview</button>
-                <button onclick="showStepTab('criteria', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Criteria Options</button>
-                <button onclick="showStepTab('scoring', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Scoring Guide</button>
-                <button onclick="showStepTab('profile', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Success Profile</button>
-                <button onclick="showStepTab('tools', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Tools</button>
+                <button onclick="showStepTab('criteria', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Part A: Identify Critical Positions</button>
+                <button onclick="showStepTab('profile', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Part B: Define Success Profile for Selected Positions</button>
+                <button onclick="showStepTab('tools', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Outputs & Templates</button>
               </nav>
             </div>
 
@@ -218,17 +217,11 @@
 <div id="s1-criteria-tab" class="step-tab-content hidden">
   <div class="space-y-6">
     <div>
-      <h3 class="font-semibold text-gray-900 mb-2">Part A: Identify Critical Positions</h3>
-      <p class="text-gray-700 text-base mb-4">
+	<h2 class="text-xl font-semibold text-[#F68C2C]">Criteria Options</h2>
+      <p class="font-semibold text-gray-700 text-base mb-4">
         CVRO Department Heads (HOD) are responsible for evaluating positions within their teams.
         Two options are presented for evaluation criteria:
       </p>
-    </div>
-    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-      <div class="flex items-center gap-2">
-        <span class="bg-ashley-orange text-white px-2 py-1 rounded text-xs font-bold">AHR RECOMMENDS</span>
-        <span class="text-yellow-800 font-medium">Option 2 - CVRO Customized</span>
-      </div>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
       <div class="bg-white border-2 border-gray-200 rounded-lg p-4">
@@ -242,7 +235,7 @@
         </div>
       </div>
 
-      <div class="bg-ashley-orange/10 border-2 border-ashley-orange rounded-lg p-4">
+      <div class="bg-white border-2 border-ashley-orange rounded-lg p-4">
         <h4 class="font-semibold text-ashley-orange mb-3">Option 2 – CVRO Customized (Equal 20% each)</h4>
         <div class="space-y-2 text-sm text-gray-700">
           <div class="flex justify-between"><span>Succession Urgency & Internal Readiness</span><span class="font-medium">20%</span></div>
@@ -253,41 +246,15 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-            <!-- Scoring Tab -->
-<div id="s1-scoring-tab" class="step-tab-content hidden">
-  <!-- 4 box phân loại -->
-  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-      <h4 class="font-bold text-red-900 mb-1">1. Critical Role</h4>
-      <p class="text-red-800 text-sm mb-2">≥4.2 points</p>
-      <p class="text-red-700 text-xs">Need to have the strategic consideration from top leadership.</p>
+	    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+      <div class="flex items-center gap-2">
+        <span class="bg-ashley-orange text-white px-2 py-1 rounded text-xs font-bold">AHR RECOMMENDS</span>
+        <span class="text-yellow-800 font-medium">Option 2 - CVRO Customized</span>
+      </div>
     </div>
-    <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded">
-      <h4 class="font-bold text-orange-900 mb-1">2. High Importance</h4>
-      <p class="text-orange-800 text-sm mb-2">3.5–4.19 points</p>
-      <p class="text-orange-700 text-xs">Requires successor planning application.</p>
-    </div>
-    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
-      <h4 class="font-bold text-yellow-900 mb-1">3. Moderate Importance</h4>
-      <p class="text-yellow-800 text-sm mb-2">2.8–3.49 points</p>
-      <p class="text-yellow-700 text-xs">Important but not urgent; succession planning optional.</p>
-    </div>
-    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
-      <h4 class="font-bold text-green-900 mb-1">4. Low Importance</h4>
-      <p class="text-green-800 text-sm mb-2">&lt;2.8 points</p>
-      <p class="text-green-700 text-xs">Less critical at this stage</p>
-    </div>
-  </div>
-
-  <div class="mt-4 bg-blue-50 p-4 rounded-lg">
-    <p class="text-blue-800 text-sm"><strong>Note:</strong> HoDs may flex classifications with documented rationale.</p>
-  </div>
-
+ <!-- Scoring Tab -->
 <!-- Section Title -->
-<h4 class="font-semibold text-gray-900 mb-4 mt-4">📊 Classification Criteria</h4>
+<h2 class="text-xl font-semibold text-[#F68C2C]">📊 Classification Criteria</h2>
 
 <!-- 5 Info Boxes with Popovers -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -439,73 +406,111 @@
     }
   });
 </script>
-
-
-<!-- ===================== Official Scoring Table (nằm dưới Calculator) ===================== -->
-<section class="mt-8">
-<div class="flex flex-col sm:flex-row justify-between mb-4 gap-2 sm:items-center">
-  <h2 class="text-xl font-semibold text-[#F68C2C]">Department Scoring Calculator</h2>
-  <div class="flex items-center gap-3 flex-wrap">
-    <label class="inline-flex items-center gap-2 text-sm text-gray-700">
-      <input id="openEmailCheckbox" type="checkbox" class="h-4 w-4 rounded border-gray-300" checked>
-      📧 Open email draft after export
-    </label>
-    <button id="btnExportXLSX"
-            class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark transition">
-      ⬇ Download Excel
-    </button>
-    <button id="btnEmailAHR"
-            class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
-      ✉️ Email AHR
-    </button>
-  </div>
-</div>
-  <!-- Department selector (auto-load from ./assets) -->
-<div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
-  <label class="text-sm font-medium text-gray-700">Select Department</label>
-  <select id="deptSelect"
-          class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300 min-w-64">
-    <option value="" selected disabled>— Loading departments… —</option>
-  </select>
-  <!-- NEW: Add Role + Reset ngay sau Select -->
-  <div class="flex items-center gap-2">
-    <button id="btnAddRow"
-            class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
-      ➕ Add Role
-    </button>
-    <button id="btnReset"
-            class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
-      ♻ Reset
-    </button>
-  </div>
-</div>
-
-  <!-- Table wrapper -->
-  <div class="overflow-x-auto border rounded-2xl bg-white">
-    <table class="min-w-[1000px] w-full text-sm">
-      <thead class="bg-gray-50">
-        <tr class="text-gray-800">
-          <th class="px-3 py-3 text-left w-5 bg-orange-50">No.</th>
-          <th class="px-3 py-3 text-left w-40 bg-orange-50">Role</th>
-          <th class="px-3 py-3 text-center bg-orange-50">Succession Urgency &<br/>Internal Readiness</th>
-          <th class="px-3 py-3 text-center bg-orange-50">Cost Efficiency</th>
-          <th class="px-3 py-3 text-center bg-orange-50">Leadership & Culture<br/>Impact</th>
-          <th class="px-3 py-3 text-center bg-orange-50">Strategic Impact</th>
-          <th class="px-3 py-3 text-center bg-orange-50">Skill Scarcity & External<br/>Hiring Difficulty</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Total</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Result</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Include in Succession Planning?</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">HoD Adjustment Rationale</th>
-		  <th class="px-3 py-3 text-center w-16 bg-orange-50">Remove?</th>
-        </tr>
-      </thead>
-      <tbody id="scoreRows"></tbody>
-    </table>
+  <!-- 4 box phân loại -->
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+      <h4 class="font-bold text-red-900 mb-1">1. Critical Role</h4>
+      <p class="text-red-800 text-sm mb-2">≥4.2 points</p>
+      <p class="text-red-700 text-xs">Need to have the strategic consideration from top leadership.</p>
+    </div>
+    <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded">
+      <h4 class="font-bold text-orange-900 mb-1">2. High Importance</h4>
+      <p class="text-orange-800 text-sm mb-2">3.5–4.19 points</p>
+      <p class="text-orange-700 text-xs">Requires successor planning application.</p>
+    </div>
+    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
+      <h4 class="font-bold text-yellow-900 mb-1">3. Moderate Importance</h4>
+      <p class="text-yellow-800 text-sm mb-2">2.8–3.49 points</p>
+      <p class="text-yellow-700 text-xs">Important but not urgent; succession planning optional.</p>
+    </div>
+    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+      <h4 class="font-bold text-green-900 mb-1">4. Low Importance</h4>
+      <p class="text-green-800 text-sm mb-2">&lt;2.8 points</p>
+      <p class="text-green-700 text-xs">Less critical at this stage</p>
+    </div>
   </div>
 
-  <p class="text-xs text-gray-500 mt-3">
-    * Score per criterion: 1–5. Total score = average of the 5 criteria (20% weight each).
-  </p>
+  <div class="mt-4 bg-blue-50 p-4 rounded-lg">
+    <p class="text-blue-800 text-sm"><strong>Note:</strong> HoDs may flex classifications with documented rationale.</p>
+  </div>
+
+
+<!-- ===================== Department Scoring Calculator (as its own bordered card) ===================== -->
+<section id="s1-calculator" class="mt-8 border-2 border-gray-300 rounded-2xl bg-white overflow-hidden">
+  <!-- Header của card -->
+  <div class="px-5 py-4 border-b-2 border-gray-200 flex flex-col sm:flex-row justify-between gap-2 sm:items-center">
+    <div class="flex items-center gap-3">
+      <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-ashley-orange text-white text-lg">📊</span>
+      <div>
+        <h2 class="text-lg font-semibold text-gray-900">Department Scoring Calculator</h2>
+        <p class="text-xs text-gray-500">Part A – Identify Critical Positions</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 flex-wrap">
+      <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+        <input id="openEmailCheckbox" type="checkbox" class="h-4 w-4 rounded border-gray-300" checked>
+        📧 Open email draft after export
+      </label>
+      <button id="btnExportXLSX"
+              class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark transition">
+        ⬇ Download Excel
+      </button>
+      <button id="btnEmailAHR"
+              class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
+        ✉️ Email AHR
+      </button>
+    </div>
+  </div>
+
+  <!-- Body của card -->
+  <div class="p-5">
+    <!-- Department selector -->
+    <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
+      <label class="text-sm font-medium text-gray-700">Select Department</label>
+      <select id="deptSelect"
+              class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300 min-w-64">
+        <option value="" selected disabled>— Loading departments… —</option>
+      </select>
+      <div class="flex items-center gap-2">
+        <button id="btnAddRow"
+                class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
+          ➕ Add Role
+        </button>
+        <button id="btnReset"
+                class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
+          ♻ Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Table wrapper -->
+    <div class="overflow-x-auto border rounded-2xl">
+      <table class="min-w-[1000px] w-full text-sm bg-white">
+        <thead class="bg-gray-50">
+          <tr class="text-gray-800">
+            <th class="px-3 py-3 text-center w-5 bg-orange-50">No.</th>
+            <th class="px-3 py-3 text-center w-40 bg-orange-50">Role</th>
+            <th class="px-3 py-3 text-center bg-orange-50">Succession Urgency &<br/>Internal Readiness</th>
+            <th class="px-3 py-3 text-center bg-orange-50">Cost Efficiency</th>
+            <th class="px-3 py-3 text-center bg-orange-50">Leadership & Culture<br/>Impact</th>
+            <th class="px-3 py-3 text-center bg-orange-50">Strategic Impact</th>
+            <th class="px-3 py-3 text-center bg-orange-50">Skill Scarcity & External<br/>Hiring Difficulty</th>
+            <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Total</th>
+            <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Result</th>
+            <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Include in Succession Planning?</th>
+            <th class="px-3 py-3 text-center w-50 text-[#F68C2C] bg-orange-50">HoD Adjustment Rationale</th>
+            <th class="px-3 py-3 text-center bg-orange-50">Remove?</th>
+          </tr>
+        </thead>
+        <tbody id="scoreRows"></tbody>
+      </table>
+    </div>
+
+    <p class="text-xs text-gray-500 mt-3">
+      * Score per criterion: 1–5. Total score = average of the 5 criteria (20% weight each).
+    </p>
+  </div>
 </section>
 
 <!-- ========== JS cho Official Scoring Table (THAY CẢ PHẦN NÀY) ========== -->
@@ -819,7 +824,7 @@ function createRow(role = '', index = 0) {
         <textarea
   class="rationale-input w-full border rounded-lg px-2 py-1 leading-snug whitespace-pre-wrap break-words resize-none overflow-hidden min-h-[38px]"
   rows="2"
-  placeholder=""></textarea>
+  placeholder="Add note…"></textarea>
         <p class="rationale-warn hidden text-xs text-red-600">Rationale required when included.</p>
       </div>
     </td>
@@ -1166,13 +1171,11 @@ if (btnEmail){
 });
 </script>
 </div>
+</div>
 <!-- Success Profile Tab -->
 <div id="s1-profile-tab" class="step-tab-content hidden">
   <div class="mb-4">
-    <h3 class="font-semibold text-gray-900 mb-2">
-      Part B: Define Success Profile for Selected Positions
-    </h3>
-    <p class="text-gray-700 text-base mb-2">
+    <p class="font-semibold text-gray-700 text-base mb-2">
       Each department must review and finalize the Success Profile for each selected role intended for succession planning.
     </p>
     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
@@ -1717,15 +1720,106 @@ if (btnEmail){
   })();
 </script>
 <!-- Tools Tab (Step 1 internal) -->
-            <div id="s1-tools-tab" class="step-tab-content hidden">
-              <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow"><div class="flex items-center mb-3"><div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3"><span class="text-green-600 text-lg">📊</span></div><div><h4 class="font-semibold text-gray-900">Critical Position Evaluation Form</h4><p class="text-sm text-gray-500">Excel template with scoring matrix</p></div></div><a href="https://masterashley-my.sharepoint.com/:x:/g/personal/anguyen_ashleyfurniture_com/ESRPdp4SMZlBkVt48EwOKMMBBzPAPFD4wZPGAxpuxeIygA?download=1" download class="block w-full text-center bg-ashley-orange text-white py-2 px-4 rounded-xl hover:bg-ashley-orange-dark transition">📥 Download .xlsx</a></div>
-                <div class="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow"><div class="flex items-center mb-3"><div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3"><span class="text-blue-600 text-lg">👤</span></div><div><h4 class="font-semibold text-gray-900">Success Profile Template 2025</h4><p class="text-sm text-gray-500">Competency & qualification framework</p></div></div><a href="https://masterashley-my.sharepoint.com/:x:/g/personal/anguyen_ashleyfurniture_com/EY0WX71-w2ZPm4DsFwg12DgBWbH6xsnwgvzNYpk5Ss92bQ?download=1" download class="block w-full text-center bg-ashley-orange text-white py-2 px-4 rounded-xl hover:bg-ashley-orange-dark transition">📥 Download .xlsx</a></div>
-              </div>
-            </div>
-          </div>
-        </div>
+<!-- Outputs & Templates Tab (Step 1 internal) -->
+<div id="s1-tools-tab" class="step-tab-content hidden">
+  <p class="text-sm text-gray-600 mb-4">
+    📁 All files are stored on SharePoint. Access is restricted by department.
+  </p>
 
+  <div class="grid md:grid-cols-2 gap-6">
+
+    <!-- Item 1: Final Forms -->
+    <div class="bg-white border rounded-lg p-5 hover:shadow-md transition-shadow">
+      <div class="flex items-center mb-2">
+        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+          <span class="text-green-600 text-lg">📊</span>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-900 flex items-center gap-2">
+            Final Forms – Critical Position Evaluation
+            <span class="text-xs px-2 py-0.5 rounded-full border border-orange-200 bg-orange-50 text-ashley-orange">
+              🔒 Department-only
+            </span>
+          </h4>
+          <p class="text-sm text-gray-500">
+            SharePoint folder containing all finalized evaluation forms exported after HoD confirmation.
+            Visible only to each department.
+          </p>
+        </div>
+      </div>
+
+      <a href="https://masterashley.sharepoint.com/:f:/r/sites/AsiaTalentManagementCenter-ATMCInternalDocumentManagement/Shared%20Documents/ATMC%20Internal%20Document%20Management/02.%20Talent%20Development%20project%20blueprint%20(dev%20stage)/13.%20Succession%20Planning/Shared%20Folder/Step%201/Step%201A.%20Identify%20Critical%20Positions?csf=1&web=1&e=YHZ4og"
+         target="_blank"
+         class="block w-full text-center bg-ashley-orange text-white py-2 px-4 rounded-xl hover:bg-ashley-orange-dark transition">
+        📁 Open SharePoint folder
+      </a>
+
+      <p class="text-xs text-gray-500 mt-2"> Saved from HoD confirmation emails.</p>
+    </div>
+
+    <!-- Item 2: Success Profile -->
+    <div class="bg-white border rounded-lg p-5 hover:shadow-md transition-shadow">
+      <div class="flex items-center mb-2">
+        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+          <span class="text-blue-600 text-lg">👤</span>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-900 flex items-center gap-2">
+            Success Profile – Department Templates (2025)
+            <span id="sp-badge"
+                  class="text-xs px-2 py-0.5 rounded-full border border-orange-200 bg-orange-50 text-ashley-orange">
+              ⏳ Opens soon
+            </span>
+          </h4>
+          <p class="text-sm text-gray-500">
+            Success Profile templates for prioritized roles in Part A — to be reviewed by HoDs as guided in the Success Profile tab.
+          </p>
+        </div>
+      </div>
+
+      <a id="sp-btn" href="#"
+ 		 class="block w-full text-center bg-gray-200 text-gray-500 py-2 px-4 rounded-xl cursor-not-allowed select-none"
+		 title="This link will be activated after the unlock time">
+		 📁 Open SharePoint folder
+		</a>
+
+      <p class="text-xs text-gray-500 mt-2">
+        Link will be updated and announced via email</p>
+    </div>
+  </div>
+</div>
+
+<!-- Auto-unlock script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const btn   = document.getElementById("sp-btn");
+    const badge = document.getElementById("sp-badge");
+    if (!btn || !badge) return;
+
+    const unlockDate = new Date("2025-11-20T13:00:00+07:00");
+	// 🔸 Giải thích: 2025-11-20 → ngày mở (theo định dạng YYYY-MM-DD)
+	// T00:00:00 → giờ mở (24h format)
+	// +07:00 → múi giờ Việt Nam
+    const forceByHash  = window.location.hash.includes("unlockSP");
+    const forceByLocal = localStorage.getItem("sp_force_open") === "1";
+
+    if (new Date() >= unlockDate || forceByHash || forceByLocal) {
+      btn.href =
+        "https://masterashley.sharepoint.com/:f:/r/sites/AsiaTalentManagementCenter-ATMCInternalDocumentManagement/Shared%20Documents/ATMC%20Internal%20Document%20Management/02.%20Talent%20Development%20project%20blueprint%20(dev%20stage)/13.%20Succession%20Planning/Shared%20Folder/Step%201/Step%201B.%20Define%20Success%20Profile%20for%20Selected%20Positions?csf=1&web=1&e=H6qdOZ";
+      btn.setAttribute("target", "_blank");
+	  btn.classList.remove("bg-gray-200","text-gray-500","cursor-not-allowed","select-none");
+      btn.classList.add("bg-ashley-orange","text-white","hover:bg-ashley-orange-dark","transition");
+      btn.textContent = "📁 Open SharePoint folder";
+      btn.removeAttribute("title");
+
+      badge.textContent = "✅ Now Open";
+      badge.classList.remove("bg-orange-50","border-orange-200","text-ashley-orange");
+      badge.classList.add("bg-green-50","border-green-200","text-green-700");
+    }
+  });
+</script>
+</div>
+</div>
 <!-- STEP 2 – Identify Talent Pool (Collapsible style, 3 colorful rounds) -->
 <div id="step-2" class="step-content hidden">
           <div class="bg-white rounded-xl border p-6 mb-6">

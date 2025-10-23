@@ -485,18 +485,18 @@
     <table class="min-w-[1000px] w-full text-sm">
       <thead class="bg-gray-50">
         <tr class="text-gray-800">
-          <th class="px-3 py-3 text-left w-5">No.</th>
-          <th class="px-3 py-3 text-left w-40">Role</th>
-          <th class="px-3 py-3 text-center">Succession Urgency &<br/>Internal Readiness</th>
-          <th class="px-3 py-3 text-center">Cost Efficiency</th>
-          <th class="px-3 py-3 text-center">Leadership & Culture<br/>Impact</th>
-          <th class="px-3 py-3 text-center">Strategic Impact</th>
-          <th class="px-3 py-3 text-center">Skill Scarcity & External<br/>Hiring Difficulty</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Total</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Result</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">Include in Succession Planning?</th>
-          <th class="px-3 py-3 text-center w-30 text-[#F68C2C]">HoD Adjustment Rationale</th>
-		  <th class="px-3 py-3 text-center w-16">Actions</th>
+          <th class="px-3 py-3 text-left w-5 bg-orange-50">No.</th>
+          <th class="px-3 py-3 text-left w-40 bg-orange-50">Role</th>
+          <th class="px-3 py-3 text-center bg-orange-50">Succession Urgency &<br/>Internal Readiness</th>
+          <th class="px-3 py-3 text-center bg-orange-50">Cost Efficiency</th>
+          <th class="px-3 py-3 text-center bg-orange-50">Leadership & Culture<br/>Impact</th>
+          <th class="px-3 py-3 text-center bg-orange-50">Strategic Impact</th>
+          <th class="px-3 py-3 text-center bg-orange-50">Skill Scarcity & External<br/>Hiring Difficulty</th>
+          <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Total</th>
+          <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Result</th>
+          <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Include in Succession Planning?</th>
+          <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">HoD Adjustment Rationale</th>
+		  <th class="px-3 py-3 text-center w-16 bg-orange-50">Remove?</th>
         </tr>
       </thead>
       <tbody id="scoreRows"></tbody>
@@ -1395,37 +1395,37 @@ if (btnEmail){
       <div>
         <label class="block font-medium">Years of Experience Required</label>
         <p class="text-xs text-gray-500 mt-1">Minimum years of relevant experience.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="3–5 years in sourcing or supplier management.">
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="7–10 years of progressive HR experience, including at least 3 years in a supervisory role">
       </div>
 
       <div>
         <label class="block font-medium">Educational Background (if any)</label>
         <p class="text-xs text-gray-500 mt-1">Required degree(s) and field(s).</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Bachelor in Engineering; MBA preferred.">
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Bachelor’s degree in Human Resources, Business Administration, or related field; MBA preferred.">
       </div>
 
       <div>
         <label class="block font-medium">Certifications (if any)</label>
         <p class="text-xs text-gray-500 mt-1">Any industry or function-related certifications required.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="PMP, CFA, Six Sigma">
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="SHRM-CP/SHRM-SCP, CIPD Level 5/7, or equivalent HR certification preferred.">
       </div>
 
       <div>
         <label class="block font-medium">Functional/Technical Knowledge</label>
         <p class="text-xs text-gray-500 mt-1">Systems, tools, or processes required.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="SAP, Power BI, Lean">
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Knowledge of HRIS systems (SAP SuccessFactors, Workday), labor law compliance, performance management processes, and talent development frameworks.">
       </div>
 
       <div>
         <label class="block font-medium">Language/Communication Skills</label>
         <p class="text-xs text-gray-500 mt-1">Requirements for English level, reporting ability, or customer-facing communication.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="English B2+, stakeholder reporting">
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Fluent in English and Vietnamese – strong presentation, reporting, and cross-cultural communication skills.">
       </div>
 
       <div>
         <label class="block font-medium">Other Role-Specific Requirements</label>
         <p class="text-xs text-gray-500 mt-1">Include availability to travel, shift flexibility, domain knowledge, etc.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Travel up to 20%, shift rotation">
+        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Ability to travel across Asia sites, strong stakeholder management, experience in multicultural environment.">
       </div>
     </div>
 
@@ -1642,6 +1642,80 @@ if (btnEmail){
   filename = `Success_Profile_${m[1].replace(/\s+/g,'_')}.xlsx`;}XLSX.writeFile(wb, filename);}
   }
 </script>
+<style>
+  /* (Các phần 1–3 giữ nguyên) */
+
+  /* 4) Watermark EXAMPLE cho từng section */
+  #sec-competency.example-watermark,
+  #sec-qualifications.example-watermark {
+    position: relative;
+  }
+
+  #sec-competency.example-watermark::before,
+  #sec-qualifications.example-watermark::before {
+    content: "EXAMPLE";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    font-weight: 700;
+    font-size: clamp(3rem, 12vw, 8rem);
+    line-height: 1;
+    letter-spacing: 0.15em;
+    color: rgba(246, 140, 44, 0.10); /* đậm hơn một chút */
+    text-shadow: 0 0 10px rgba(246, 140, 44, 0.10);
+    display: grid;
+    place-items: center;
+    transform: rotate(-18deg);
+  }
+</style>
+
+<script>
+  (function () {
+    const root = document.getElementById('s1-profile-tab');
+    if (!root) return;
+
+    /* A) Làm nổi badge EXAMPLE */
+    const exampleBadge = [...root.querySelectorAll('span')].find(
+      s => s.textContent.trim().toUpperCase() === 'EXAMPLE'
+    );
+    if (exampleBadge) {
+      exampleBadge.classList.add('ring-2','ring-ashley-orange','animate-pulse');
+    }
+
+    /* B) Thêm watermark EXAMPLE cho từng section */
+    ['sec-competency', 'sec-qualifications'].forEach(id => {
+      const sec = document.getElementById(id);
+      if (sec) sec.classList.add('example-watermark');
+    });
+
+    /* C) Xóa các control tương tác còn lại */
+    root.querySelectorAll('.add-row, .action-remove, #btn-export-excel').forEach(el => el.remove());
+
+    /* D) Gỡ onclick và khóa button */
+    root.querySelectorAll('button').forEach(btn => {
+      const clean = btn.cloneNode(true);
+      clean.removeAttribute('onclick');
+      btn.replaceWith(clean);
+    });
+
+    /* E) Biến input/textarea thành text thuần */
+    root.querySelectorAll('input, textarea').forEach(ip => {
+      const span = document.createElement('span');
+      const value = (ip.value ?? ip.textContent ?? '').toString();
+      span.textContent = value;
+      span.className = 'inline-block align-middle';
+      const cs = getComputedStyle(ip);
+      span.style.minHeight = cs.height;
+      span.style.padding = cs.padding;
+      span.style.whiteSpace = 'pre-wrap';
+      const parentCell = ip.closest('td, div, p') || ip.parentNode;
+      parentCell.replaceChild(span, ip);
+    });
+
+    /* F) Vô hiệu bàn phím */
+    root.addEventListener('keydown', e => e.preventDefault(), true);
+  })();
+</script>
 <!-- Tools Tab (Step 1 internal) -->
             <div id="s1-tools-tab" class="step-tab-content hidden">
               <div class="grid md:grid-cols-2 gap-6">
@@ -1836,6 +1910,7 @@ if (btnEmail){
     <span class="font-bold text-blue-700">Round 2</span> empowers employees to apply, and 
     <span class="font-bold text-ashley-orange">Round 3</span> confirms the final endorsed list for Step 3 – Gap Assessment.
   </div>
+</div>
 </div>
         <!-- STEP 3 CONTENT -->
         <div id="step-3" class="step-content hidden">

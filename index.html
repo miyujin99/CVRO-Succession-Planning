@@ -1,2747 +1,669 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CVRO Succession Planning - Workshop Playbook</title>
-  <!-- PNG fallback -->
-<link rel="icon" type="image/png" href="./assets/Favicon-32.png" sizes="32x32" />
-<link rel="icon" type="image/png" href="./assets/Favicon-16.png" sizes="16x16" />
-
-<!-- SVG (ưu tiên) -->
-<link rel="icon" type="image/svg+xml" href="./assets/Favicon.svg?v=4" />
-
-<!-- Safari pinned tab (tùy chọn) -->
-<link rel="mask-icon" href="./assets/Favicon.svg" color="#F68C2C">
-
+  <title>Tiệm Nước Tụi Mình · POS</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: { extend: { colors: { 'ashley-orange': '#F68C2C', 'ashley-orange-dark': '#E67A1A' } } }}
-  </script>
   <style>
-    body{box-sizing:border-box}
-    .fade-in{animation:fadeIn .25s ease-in}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .modal-enter { opacity: 0; transform: translateY(6px); }
+    .modal-enter-active { opacity: 1; transform: translateY(0); transition: all .15s ease; }
   </style>
 </head>
-<body class="bg-gray-50 font-sans">
-  <!-- Hộp câu hỏi bảo mật -->
-
+<body class="min-h-screen bg-gray-100">
   <!-- Header -->
-  <header class="bg-white shadow-sm border-b sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        <div class="flex items-center space-x-8">
-          <div class="flex-shrink-0">
-          <img src="assets/ahr-logo.png" alt="Asia Human Resources Logo" class="h-12">
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🧋</span>
+        <div>
+          <h1 class="text-lg font-bold">Tiệm Nước Tụi Mình · POS</h1>
+          <p class="text-xs text-gray-500">HTML + Tailwind · localStorage / Firebase</p>
         </div>
-          <nav class="hidden md:flex space-x-6">
-            <button data-tab="home" onclick="showTab('home', event)" class="nav-tab text-gray-700 hover:text-ashley-orange px-3 py-2 text-sm font-medium border-b-2 border-ashley-orange">Home</button>
-            <button data-tab="framework" onclick="showTab('framework', event)" class="nav-tab text-gray-700 hover:text-ashley-orange px-3 py-2 text-sm font-medium">Framework (6 Steps)</button>
-            <button data-tab="tools" onclick="showTab('tools', event)" class="nav-tab text-gray-700 hover:text-ashley-orange px-3 py-2 text-sm font-medium">Tools & Templates</button>
-            <button data-tab="metrics" onclick="showTab('metrics', event)" class="nav-tab text-gray-700 hover:text-ashley-orange px-3 py-2 text-sm font-medium">Metrics & Governance</button>
-            <button data-tab="faq" onclick="showTab('faq', event)" class="nav-tab text-gray-700 hover:text-ashley-orange px-3 py-2 text-sm font-medium">FAQ</button>
-          </nav>
-          <button onclick="openSearchModal()"class="hidden md:inline-flex bg-white border px-3 py-2 rounded-xl text-sm hover:bg-gray-100">🔎 Search</button>
-        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <select id="roleSelect" class="border rounded-lg px-3 py-2 text-sm" title="Chọn vai trò">
+          <option value="staff">Nhân viên (Gọi món)</option>
+          <option value="barista">Quầy pha chế</option>
+          <option value="server">Nhân viên giao bàn</option>
+          <option value="cashier">Thu ngân</option>
+          <option value="admin">Quản lý</option>
+        </select>
+        <button id="btnResetData" class="text-sm px-3 py-2 border rounded-lg">Reset data</button>
       </div>
     </div>
   </header>
 
-  <!-- CTA Row -->
-  <div class="bg-ashley-orange text-white py-3 sticky top-16 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-center md:justify-end items-center gap-3">
-      <button class="bg-white text-ashley-orange px-4 py-2 rounded-xl text-sm font-medium hover:bg-gray-100">📥 Download All Templates</button>
-      <button onclick="showQuestionModal()" class="bg-white text-ashley-orange px-4 py-2 rounded-xl text-sm font-medium hover:bg-gray-100">❓ I Have A Question!</button>
-      </div>
-  </div>
-
-  <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-    <!-- HOME TAB -->
-    <section id="home-tab" class="tab-content">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">CVRO Succession Planning – Workshop Playbook</h1>
-        <p class="text-xl text-gray-600 mb-2">Build leadership continuity, readiness, and visibility.</p>
-        <p class="text-lg text-gray-500 mb-8">Xây dựng tính liên tục lãnh đạo, mức độ sẵn sàng và tính minh bạch.</p>
-      </div>
-      <div class="grid md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 bg-ashley-orange rounded-lg flex items-center justify-center mb-4"><span class="text-white text-xl">📊</span></div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Executive Overview</h3>
-          <p class="text-sm text-gray-500 mb-2">Tổng quan chương trình</p>
-          <p class="text-gray-600">Transparent · Fair · Development‑focused; readiness over title; evidence via SBI.</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 bg-ashley-orange rounded-lg flex items-center justify-center mb-4"><span class="text-white text-xl">🛠️</span></div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Hands‑on Tools</h3>
-          <p class="text-sm text-gray-500 mb-2">Bộ công cụ thực hành</p>
-          <p class="text-gray-600">Templates, checklists, and sheets headers for end‑to‑end execution.</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 bg-ashley-orange rounded-lg flex items-center justify-center mb-4"><span class="text-white text-xl">🎯</span></div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Step‑by‑step Workshops</h3>
-          <p class="text-sm text-gray-500 mb-2">Kịch bản workshop theo bước</p>
-        </div>
-      </div>
-      <div class="text-center flex flex-wrap gap-3 justify-center">
-        <button onclick="showTab('framework', event)" class="bg-white text-ashley-orange border-2 border-ashley-orange px-6 py-3 rounded-xl font-medium hover:bg-ashley-orange hover:text-white">📋 Framework Stepper</button>
-        <button onclick="showTab('tools', event)" class="bg-white text-ashley-orange border-2 border-ashley-orange px-6 py-3 rounded-xl font-medium hover:bg-ashley-orange hover:text-white">📁 Tools & Templates</button>
-      </div>
-    </section>
-
-   
-    <!-- FRAMEWORK TAB -->
-    <section id="framework-tab" class="tab-content hidden">
-      <div class="mb-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-2">6‑Step Framework</h2>
-        <p class="text-gray-600 mb-6">Khung làm việc 6 bước</p>
-
-        <!-- Stepper -->
-        <div class="bg-white rounded-xl border p-6 mb-6">
-          <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center space-x-4">
-              <div class="step-indicator w-8 h-8 bg-ashley-orange text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
-              <div class="step-line w-16 h-1 bg-ashley-orange"></div>
-              <div class="step-indicator w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">2</div>
-              <div class="step-line w-16 h-1 bg-gray-300"></div>
-              <div class="step-indicator w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">3</div>
-              <div class="step-line w-16 h-1 bg-gray-300"></div>
-              <div class="step-indicator w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">4</div>
-              <div class="step-line w-16 h-1 bg-gray-300"></div>
-              <div class="step-indicator w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">5</div>
-              <div class="step-line w-16 h-1 bg-gray-300"></div>
-              <div class="step-indicator w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">6</div>
-            </div>
-            <div id="stepLabel" class="text-sm text-gray-500">Step 1 of 6</div>
-          </div>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <button onclick="showStep(1, event)" class="step-btn bg-ashley-orange text-white px-3 py-1 rounded text-sm">Step 1</button>
-            <button onclick="showStep(2, event)" class="step-btn bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm">Step 2</button>
-            <button onclick="showStep(3, event)" class="step-btn bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm">Step 3</button>
-            <button onclick="showStep(4, event)" class="step-btn bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm">Step 4</button>
-            <button onclick="showStep(5, event)" class="step-btn bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm">Step 5</button>
-            <button onclick="showStep(6, event)" class="step-btn bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm">Step 6</button>
-          </div>
-        </div>
-
-        <!-- STEP 1 CONTENT -->
-        <div id="step-1" class="step-content">
-          <div class="bg-white rounded-xl border p-6 mb-6">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">STEP 1: Identify Critical Positions & Define Success Profile</h3>
-            <p class="text-gray-600 mb-6">To ensure organizational continuity <strong>by identifying the most business-critical positions for succession planning</strong> and clearly <strong>defining the expectations</strong> for successors.</p>
-            <div class="border-b mb-6">
-              <nav class="flex flex-wrap gap-5">
-                <button onclick="showStepTab('overview', event)" class="step-tab-btn border-b-2 border-ashley-orange text-ashley-orange py-2 px-1 text-sm font-medium">Overview</button>
-                <button onclick="showStepTab('criteria', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Part A: Identify Critical Positions</button>
-                <button onclick="showStepTab('profile', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Part B: Define Success Profile for Selected Positions</button>
-                <button onclick="showStepTab('tools', event)" class="step-tab-btn border-b-2 border-transparent text-gray-500 hover:text-gray-700 py-2 px-1 text-sm font-medium">Outputs & Templates</button>
-              </nav>
-            </div>
-
-<!-- Overview Tab -->
-<div id="s1-overview-tab" class="step-tab-content">
-  <div class="space-y-6">
-
-    <!-- Header -->
-    <div class="bg-white italic">
-      <p class="text-sm text-gray-700"> Overview of Step 1 to ensure continuity by identifying business-critical roles and defining clear success expectations.
-      </p>
-    </div>
-
-    <!-- Part A -->
-    <details class="group bg-orange-50 border-l-4 border-ashley-orange rounded-r-lg">
-      <summary class="flex items-center justify-between cursor-pointer select-none px-5 py-3">
-        <span class="font-semibold text-ashley-orange text-base flex items-center gap-2">
-          🧭 Part A – Identify Critical Positions
-        </span>
-        <!-- Chevron -->
-        <svg class="h-5 w-5 text-ashley-orange transition-transform duration-200 ease-out">
-          <path fill="currentColor" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.12l3.71-2.89a.75.75 0 1 1 1.04 1.08l-4.24 3.31a.75.75 0 0 1-.93 0L5.21 8.31a.75.75 0 0 1 .02-1.1z"/>
-        </svg>
-      </summary>
-      <div class="px-5 pb-4 pt-1 text-sm text-gray-800">
-        <p class="mb-2">
-          HoDs assess roles in their teams to decide which are <span class="font-medium">business-critical</span>.
-          Two criteria sets are available:
-        </p>
-        <ul class="list-disc pl-5 space-y-1">
-          <li><span class="font-medium">Option 1 – Standard Market (Weighted):</span> Urgency, Business Impact, Required Skills/Expertise, Internal Talent Availability, External Hiring Difficulty.</li>
-          <li><span class="font-medium">Option 2 – CVRO Customized (Equal 20%):</span> Succession Urgency & Internal Readiness, Cost Efficiency, Leadership & Culture Impact, Strategic Contribution, Skill Scarcity & Market Competition.</li>
-        </ul>
-        <p class="mt-3 text-xs text-gray-700">Scoring note: Score per criterion 1–5; total score is the average of 5 criteria (20% each).</p>
-      </div>
-    </details>
-
-    <!-- Part B -->
-    <details class="group bg-blue-50 border-l-4 border-blue-400 rounded-r-lg">
-      <summary class="flex items-center justify-between cursor-pointer select-none px-5 py-3">
-        <span class="font-semibold text-blue-700 text-base flex items-center gap-2">
-          🎯 Part B – Define Success Profile
-        </span>
-        <!-- Chevron -->
-        <svg class="h-5 w-5 text-blue-600 transition-transform duration-200 ease-out">
-          <path fill="currentColor" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.12l3.71-2.89a.75.75 0 1 1 1.04 1.08l-4.24 3.31a.75.75 0 0 1-.93 0L5.21 8.31a.75.75 0 0 1 .02-1.1z"/>
-        </svg>
-      </summary>
-      <div class="px-5 pb-4 pt-1 text-sm text-gray-800">
-        <p class="mb-2">
-          Departments finalize the <span class="font-medium">Success Profile</span> for each selected role:
-        </p>
-        <ul class="list-disc pl-5 space-y-1">
-          <li><span class="font-medium">Competency requirements:</span> leadership & technical skills (criteria in the Performance Evaluation System).</li>
-          <li><span class="font-medium">Job qualifications:</span> education, experience, certifications, tools (from departmental JDs; consolidate into the template).</li>
-        </ul>
-        <p class="mt-3">
-          The finalized profile serves as the benchmark for <span class="font-medium">Step 3 – Gap Assessment</span>.
-        </p>
-      </div>
-    </details>
-
-<!-- One-line summary -->
-<div class="bg-white-50 border-l-4 border-red-400 rounded-r-lg p-4 text-sm text-gray-800">
-  <span class="font-bold text-ashley-orange">Part A clarifies</span>
-  <span class="font-bold">which positions should be prioritized for succession</span>;
-  <span class="font-bold text-blue-700">Part B defines</span>
-  <span class="font-bold">what successors are expected to grow toward</span>.
-</div>
-</div>
-<!-- Scoped styles for chevron rotation (no impact to other tabs) -->
-<style>
-  #s1-overview-tab details[open] > summary svg { transform: rotate(180deg); }
-</style>
-</div>
-<!-- Criteria Tab -->
-<div id="s1-criteria-tab" class="step-tab-content hidden">
-  <div class="space-y-6">
-    <div>
-	<h2 class="text-xl font-semibold text-[#F68C2C]">Criteria Options</h2>
-      <p class="font-semibold text-gray-700 text-base mb-4">
-        CVRO Department Heads (HOD) are responsible for evaluating positions within their teams.
-        Two options are presented for evaluation criteria:
-      </p>
-    </div>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-white border-2 border-gray-200 rounded-lg p-4">
-        <h4 class="font-semibold text-gray-900 mb-3">Option 1 – Standard Market Criteria (Weighted)</h4>
-        <div class="space-y-2 text-sm">
-          <div class="flex justify-between"><span>Urgency</span><span class="font-medium">20%</span></div>
-          <div class="flex justify-between"><span>Impact</span><span class="font-medium">30%</span></div>
-          <div class="flex justify-between"><span>Skills</span><span class="font-medium">30%</span></div>
-          <div class="flex justify-between"><span>Internal Talent</span><span class="font-medium">15%</span></div>
-          <div class="flex justify-between"><span>External Difficulty</span><span class="font-medium">5%</span></div>
-        </div>
-      </div>
-
-      <div class="bg-white border-2 border-ashley-orange rounded-lg p-4">
-        <h4 class="font-semibold text-ashley-orange mb-3">Option 2 – CVRO Customized (Equal 20% each)</h4>
-        <div class="space-y-2 text-sm text-gray-700">
-          <div class="flex justify-between"><span>Succession Urgency & Internal Readiness</span><span class="font-medium">20%</span></div>
-          <div class="flex justify-between"><span>Cost Efficiency</span><span class="font-medium">20%</span></div>
-          <div class="flex justify-between"><span>Leadership & Culture Impact</span><span class="font-medium">20%</span></div>
-          <div class="flex justify-between"><span>Strategic Contribution</span><span class="font-medium">20%</span></div>
-          <div class="flex justify-between"><span>Skill Scarcity & Market Competition</span><span class="font-medium">20%</span></div>
-        </div>
-      </div>
-    </div>
-	    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-      <div class="flex items-center gap-2">
-        <span class="bg-ashley-orange text-white px-2 py-1 rounded text-xs font-bold">AHR RECOMMENDS</span>
-        <span class="text-yellow-800 font-medium">Option 2 - CVRO Customized</span>
-      </div>
-    </div>
- <!-- Scoring Tab -->
-<!-- Section Title -->
-<h2 class="text-xl font-semibold text-[#F68C2C]">📊 Classification Criteria</h2>
-
-<!-- 5 Info Boxes with Popovers -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-
-  <!-- Box 1 -->
-  <div class="help-wrap relative">
-    <button type="button"
-            onclick="toggleHelp('pop-succession', event)"
-            class="w-full h-full text-left bg-white border rounded-xl p-4 hover:shadow-md transition flex flex-col justify-between">
-      <div class="flex items-center justify-between mb-2">
-        <h5 class="font-semibold text-gray-900 text-sm">
-          Succession Urgency & Internal Readiness (20%)
-        </h5>
-        <span class="text-ashley-orange font-bold text-base leading-none">?</span>
-      </div>
-      <p class="text-xs text-gray-500">Click to view details</p>
-    </button>
-    <div id="pop-succession"
-         class="score-help hidden absolute left-0 top-full mt-2 w-80 bg-white border rounded-lg shadow-lg p-3 z-50">
-      <p class="text-xs font-semibold mb-2">How soon will this role likely be vacant, and is there an internal successor ready?</p>
-      <ul class="text-xs text-gray-700 space-y-1">
-        <li><b>5</b> – Vacancy ve		y likely within months (retirement, resignation, promotion, transfer) and no successor ready.</li>
-        <li><b>4</b> – Vacancy likely within 6–12 months;  successor exists but needs significant development.</li>
-        <li><b>3</b> – Vacancy possible in 1–2y, successor exists but needs moderate upskilling.</li>
-        <li><b>2</b> – No planned change but medium risk; candidate nearly ready.</li>
-        <li><b>1</b> – Stable long-term, no anticipated change; candidate fully ready.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Box 2 -->
-  <div class="help-wrap relative">
-    <button type="button"
-            onclick="toggleHelp('pop-cost', event)"
-            class="w-full h-full text-left bg-white border rounded-xl p-4 hover:shadow-md transition flex flex-col justify-between">
-      <div class="flex items-center justify-between mb-2">
-        <h5 class="font-semibold text-gray-900 text-sm">
-          Cost Efficiency (20%)
-        </h5>
-        <span class="text-ashley-orange font-bold text-base leading-none">?</span>
-      </div>
-      <p class="text-xs text-gray-500">Click to view details</p>
-    </button>
-    <div id="pop-cost"
-         class="score-help hidden absolute left-0 top-full mt-2 w-80 bg-white border rounded-lg shadow-lg p-3 z-50">
-      <p class="text-xs font-semibold mb-2">(How much cost is saved internally vs external? (including ramp-up & hidden costs)?)</p>
-      <ul class="text-xs text-gray-700 space-y-1">
-        <li><b>5</b> – Internal saves huge cost, minimal ramp-up.</li>
-        <li><b>4</b> – Noticeable saving, moderate training cost.</li>
-        <li><b>3</b> – Moderate saving, some training cost.</li>
-        <li><b>2</b> – Slight saving, low training cost.</li>
-        <li><b>1</b> – No cost advantage; same as external.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Box 3 -->
-  <div class="help-wrap relative">
-    <button type="button"
-            onclick="toggleHelp('pop-leadership', event)"
-            class="w-full h-full text-left bg-white border rounded-xl p-4 hover:shadow-md transition flex flex-col justify-between">
-      <div class="flex items-center justify-between mb-2">
-        <h5 class="font-semibold text-gray-900 text-sm">
-          Leadership & Culture Impact (20%)
-        </h5>
-        <span class="text-ashley-orange font-bold text-base leading-none">?</span>
-      </div>
-      <p class="text-xs text-gray-500">Click to view details</p>
-    </button>
-    <div id="pop-leadership"
-         class="score-help hidden absolute left-0 top-full mt-2 w-80 bg-white border rounded-lg shadow-lg p-3 z-50">
-      <p class="text-xs font-semibold mb-2">How strongly does this role inspire, influence, and shape company values, leadership culture, and team aspiration?</p>
-      <ul class="text-xs text-gray-700 space-y-1">
-        <li><b>5</b> – Critical leadership role with strong influence on company values, leadership culture, and team aspiration. Inspires and motivates across the organization.</li>
-        <li><b>4</b> – Strong influence on department’s leadership culture and maintaining motivation.</li>
-        <li><b>3</b> – Moderate leadership/culture influence; role models desired behaviors.</li>
-        <li><b>2</b> – Minor leadership/culture influence; helps maintain team stability.</li>
-        <li><b>1</b> – Minimal influence.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Box 4 -->
-  <div class="help-wrap relative">
-    <button type="button"
-            onclick="toggleHelp('pop-strategy', event)"
-            class="w-full h-full text-left bg-white border rounded-xl p-4 hover:shadow-md transition flex flex-col justify-between">
-      <div class="flex items-center justify-between mb-2">
-        <h5 class="font-semibold text-gray-900 text-sm">
-          Strategic Contribution (20%)
-        </h5>
-        <span class="text-ashley-orange font-bold text-base leading-none">?</span>
-      </div>
-      <p class="text-xs text-gray-500">Click to view details</p>
-    </button>
-    <div id="pop-strategy"
-         class="score-help hidden absolute left-0 top-full mt-2 w-80 bg-white border rounded-lg shadow-lg p-3 z-50">
-      <p class="text-xs font-semibold mb-2">If vacant, how would it affect company’s strategy?</p>
-      <ul class="text-xs text-gray-700 space-y-1">
-        <li><b>5</b> – Cross-department, multi-functional strategic impact.</li>
-        <li><b>4</b> – Significant impact on one major department.</li>
-        <li><b>3</b> – Manageable impact, limited to certain areas.</li>
-        <li><b>2</b> – Minor or indirect impact.</li>
-        <li><b>1</b> – Minimal or negligible impact.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Box 5 -->
-  <div class="help-wrap relative">
-    <button type="button"
-            onclick="toggleHelp('pop-scarcity', event)"
-            class="w-full h-full text-left bg-white border rounded-xl p-4 hover:shadow-md transition flex flex-col justify-between">
-      <div class="flex items-center justify-between mb-2">
-        <h5 class="font-semibold text-gray-900 text-sm">
-          Skill Scarcity & Market Competition (20%)
-        </h5>
-        <span class="text-ashley-orange font-bold text-base leading-none">?</span>
-      </div>
-      <p class="text-xs text-gray-500">Click to view details</p>
-    </button>
-    <div id="pop-scarcity"
-         class="score-help hidden absolute left-0 top-full mt-2 w-80 bg-white border rounded-lg shadow-lg p-3 z-50">
-      <p class="text-xs font-semibold mb-2">How rare are the skills required for this role, and how difficult is it to hire externally?)</p>
-      <ul class="text-xs text-gray-700 space-y-1">
-        <li><b>5</b> – Highly specialized skills, extremely hard to hire externally.</li>
-        <li><b>4</b> – Rare, difficult to hire.</li>
-        <li><b>3</b> – Moderate availability.</li>
-        <li><b>2</b> – Common, easy to hire.</li>
-        <li><b>1</b> – Very common skills.</li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- Script -->
-<script>
-  function toggleHelp(id, e){
-    if (e) e.stopPropagation();
-    document.querySelectorAll('.score-help').forEach(el=>{
-      if(el.id!==id) el.classList.add('hidden');
-    });
-    const el=document.getElementById(id);
-    if(el) el.classList.toggle('hidden');
-  }
-  document.addEventListener('click', (ev)=>{
-    if(!ev.target.closest('.help-wrap')){
-      document.querySelectorAll('.score-help').forEach(el=>el.classList.add('hidden'));
-    }
-  });
-</script>
-  <!-- 4 box phân loại -->
-  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-      <h4 class="font-bold text-red-900 mb-1">1. Critical Role</h4>
-      <p class="text-red-800 text-sm mb-2">≥4.2 points</p>
-      <p class="text-red-700 text-xs">Need to have the strategic consideration from top leadership.</p>
-    </div>
-    <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded">
-      <h4 class="font-bold text-orange-900 mb-1">2. High Importance</h4>
-      <p class="text-orange-800 text-sm mb-2">3.5–4.19 points</p>
-      <p class="text-orange-700 text-xs">Requires successor planning application.</p>
-    </div>
-    <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
-      <h4 class="font-bold text-yellow-900 mb-1">3. Moderate Importance</h4>
-      <p class="text-yellow-800 text-sm mb-2">2.8–3.49 points</p>
-      <p class="text-yellow-700 text-xs">Important but not urgent; succession planning optional.</p>
-    </div>
-    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
-      <h4 class="font-bold text-green-900 mb-1">4. Low Importance</h4>
-      <p class="text-green-800 text-sm mb-2">&lt;2.8 points</p>
-      <p class="text-green-700 text-xs">Less critical at this stage</p>
-    </div>
-  </div>
-
-  <div class="mt-4 bg-blue-50 p-4 rounded-lg">
-    <p class="text-blue-800 text-sm"><strong>Note:</strong> HoDs may flex classifications with documented rationale.</p>
-  </div>
-
-
-<!-- ===================== Department Scoring Calculator (as its own bordered card) ===================== -->
-<section id="s1-calculator" class="mt-8 border-2 border-gray-300 rounded-2xl bg-white overflow-hidden">
-  <!-- Header của card -->
-  <div class="px-5 py-4 border-b-2 border-gray-200 flex flex-col sm:flex-row justify-between gap-2 sm:items-center">
-    <div class="flex items-center gap-3">
-      <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-ashley-orange text-white text-lg">📊</span>
-      <div>
-        <h2 class="text-lg font-semibold text-gray-900">Department Scoring Calculator</h2>
-        <p class="text-xs text-gray-500">Part A – Identify Critical Positions</p>
-      </div>
-    </div>
-
-    <div class="flex items-center gap-3 flex-wrap">
-      <label class="inline-flex items-center gap-2 text-sm text-gray-700">
-        <input id="openEmailCheckbox" type="checkbox" class="h-4 w-4 rounded border-gray-300" checked>
-        📧 Open email draft after export
-      </label>
-      <button id="btnExportXLSX"
-              class="px-4 py-2 rounded-xl bg-ashley-orange text-white hover:bg-ashley-orange-dark transition">
-        ⬇ Download Excel
-      </button>
-      <button id="btnEmailAHR"
-              class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
-        ✉️ Email AHR
-      </button>
-    </div>
-  </div>
-
-  <!-- Body của card -->
-  <div class="p-5">
-    <!-- Department selector -->
-    <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
-      <label class="text-sm font-medium text-gray-700">Select Department</label>
-      <select id="deptSelect"
-              class="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300 min-w-64">
-        <option value="" selected disabled>— Loading departments… —</option>
-      </select>
-      <div class="flex items-center gap-2">
-        <button id="btnAddRow"
-                class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
-          ➕ Add Role
-        </button>
-        <button id="btnReset"
-                class="px-4 py-2 rounded-xl bg-white border text-gray-700 hover:bg-gray-100 transition">
-          ♻ Reset
-        </button>
-      </div>
-    </div>
-
-    <!-- Table wrapper -->
-    <div class="overflow-x-auto border rounded-2xl">
-      <table class="min-w-[1000px] w-full text-sm bg-white">
-        <thead class="bg-gray-50">
-          <tr class="text-gray-800">
-            <th class="px-3 py-3 text-center w-5 bg-orange-50">No.</th>
-            <th class="px-3 py-3 text-center w-40 bg-orange-50">Role</th>
-            <th class="px-3 py-3 text-center bg-orange-50">Succession Urgency &<br/>Internal Readiness</th>
-            <th class="px-3 py-3 text-center bg-orange-50">Cost Efficiency</th>
-            <th class="px-3 py-3 text-center bg-orange-50">Leadership & Culture<br/>Impact</th>
-            <th class="px-3 py-3 text-center bg-orange-50">Strategic Impact</th>
-            <th class="px-3 py-3 text-center bg-orange-50">Skill Scarcity & External<br/>Hiring Difficulty</th>
-            <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Total</th>
-            <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Result</th>
-            <th class="px-3 py-3 text-center w-30 text-[#F68C2C] bg-orange-50">Include in Succession Planning?</th>
-            <th class="px-3 py-3 text-center w-50 text-[#F68C2C] bg-orange-50">HoD Adjustment Rationale</th>
-            <th class="px-3 py-3 text-center bg-orange-50">Remove?</th>
-          </tr>
-        </thead>
-        <tbody id="scoreRows"></tbody>
-      </table>
-    </div>
-
-    <p class="text-xs text-gray-500 mt-3">
-      * Score per criterion: 1–5. Total score = average of the 5 criteria (20% weight each).
-    </p>
-  </div>
-</section>
-
-<!-- ========== JS cho Official Scoring Table (THAY CẢ PHẦN NÀY) ========== -->
-<!-- SheetJS (xuất Excel) -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script>
-  /* ========= 1) Data model (auto-load from ./assets) ========= */
-  // Kỳ vọng 1 trong 2 file tồn tại trong ./assets/:
-  //   a) dept_roles.json
-  //      - Dạng 1 (object): { "ahr": { "name":"Asia Human Resources", "roles":[...] }, ... }
-  //      - Dạng 2 (array):  [ { "code":"ahr","name":"Asia Human Resources","roles":[...] }, ... ]
-  //   b) departments_roles.csv  (fallback nếu không có JSON)
-  //      Header: code,name,role
-  //      Nhiều dòng role cho cùng 1 code/name
-  //
-  // Ví dụ CSV:
-  // code,name,role
-  // ahr,Asia Human Resources,Senior Team Leader of Human Resources
-  // ahr,Asia Human Resources,Talent Development Project Leader
-  // ...
-
-  let DEPT_MAP = {};  // { code: { name: string, roles: string[] } }
-
-  async function loadDeptData() {
-    // Ưu tiên JSON
-    try {
-      const r = await fetch('./assets/dept_roles.json', { cache: 'no-store' });
-      if (r.ok) {
-        const data = await r.json();
-        if (Array.isArray(data)) {
-          // array: [{code,name,roles}]
-          data.forEach(d => {
-            if (!d?.code) return;
-            DEPT_MAP[d.code] = { name: d.name ?? d.code, roles: Array.isArray(d.roles) ? d.roles : [] };
-          });
-        } else if (data && typeof data === 'object') {
-          // object map
-          Object.entries(data).forEach(([code, val]) => {
-            if (!code) return;
-            const name = val?.name ?? code;
-            const roles = Array.isArray(val?.roles) ? val.roles : [];
-            DEPT_MAP[code] = { name, roles };
-          });
-        }
-      } else {
-        throw new Error('dept_roles.json not found');
-      }
-    } catch (e) {
-      // Fallback: CSV
-      await loadDeptDataFromCSV('./assets/departments_roles.csv');
-    }
-
-    // Nếu vẫn rỗng → gắn tạm để trang không lỗi
-    if (!Object.keys(DEPT_MAP).length) {
-      console.warn('No dept data found in ./assets. Please add dept_roles.json or departments_roles.csv');
-    }
-
-    hydrateDeptSelect();
-  }
-
-  async function loadDeptDataFromCSV(url) {
-    try {
-      const r = await fetch(url, { cache: 'no-store' });
-      if (!r.ok) throw new Error('CSV not found');
-      const text = await r.text();
-      parseDeptCSV(text);
-    } catch (e) {
-      console.warn('CSV load failed:', e);
-    }
-  }
-
-  function parseDeptCSV(csvText) {
-    const lines = csvText.split(/\r?\n/).filter(l => l.trim().length);
-    if (!lines.length) return;
-    // lấy header
-    const header = lines[0].split(',').map(h => h.trim().toLowerCase());
-    const idxCode = header.indexOf('code');
-    const idxName = header.indexOf('name');
-    const idxRole = header.indexOf('role');
-    if (idxCode < 0 || idxName < 0 || idxRole < 0) {
-      console.warn('CSV header must include code,name,role');
-      return;
-    }
-    for (let i = 1; i < lines.length; i++) {
-      const cols = splitCSVLine(lines[i]);
-      const code = (cols[idxCode] || '').trim();
-      const name = (cols[idxName] || '').trim() || code;
-      const role = (cols[idxRole] || '').trim();
-      if (!code || !role) continue;
-      if (!DEPT_MAP[code]) DEPT_MAP[code] = { name, roles: [] };
-      if (!DEPT_MAP[code].roles.includes(role)) DEPT_MAP[code].roles.push(role);
-      // nếu name khác trước thì cập nhật theo dòng CSV mới nhất
-      DEPT_MAP[code].name = name || DEPT_MAP[code].name;
-    }
-  }
-
-  // parser CSV đơn giản (hỗ trợ dấu phẩy trong "...")
-  function splitCSVLine(line) {
-    const out = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (ch === '"') {
-        if (inQ && line[i+1] === '"') { cur += '"'; i++; }
-        else inQ = !inQ;
-      } else if (ch === ',' && !inQ) {
-        out.push(cur); cur = '';
-      } else {
-        cur += ch;
-      }
-    }
-    out.push(cur);
-    return out;
-  }
-
-  function hydrateDeptSelect() {
-    const sel = document.getElementById('deptSelect');
-    if (!sel) return;
-    sel.innerHTML = '<option value="" selected disabled>— Choose a department —</option>';
-
-    const entries = Object.entries(DEPT_MAP).sort((a, b) => a[1].name.localeCompare(b[1].name, 'en'));
-    entries.forEach(([code, v]) => {
-      const opt = document.createElement('option');
-      opt.value = code;
-      opt.textContent = v.name || code;
-      sel.appendChild(opt);
-    });
-  }
-
-  /* ========= 2) Phân loại ========= */
-  function classify(score){
-    if (score >= 4.2)  return {label:'Critical Role',       bg:'bg-red-50',    text:'text-red-800',    border:'border-red-500'};
-    if (score >= 3.5)  return {label:'High Importance',     bg:'bg-orange-50', text:'text-orange-800', border:'border-orange-500'};
-    if (score >= 2.8)  return {label:'Moderate Importance', bg:'bg-yellow-50', text:'text-yellow-800', border:'border-yellow-500'};
-    return               {label:'Low Importance',           bg:'bg-green-50',  text:'text-green-800',  border:'border-green-500'};
-  }
-
-  /* ========= 3) Include cell ========= */
-  function renderIncludeCell(tr, label){
-    const cell = tr.querySelector('.include-cell');
-    if (!cell) return;
-    cell.innerHTML = '';
-    if (!label) return;
-
-    if (label === 'Low Importance'){
-      cell.innerHTML = `<span class="text-gray-400 text-base select-none">✖</span>`;
-      const rat = tr.querySelector('.rationale-input');
-      const warn = tr.querySelector('.rationale-warn');
-      if (rat){ rat.disabled = true; rat.value=''; rat.classList.remove('border-red-400','ring-1','ring-red-300'); }
-      tr.classList.remove('bg-red-50'); warn?.classList.add('hidden');
-      return;
-    }
-    const checked = (label === 'High Importance') ? 'checked' : '';
-    cell.innerHTML = `<input type="checkbox" class="include-checkbox h-4 w-4" ${checked}>`;
-    const rat = tr.querySelector('.rationale-input');
-    if (rat){ rat.disabled = false; }
-    const cb = cell.querySelector('.include-checkbox');
-    if (cb){ cb.addEventListener('change', () => requireRationaleIfIncluded(tr)); }
-  }
-
-  function requireRationaleIfIncluded(tr){
-    const cb   = tr.querySelector('.include-checkbox');
-    const rat  = tr.querySelector('.rationale-input');
-    const warn = tr.querySelector('.rationale-warn');
-    const resultText = tr.querySelector('.result-pill')?.textContent.trim();
-
-    if (!cb){
-      tr.classList.remove('bg-red-50');
-      warn?.classList.add('hidden');
-      if (rat){ rat.disabled = true; rat.value=''; rat.classList.remove('border-red-400','ring-1','ring-red-300'); }
-      return;
-    }
-    if (rat) rat.disabled = false;
-
-    const exempt  = (resultText === 'High Importance');
-    const needWarn = cb.checked && !exempt && (!rat?.value || !rat.value.trim());
-
-    if (needWarn){
-      tr.classList.add('bg-red-50');
-      warn?.classList.remove('hidden');
-      rat?.classList.add('border-red-400','ring-1','ring-red-300');
-    } else {
-      tr.classList.remove('bg-red-50');
-      warn?.classList.add('hidden');
-      rat?.classList.remove('border-red-400','ring-1','ring-red-300');
-    }
-  }
-
-  function clampTo1to5(inp){
-    const raw = String(inp.value).trim();
-    if (raw === '') return null;
-    let n = Math.round(parseFloat(raw));
-    if (isNaN(n)) { inp.value = ''; return null; }
-    if (n < 1) n = 1;
-    if (n > 5) n = 5;
-    inp.value = n;
-    return n;
-  }
-
-  function recomputeRow(tr){
-    const inputs = Array.from(tr.querySelectorAll('.score-input'));
-    const values = inputs.map(inp => clampTo1to5(inp));
-    const valid  = values.every(v => v !== null);
-
-    const totalEl = tr.querySelector('.total-cell');
-    const pill    = tr.querySelector('.result-pill');
-
-    if (valid){
-      const avg = (values.reduce((a,b)=>a+b,0) / 5);
-      totalEl.textContent = avg.toFixed(2);
-      const c = classify(avg);
-      pill.textContent = c.label;
-      pill.className   = `result-pill inline-block px-2 py-1 rounded border text-xs ${c.bg} ${c.text} ${c.border}`;
-      renderIncludeCell(tr, c.label);
-    } else {
-      totalEl.textContent = '—';
-      pill.textContent    = '—';
-      pill.className      = 'result-pill inline-block px-2 py-1 rounded border text-xs';
-      renderIncludeCell(tr, null);
-      tr.classList.remove('bg-red-50');
-      tr.querySelector('.rationale-warn')?.classList.add('hidden');
-      tr.querySelector('.rationale-input')?.classList.remove('border-red-400','ring-1','ring-red-300');
-    }
-    requireRationaleIfIncluded(tr);
-  }
-function autosizeRole(el) {
-  el.style.height = 'auto';
-  el.style.height = el.scrollHeight + 'px';
-}
-function autosizeAllRoles(){
-  document.querySelectorAll('#scoreRows .role-input, #scoreRows .rationale-input')
-    .forEach(ta => autosizeRole(ta));
-}
-
-function attachDelegatedHandlers(){
-  const tbody = document.getElementById('scoreRows');
-  if (!tbody) return;
-
-tbody.addEventListener('input', e => {
-  const t = e.target;
-  if (t.classList.contains('role-input')) {
-    autosizeRole(t);
-    saveDebounced();
-  }
-  if (t.classList.contains('score-input')){
-    clampTo1to5(t);
-    const tr = t.closest('tr'); if (tr) recomputeRow(tr);
-    saveDebounced();
-  }
-  if (t.classList.contains('rationale-input')){
-  autosizeRole(t);  // NEW: tự giãn
-  const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
-  saveDebounced();
-}
-});
-
-  tbody.addEventListener('change', e => {
-  const t = e.target;
-  if (t.classList.contains('score-input')){
-    clampTo1to5(t);
-    const tr = t.closest('tr'); if (tr) recomputeRow(tr);
-    saveDebounced();
-  }
-  if (t.classList.contains('rationale-input') || t.classList.contains('include-checkbox')){
-    const tr = t.closest('tr'); if (tr) requireRationaleIfIncluded(tr);
-    saveDebounced();
-  }
-});
-
-
-  tbody.addEventListener('wheel', e => {
-    if (e.target && e.target.classList.contains('score-input')) e.preventDefault();
-  }, { passive:false });
-
-  // ===== NEW: Click thùng rác xoá dòng (đặt ĐÚNG CHỖ) =====
-  tbody.addEventListener('click', e => {
-  const btn = e.target.closest('.btn-del-row');
-  if (!btn) return;
-  const tr = btn.closest('tr');
-  if (tr) {
-    tr.remove();
-    renumberRows();
-    saveDebounced();
-  }
-});
-}
-
-  // ===== NEW: Helpers tạo/xoá/đánh số dòng =====
-function createRow(role = '', index = 0) {
-  const tr = document.createElement('tr');
-  tr.className = 'border-t align-top';
-  tr.innerHTML = `
-    <td class="px-3 py-2 text-gray-600 row-index">${index}</td>
-<td class="px-3 py-2 align-top">
-  <textarea
-  class="role-input w-full border rounded-lg px-2 py-1 leading-snug whitespace-pre-wrap break-words resize-none overflow-hidden min-h-[38px]"
-  rows="1"
-  placeholder="Enter position name...">${role}</textarea>
-
-</td>
-    ${[1,2,3,4,5].map(() => `
-      <td class="px-2 py-2">
-        <input type="number" min="1" max="5" step="1" inputmode="numeric"
-               class="score-input w-20 text-center border rounded-lg px-2 py-1" placeholder="1–5">
-      </td>`).join('')}
-    <td class="px-3 py-2 text-center font-semibold"><span class="total-cell">—</span></td>
-    <td class="px-3 py-2"><div class="result-pill inline-block px-2 py-1 rounded border text-xs">—</div></td>
-    <td class="px-3 py-2 text-center include-cell"></td>
-    <td class="px-3 py-2">
-      <div class="space-y-1">
-        <textarea
-  class="rationale-input w-full border rounded-lg px-2 py-1 leading-snug whitespace-pre-wrap break-words resize-none overflow-hidden min-h-[38px]"
-  rows="2"
-  placeholder="Add note…"></textarea>
-        <p class="rationale-warn hidden text-xs text-red-600">Rationale required when included.</p>
-      </div>
-    </td>
-    <td class="px-3 py-2 text-center">
-      <button type="button" class="btn-del-row text-gray-400 hover:text-red-600" title="Delete row">🗑️</button>
-    </td>
-  `;
-  recomputeRow(tr);
-  return tr;
-}
-
-function renumberRows() {
-  document.querySelectorAll('#scoreRows tr .row-index').forEach((td, i) => {
-    td.textContent = i + 1;
-  });
-}
-// ===== NEW: LocalStorage helpers =====
-const STORAGE_PREFIX = 'SP_CALC_V1_';
-const getKey = (code) => STORAGE_PREFIX + (code || 'unknown');
-
-function saveState(deptCode){
-  const data = [];
-  document.querySelectorAll('#scoreRows tr').forEach(tr => {
-    const role = tr.querySelector('.role-input')?.value.trim() || '';
-    if (!role) return;
-    const scores = Array.from(tr.querySelectorAll('.score-input'))
-                    .map(i => i.value === '' ? null : Number(i.value));
-    const includeCb = tr.querySelector('.include-checkbox');
-    const include = includeCb ? !!includeCb.checked : null;
-    const rationale = tr.querySelector('.rationale-input')?.value || '';
-    data.push({ role, scores, include, rationale });
-  });
-  try { localStorage.setItem(getKey(document.getElementById('deptSelect')?.value), JSON.stringify(data)); } catch(e){}
-}
-
-function loadState(deptCode){
-  try {
-    const raw = localStorage.getItem(getKey(deptCode));
-    if (!raw) return null;
-    const arr = JSON.parse(raw);
-    return Array.isArray(arr) ? arr : null;
-  } catch(e){ return null; }
-}
-
-function clearState(deptCode){
-  try { localStorage.removeItem(getKey(deptCode)); } catch(e){}
-}
-
-// Debounce để tránh ghi liên tục
-let __saveTimer = null;
-function saveDebounced(){
-  const code = document.getElementById('deptSelect')?.value;
-  if (!code) return;
-  clearTimeout(__saveTimer);
-  __saveTimer = setTimeout(() => saveState(code), 300);
-}
-// ===== NEW: Nhớ phòng ban lần cuối =====
-const LAST_DEPT_KEY = 'SP_CALC_LAST_DEPT';
-
-function addRoleRow(roleName = '') {
-  const tbody = document.getElementById('scoreRows');
-  const tr = createRow(roleName, (tbody.children.length + 1));
-  tbody.appendChild(tr);
-  const ta = tr.querySelector('.role-input');
-if (ta) requestAnimationFrame(() => autosizeRole(ta));
-const rat = tr.querySelector('.rationale-input');              // NEW
-if (rat) requestAnimationFrame(() => autosizeRole(rat));       // NEW
-renumberRows();
-saveDebounced();
-}
-
-function renderRoles(deptCode){
-  const dept = DEPT_MAP[deptCode];
-  const rolesFromCSV = dept?.roles || [];
-  const tbody = document.getElementById('scoreRows');
-  if (!tbody) return;
-
-  const saved = loadState(deptCode);
-  tbody.innerHTML = '';
-
-  const rowsToRender = (saved && saved.length) ? saved
-                     : rolesFromCSV.map(r => ({ role: r, scores:[null,null,null,null,null], include:null, rationale:'' }));
-
-  rowsToRender.forEach((item, idx) => {
-    const tr = createRow(item.role, idx + 1);
-    tbody.appendChild(tr);
-
-    // Gán điểm đã lưu
-    const scoreInputs = tr.querySelectorAll('.score-input');
-    (item.scores || []).forEach((v, i) => {
-      if (v !== null && scoreInputs[i]) scoreInputs[i].value = v;
-    });
-
-    // Tính lại để hiện Total & Result
-    recomputeRow(tr);
-
-    // Gán include đã lưu (nếu có)
-    if (item.include === true) {
-      const cb = tr.querySelector('.include-checkbox');
-      if (cb) cb.checked = true;
-    }
-
-    // Gán rationale đã lưu
-const rat = tr.querySelector('.rationale-input');
-if (rat && item.rationale) rat.value = item.rationale;
-// autosize ngay sau khi set value
-if (rat) requestAnimationFrame(() => autosizeRole(rat));
-
-
-    // Autosize Role textarea
-    const ta = tr.querySelector('.role-input');
-    if (ta) requestAnimationFrame(() => autosizeRole(ta));
-  });
-
-  renumberRows();
-  requestAnimationFrame(autosizeAllRoles);
-}
-
- // ========= Init =========
-  document.addEventListener('DOMContentLoaded', () => {
-    attachDelegatedHandlers();
-// ===== Add Role + Reset + Dept change
-const btnAdd = document.getElementById('btnAddRow');
-if (btnAdd) {
-  btnAdd.addEventListener('click', () => addRoleRow(''));
-}
-
-const btnReset = document.getElementById('btnReset');
-if (btnReset){
-  btnReset.addEventListener('click', () => {
-    const code = document.getElementById('deptSelect')?.value;
-    if (!code) return;
-    clearState(code);          // xoá dữ liệu đã lưu
-    renderRoles(code);         // render lại từ CSV/JSON gốc
-    requestAnimationFrame(autosizeAllRoles);
-  });
-}
-
-
-const deptSelect = document.getElementById('deptSelect');
-if (deptSelect){
-  deptSelect.addEventListener('change', (e) => {
-    const code = e.target.value;
-    try { localStorage.setItem(LAST_DEPT_KEY, code); } catch(e){}
-    renderRoles(code);                  // ưu tiên load từ LocalStorage nếu có
-    requestAnimationFrame(autosizeAllRoles);
-  });
-}
-
-
-
-    loadDeptData(); // nạp dữ liệu phòng ban
-// Khi load xong danh sách dept (hydrateDeptSelect đã điền options),
-// tự chọn lại phòng ban cuối cùng nếu có và render ngay.
-const tryRestoreDept = () => {
-  const sel = document.getElementById('deptSelect');
-  if (!sel || !Object.keys(DEPT_MAP).length) return;
-
-  // 1) lấy dept lần cuối
-  let code = null;
-  try { code = localStorage.getItem(LAST_DEPT_KEY) || null; } catch(e){}
-
-  // 2) nếu có và tồn tại trong DEPT_MAP -> set select + render
-  if (code && DEPT_MAP[code]) {
-    sel.value = code;
-    renderRoles(code);
-    requestAnimationFrame(autosizeAllRoles);
-    return;
-  }
-
-  // (tùy chọn) nếu muốn auto chọn dept đầu tiên khi chưa có lựa chọn trước đó:
-  // const first = Object.keys(DEPT_MAP)[0];
-  // if (first) { sel.value = first; renderRoles(first); requestAnimationFrame(autosizeAllRoles); }
-};
-
-// Vì loadDeptData() là async (fetch JSON/CSV), ta đợi một "tick" để hydrate xong select:
-setTimeout(tryRestoreDept, 0);
-
-  // Export Excel + mở Outlook (nếu checkbox bật)
-  (function () {
-    const btnExport = document.getElementById('btnExportXLSX');
-    if (!btnExport) return;
-
-    btnExport.addEventListener('click', () => {
-      const deptEl   = document.getElementById('deptSelect');
-      const deptKey  = deptEl?.value || 'Department';
-      const deptName = (window.DEPT_MAP?.[deptKey]?.name)
-                    || (deptEl?.options[deptEl.selectedIndex]?.text)
-                    || 'Department';
-
-      // Thu dữ liệu bảng
-      const rows = [];
-      let totalRoles = 0;
-      let includedCount = 0;
-
-      document.querySelectorAll('#scoreRows tr').forEach(tr => {
-        const role = tr.querySelector('.role-input')?.value.trim()
-           || tr.querySelector('.role-cell')?.textContent.trim()
-           || '';
-
-        if (!role) return;
-        totalRoles++;
-
-        const scores = Array.from(tr.querySelectorAll('.score-input')).map(i => i.value || '');
-        const total  = tr.querySelector('.total-cell')?.textContent || '';
-        const result = tr.querySelector('.result-pill')?.textContent || '';
-        const includeCb = tr.querySelector('.include-checkbox');
-        const include = includeCb ? (includeCb.checked ? 'Yes' : 'No')
-                      : (tr.querySelector('.include-cell')?.textContent.trim() === '✖' ? 'Not allowed (Low)' : '');
-        const rationale = tr.querySelector('.rationale-input')?.value || '';
-
-        if (include === 'Yes') includedCount++;
-
-        rows.push({
-          Department: deptName,
-          Role: role,
-          'Succession Urgency (1-5)': scores[0],
-          'Cost Efficiency (1-5)':     scores[1],
-          'Leadership & Culture (1-5)':scores[2],
-          'Strategic Impact (1-5)':    scores[3],
-          'Skill Scarcity (1-5)':      scores[4],
-          Total: total,
-          Result: result,
-          'Include in Succession Planning?': include,
-          'HoD Adjustment Rationale': rationale
-        });
-      });
-
-      // Tạo file Excel
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.json_to_sheet(rows);
-      XLSX.utils.book_append_sheet(wb, ws, 'Scoring');
-
-      const d  = new Date();
-      const y2 = String(d.getFullYear()).slice(-2);
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      const dateCode    = `${y2}${mm}${dd}`;               // ví dụ 251009
-      const dateDisplay = `${d.getFullYear()}-${mm}-${dd}`; // ví dụ 2025-10-09
-
-      const safeDept = deptName.replace(/\s+/g, '_');
-      const filename = `Critical_Position_Evaluation_Form_${safeDept}_${dateCode}.xlsx`;
-
-      XLSX.writeFile(wb, filename);
-
-      // Mở Outlook nếu được tick
-      const openMail = document.getElementById('openEmailCheckbox')?.checked;
-      if (!openMail) return;
-
-      setTimeout(() => {
-        const to = 'anguyen@ashleyfurniture.com, hphamhong@ashleyfurniture.com';
-        const subject = `CVRO – Critical Position Scoring (${deptName}, ${dateDisplay})`;
-
-        // Soạn email body (plain text nhưng vẫn có “in đậm” giả lập)
-        const bodyLines = [
-  'Dear team,',
-  '',
-  `The Critical Position Scoring form for the ${deptName} department has just been finalized and exported on ${dateDisplay}.`,
-  '',
-  `• Total roles evaluated: ${totalRoles}`,
-  `• Roles included in succession planning: ${includedCount}`,
-  '',
-  `⚠️ IMPORTANT⚠️: Please attach the file below (downloaded automatically) before sending.`,
-  `File: ${filename}`,
-  '',
-  'Thank you,',
-  deptName
-];
-
-const bodyPlain = bodyLines.join('\r\n');
-
-// Tạo mailto URL
-const mailto =
-  `mailto:${encodeURIComponent(to)}`
-  + `?subject=${encodeURIComponent(subject)}`
-  + `&body=${encodeURIComponent(bodyPlain)}`;
-
-window.location.href = mailto;
-      }, 500);
-    });
-  })();
-  // ====== Nút Email AHR (mở soạn email tự động) ======
-const btnEmail = document.getElementById('btnEmailAHR');
-if (btnEmail){
-  btnEmail.addEventListener('click', () => {
-    const deptEl   = document.getElementById('deptSelect');
-    const deptKey  = deptEl?.value || 'Department';
-    const deptName = (window.DEPT_MAP?.[deptKey]?.name)
-                  || (deptEl?.options[deptEl.selectedIndex]?.text)
-                  || 'Department';
-
-    // Đếm tổng roles & số role được tick include
-    let totalRoles = 0, includedCount = 0;
-    document.querySelectorAll('#scoreRows tr').forEach(tr => {
-  const role = tr.querySelector('.role-input')?.value.trim()
-              || tr.querySelector('.role-cell')?.textContent.trim()
-              || '';
-  if (!role) return;
-  totalRoles++;
-  const cb = tr.querySelector('.include-checkbox');
-  if (cb && cb.checked) includedCount++;
-});
-
-    // Tạo các biến ngày & tên file (trùng với export)
-    const d  = new Date();
-    const y2 = String(d.getFullYear()).slice(-2);
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    const dateDisplay = `${d.getFullYear()}-${mm}-${dd}`;
-    const safeDept = deptName.replace(/\s+/g, '_');
-    const filename = `Critical_Position_Evaluation_Form_${safeDept}_${y2}${mm}${dd}.xlsx`;
-
-    // Mailto
-    const to = 'anguyen@ashleyfurniture.com, hphamhong@ashleyfurniture.com';
-    const subject = `CVRO – Critical Position Scoring (${deptName}, ${dateDisplay})`;
-
-    // Lưu ý: mailto thường là plain text; bold HTML có thể bị bỏ qua trong Outlook.
-    const body = [
-      'Dear team,',
-      '',
-      `The Critical Position Scoring form for the ${deptName} department has just been finalized and exported on ${dateDisplay}.`,
-      '',
-      `• Total roles evaluated: ${totalRoles}`,
-      `• Roles included in succession planning: ${includedCount}`,
-      '',
-      '⚠️IMPORTANT⚠️: Please attach the file below before sending. (You may remove this line after attaching.)',
-      `File: ${filename}`,
-      '',
-      'Thank you,',
-      deptName
-    ].join('\r\n');
-
-    const mailto =
-      `mailto:${encodeURIComponent(to)}`
-      + `?subject=${encodeURIComponent(subject)}`
-      + `&body=${encodeURIComponent(body)}`;
-
-    window.location.href = mailto;
-  });
-}
-  // gọi autosize khi toàn trang load xong (chắc chắn hiển thị đủ)
-  window.addEventListener('load', autosizeAllRoles);
-
-});
-</script>
-</div>
-</div>
-<!-- Success Profile Tab -->
-<div id="s1-profile-tab" class="step-tab-content hidden">
-  <div class="mb-4">
-    <p class="font-semibold text-gray-700 text-base mb-2">
-      Each department must review and finalize the Success Profile for each selected role intended for succession planning.
-    </p>
-    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-      <div class="flex items-center gap-2">
-        <span class="bg-ashley-orange text-white px-2 py-1 rounded text-xs font-bold">EXAMPLE</span>
-        <span class="text-yellow-800 font-medium">The content below is an example for the position of Senior Team Leader of Human Resources under the Asia Human Resources department.</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================== Section 1 ================== -->
-  <section id="sec-competency" class="border-2 border-gray-300 rounded-xl bg-white">
-    <div class="px-5 py-4 border-b-2 border-gray-200">
-      <h3 class="text-ashley-orange font-extrabold text-lg">Section 1: Competency Requirements</h3>
-    </div>
-
-    <div class="overflow-x-auto">
-      <table class="min-w-[1100px] w-full text-sm">
-        <thead class="bg-gray-50">
-          <tr class="text-gray-800">
-            <th class="px-3 py-3 text-left w-20">Areas</th>
-            <th class="px-3 py-3 text-left w-12">No.</th>
-            <th class="px-3 py-3 text-left w-20">Competency Name</th>
-            <th class="px-3 py-3 text-left w-50">Competency Description</th>
-            <th class="px-3 py-3 text-left w-30">Evaluation Item (Job Skills)</th>
-            <th class="px-3 py-3 text-left w-[22rem]">Item Description</th>
-          </tr>
-        </thead>
-
-        <tbody class="align-top">
-          <!-- ===== Business/Management Skills (3) ===== -->
-          <tr>
-            <td class="border-t px-3 py-2 font-medium area-cell" rowspan="3">Business/Management Skills</td>
-            <td class="border-t px-3 py-2">
-              <input type="text" class="border rounded px-2 py-1 w-full" value="1">
-            </td>
-            <td class="border-t px-3 py-2">
-              <input type="text" class="border rounded px-2 py-1 w-full" value="Business Knowledge">
-            </td>
-            <td class="border-t px-3 py-2">
-              <input type="text" class="border rounded px-2 py-1 w-full" value="Understands business drivers; evaluates proposals; spots data gaps that need deeper analysis.">
-            </td>
-            <td class="border-t px-3 py-2">
-              <input type="text" class="border rounded px-2 py-1 w-full" value="Analyze a proposal">
-            </td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Review a real case and identify key levers, risks, and assumptions.">
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="2"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Customer Orientation"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Discovers and meets customer needs; balances cost, quality, time for win-win outcomes."></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Customer scenario"></td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Role-play handling a priority conflict while maintaining SLA.">
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="3"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Operational Excellence"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Applies best practices; drives continuous improvement to efficiency and quality."></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Kaizen mini-case"></td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Map a process, propose waste reduction and measurable KPIs.">
-              </div>
-            </td>
-          </tr>
-          <!-- Add button row -->
-          <tr class="add-row">
-            <td colspan="6" class="border-t">
-              <div class="flex justify-start px-3 py-2">
-                <button type="button"
-                  class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
-                  onclick="addAreaRow(this)">+ Add Row</button>
-              </div>
-            </td>
-          </tr>
-
-          <!-- ===== Interpersonal Effectiveness (3) ===== -->
-          <tr>
-            <td class="border-t px-3 py-2 font-medium area-cell" rowspan="3">Interpersonal Effectiveness</td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="1"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Stakeholder Communication"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Communicates clearly and on time; tailors messages to audience; aligns expectations."></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Executive update"></td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Deliver a 3-slide status with risk/mitigation; assess clarity & influence.">
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="2"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Conflict Resolution"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Addresses disagreement constructively; seeks common ground and commitments."></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Mediation role-play"></td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Facilitate two parties to an agreed next step and timeline.">
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="3"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Cross-functional Collaboration"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Builds trust with other teams; shares context; co-creates solutions."></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Joint planning"></td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Draft a RACI & sprint plan with another function; evaluate feasibility.">
-              </div>
-            </td>
-          </tr>
-          <!-- Add button row -->
-          <tr class="add-row">
-            <td colspan="6" class="border-t">
-              <div class="flex justify-start px-3 py-2">
-                <button type="button"
-                  class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
-                  onclick="addAreaRow(this)">+ Add Row</button>
-              </div>
-            </td>
-          </tr>
-
-          <!-- ===== Personal Attributes (2) ===== -->
-          <tr>
-            <td class="border-t px-3 py-2 font-medium area-cell" rowspan="2">Personal Attributes</td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="1"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Ownership & Accountability"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Takes responsibility; follows through; learns from mistakes and prevents recurrence."></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Post-mortem review"></td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Write an RCA (5-Whys) and prevention actions with owners/due dates.">
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="2"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Resilience"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Stays composed under pressure; adapts priorities; maintains performance."></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Stress scenario"></td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Plan workload re-prioritization and stakeholder comms for a sudden change.">
-              </div>
-            </td>
-          </tr>
-          <!-- Add button row -->
-          <tr class="add-row">
-            <td colspan="6" class="border-t">
-              <div class="flex justify-start px-3 py-2">
-                <button type="button"
-                  class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
-                  onclick="addAreaRow(this)">+ Add Row</button>
-              </div>
-            </td>
-          </tr>
-
-          <!-- ===== Leadership Impact (2) ===== -->
-          <tr>
-            <td class="border-t px-3 py-2 font-medium area-cell" rowspan="2">Leadership Impact</td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="1"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Team Leadership"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Sets direction; coaches performance; builds an inclusive, high-standards culture."></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Coaching plan"></td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Create a 90-day plan: goals, feedback rhythm, growth actions.">
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="2"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Strategic Thinking"></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Connects initiatives to business strategy; anticipates risks and opportunities."></td>
-            <td class="border-t px-3 py-2"><input type="text" class="border rounded px-2 py-1 w-full" value="Strategy brief"></td>
-            <td class="border-t px-3 py-2">
-              <div class="flex items-center gap-2">
-                <input type="text" class="border rounded px-2 py-1 w-full" value="Draft OKRs aligned to company priorities; outline risk mitigations.">
-              </div>
-            </td>
-          </tr>
-          <!-- Add button row -->
-          <tr class="add-row">
-            <td colspan="6" class="border-t">
-              <div class="flex justify-start px-3 py-2">
-                <button type="button"
-                  class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
-                  onclick="addAreaRow(this)">+ Add Row</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Conclusion note -->
-    <div class="px-5 py-4 border-t-2 border-gray-200 bg-yellow-50 rounded-b-xl">
-      <p class="text-sm text-gray-800">
-        <span class="font-semibold">Available in the Performance Evaluation System:</span>
-        Review & finalize the competency requirements of the successor role, including both leadership competencies and technical skills.
-      </p>
-    </div>
-  </section>
-
-  <!-- ================== Section 2 ================== -->
-  <section id="sec-qualifications" class="border-2 border-gray-300 rounded-xl bg-white mt-6">
-    <div class="px-5 py-4 border-b-2 border-gray-200">
-      <h3 class="text-blue-700 font-extrabold text-lg">Section 2: Job Qualifications</h3>
-    </div>
-
-    <div class="p-5 grid md:grid-cols-2 gap-6 text-sm">
-      <div>
-        <label class="block font-medium">Years of Experience Required</label>
-        <p class="text-xs text-gray-500 mt-1">Minimum years of relevant experience.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="7–10 years of progressive HR experience, including at least 3 years in a supervisory role">
-      </div>
-
-      <div>
-        <label class="block font-medium">Educational Background (if any)</label>
-        <p class="text-xs text-gray-500 mt-1">Required degree(s) and field(s).</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Bachelor’s degree in Human Resources, Business Administration, or related field; MBA preferred.">
-      </div>
-
-      <div>
-        <label class="block font-medium">Certifications (if any)</label>
-        <p class="text-xs text-gray-500 mt-1">Any industry or function-related certifications required.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="SHRM-CP/SHRM-SCP, CIPD Level 5/7, or equivalent HR certification preferred.">
-      </div>
-
-      <div>
-        <label class="block font-medium">Functional/Technical Knowledge</label>
-        <p class="text-xs text-gray-500 mt-1">Systems, tools, or processes required.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Knowledge of HRIS systems (SAP SuccessFactors, Workday), labor law compliance, performance management processes, and talent development frameworks.">
-      </div>
-
-      <div>
-        <label class="block font-medium">Language/Communication Skills</label>
-        <p class="text-xs text-gray-500 mt-1">Requirements for English level, reporting ability, or customer-facing communication.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Fluent in English and Vietnamese – strong presentation, reporting, and cross-cultural communication skills.">
-      </div>
-
-      <div>
-        <label class="block font-medium">Other Role-Specific Requirements</label>
-        <p class="text-xs text-gray-500 mt-1">Include availability to travel, shift flexibility, domain knowledge, etc.</p>
-        <input type="text" class="mt-2 border rounded w-full px-3 py-2" value="Ability to travel across Asia sites, strong stakeholder management, experience in multicultural environment.">
-      </div>
-    </div>
-
-    <div class="px-5 py-4 border-t-2 border-gray-200 bg-yellow-50 rounded-b-xl">
-      <p class="text-sm text-gray-800">
-        <span class="font-semibold">Available in departmental JDs: </span>
-        Review the essential Job qualifications. This section must be reviewed and consolidated into the template
-      </p>
-    </div>
-  </section>
-
-  <!-- Download toolbar (bottom-right) -->
-  <div class="flex justify-end mt-4">
-    <button type="button" id="btn-export-excel"
-      class="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm hover:bg-gray-100 transition"
-      onclick="exportSuccessProfile()">⬇ Download Excel</button>
-  </div>
-</div>
-<script>
-  /* ======== Add / Remove Row for Section 1 ======== */
-  function findGroupHeaderCell(fromTr) {
-    let tr = fromTr.previousElementSibling;
-    while (tr) {
-      const cell = tr.querySelector('.area-cell');
-      if (cell) return cell;
-      tr = tr.previousElementSibling;
-    }
-    return null;
-  }
-
-  function getAddRowForGroup(fromTr) {
-    let tr = fromTr.nextElementSibling;
-    while (tr && !tr.classList.contains('add-row')) tr = tr.nextElementSibling;
-    return tr || null;
-  }
-
-  function getGroupRows(addTr) {
-    const rows = [];
-    let tr = addTr.previousElementSibling;
-    while (tr && !tr.querySelector('.area-cell')) {
-      rows.unshift(tr);
-      tr = tr.previousElementSibling;
-    }
-    if (tr) rows.unshift(tr); // include header row (has .area-cell)
-    return rows;
-  }
-
-  function renumberGroup(addTr) {
-    const groupRows = getGroupRows(addTr);
-    groupRows.forEach((row, idx) => {
-      const inputNo = row.querySelector('input');
-      if (inputNo) inputNo.value = (idx + 1).toString();
-    });
-  }
-
-  function createRemoveBtn() {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'action-remove shrink-0 px-2 py-1 text-xs rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 transition';
-    btn.title = 'Remove this row';
-    btn.textContent = '🗑';
-    btn.addEventListener('click', function () { removeAreaRow(this); });
-    return btn;
-  }
-
-  function ensureRemoveBtn(row) {
-    if (row.querySelector('.area-cell')) return; // skip header row
-    const lastTd = row.lastElementChild;
-    if (!lastTd) return;
-    const wrapper = lastTd.querySelector('.flex.items-center.gap-2') || lastTd;
-    wrapper.querySelectorAll('.action-remove').forEach(el => el.remove());
-    wrapper.appendChild(createRemoveBtn());
-  }
-
-  function refreshRemoveButtonsInGroup(addTr) {
-    const groupRows = getGroupRows(addTr);
-    groupRows.forEach(row => ensureRemoveBtn(row));
-  }
-
-  function addAreaRow(btn) {
-    const addTr = btn.closest('tr');
-    const template = addTr.previousElementSibling.cloneNode(true);
-
-    // nếu clone trùng hàng đầu nhóm, bỏ ô Areas
-    const areaCellInTemplate = template.querySelector('.area-cell');
-    if (areaCellInTemplate) areaCellInTemplate.remove();
-
-    // reset input
-    template.querySelectorAll('input').forEach((inp) => inp.value = '');
-    template.querySelectorAll('.action-remove').forEach(el => el.remove());
-
-    // chèn vào trước add-row
-    addTr.parentNode.insertBefore(template, addTr);
-
-    // tăng rowspan
-    const headerCell = findGroupHeaderCell(addTr);
-    if (headerCell) headerCell.rowSpan = (headerCell.rowSpan || 1) + 1;
-
-    // đánh số lại và thêm nút remove
-    renumberGroup(addTr);
-    refreshRemoveButtonsInGroup(addTr);
-  }
-
-  function removeAreaRow(removeBtnEl) {
-    const row = removeBtnEl.closest('tr');
-    if (!row) return;
-
-    // tìm header của nhóm
-    let headerTr = row.previousElementSibling;
-    while (headerTr && !headerTr.querySelector('.area-cell')) {
-      headerTr = headerTr.previousElementSibling;
-    }
-    const headerCell = headerTr ? headerTr.querySelector('.area-cell') : null;
-
-    // tìm add-row
-    const addTr = getAddRowForGroup(row);
-
-    if (!addTr || !headerCell) return;
-    if (row.querySelector('.area-cell')) return; // không xóa hàng đầu nhóm
-
-    row.remove();
-    headerCell.rowSpan = Math.max(1, (headerCell.rowSpan || 1) - 1);
-    renumberGroup(addTr);
-    refreshRemoveButtonsInGroup(addTr);
-  }
-
-  // init remove buttons on load
-  (function initRemoveButtons() {
-    document.querySelectorAll('#sec-competency tbody tr').forEach(tr => {
-      if (tr.classList.contains('add-row')) return;
-      if (tr.querySelector('.area-cell')) return;
-      ensureRemoveBtn(tr);
-    });
-  })();
-
-  /* ======== Export to Excel for Section 1 + Section 2 ======== */
-  function textOf(el) {
-    if (!el) return '';
-    const ip = el.querySelector('input, textarea');
-    return ip ? (ip.value ?? '').toString().trim() : (el.textContent ?? '').toString().trim();
-  }
-
-  function autoWidthForSheet(ws, aoa) {
-    const colMax = Math.max(...aoa.map(r => r.length));
-    const widths = new Array(colMax).fill(10);
-    aoa.forEach(row => {
-      row.forEach((cell, c) => {
-        const len = (cell ? String(cell).length : 0);
-        widths[c] = Math.max(widths[c], Math.min(len + 2, 60));
-      });
-    });
-    ws['!cols'] = widths.map(w => ({ wch: w }));
-  }
-
-  function exportSuccessProfile() {
-    // ----- Section 1
-    const table = document.querySelector('#sec-competency table');
-    if (!table) return alert('Section 1 not found.');
-
-    const headers = Array.from(table.tHead.rows[0].cells).map(th => textOf(th));
-    const bodyRows = Array.from(table.tBodies[0].rows).filter(tr => !tr.classList.contains('add-row'));
-
-    let currentArea = '';
-    const dataRows = bodyRows.map(tr => {
-      const areaCell = tr.querySelector('.area-cell');
-      if (areaCell) currentArea = textOf(areaCell);
-
-      const tds = Array.from(tr.cells);
-      const row = [];
-      for (let i = 0; i < tds.length; i++) {
-        const td = tds[i];
-        if (td.classList.contains('area-cell')) {
-          row.push(currentArea);
-        } else {
-          row.push(textOf(td));
-        }
-      }
-      if (row.length === headers.length - 1) row.unshift(currentArea);
-      return row;
-    });
-
-    const aoa1 = [headers, ...dataRows];
-
-    // ----- Section 2 (fixed selector)
-    const sec2 = document.querySelector('#sec-qualifications');
-    if (!sec2) return alert('Section 2 not found.');
-
-    const fieldBlocks = sec2.querySelectorAll('.p-5 > div');
-    const aoa2 = [['Field', 'Value']];
-    fieldBlocks.forEach(div => {
-      const label = textOf(div.querySelector('label')) || '';
-      const ip = div.querySelector('input, textarea');
-      const value = ip ? (ip.value ?? '').toString().trim() : '';
-      aoa2.push([label, value]);
-    });
-
-    // build workbook
-    const wb = XLSX.utils.book_new();
-    const ws1 = XLSX.utils.aoa_to_sheet(aoa1);
-    const ws2 = XLSX.utils.aoa_to_sheet(aoa2);
-
-    autoWidthForSheet(ws1, aoa1);
-    autoWidthForSheet(ws2, aoa2);
-
-    XLSX.utils.book_append_sheet(wb, ws1, 'Competency Requirements');
-    XLSX.utils.book_append_sheet(wb, ws2, 'Job Qualifications');
-
-    // filename from badge if available
-    let filename = 'Success_Profile_Export.xlsx';
-    const roleHint = document.querySelector('#s1-profile-tab .bg-yellow-50 span.text-yellow-800');
-    if (roleHint) {
-      const m = roleHint.textContent.match(/position of (.*?) under/i);
-      if (m && m[1]) {
-  filename = `Success_Profile_${m[1].replace(/\s+/g,'_')}.xlsx`;}XLSX.writeFile(wb, filename);}
-  }
-</script>
-<style>
-  /* (Các phần 1–3 giữ nguyên) */
-
-  /* 4) Watermark EXAMPLE cho từng section */
-  #sec-competency.example-watermark,
-  #sec-qualifications.example-watermark {
-    position: relative;
-  }
-
-  #sec-competency.example-watermark::before,
-  #sec-qualifications.example-watermark::before {
-    content: "EXAMPLE";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    font-weight: 700;
-    font-size: clamp(3rem, 12vw, 8rem);
-    line-height: 1;
-    letter-spacing: 0.15em;
-    color: rgba(246, 140, 44, 0.10); /* đậm hơn một chút */
-    text-shadow: 0 0 10px rgba(246, 140, 44, 0.10);
-    display: grid;
-    place-items: center;
-    transform: rotate(-18deg);
-  }
-</style>
-
-<script>
-  (function () {
-    const root = document.getElementById('s1-profile-tab');
-    if (!root) return;
-
-    /* A) Làm nổi badge EXAMPLE */
-    const exampleBadge = [...root.querySelectorAll('span')].find(
-      s => s.textContent.trim().toUpperCase() === 'EXAMPLE'
-    );
-    if (exampleBadge) {
-      exampleBadge.classList.add('ring-2','ring-ashley-orange','animate-pulse');
-    }
-
-    /* B) Thêm watermark EXAMPLE cho từng section */
-    ['sec-competency', 'sec-qualifications'].forEach(id => {
-      const sec = document.getElementById(id);
-      if (sec) sec.classList.add('example-watermark');
-    });
-
-    /* C) Xóa các control tương tác còn lại */
-    root.querySelectorAll('.add-row, .action-remove, #btn-export-excel').forEach(el => el.remove());
-
-    /* D) Gỡ onclick và khóa button */
-    root.querySelectorAll('button').forEach(btn => {
-      const clean = btn.cloneNode(true);
-      clean.removeAttribute('onclick');
-      btn.replaceWith(clean);
-    });
-
-    /* E) Biến input/textarea thành text thuần */
-    root.querySelectorAll('input, textarea').forEach(ip => {
-      const span = document.createElement('span');
-      const value = (ip.value ?? ip.textContent ?? '').toString();
-      span.textContent = value;
-      span.className = 'inline-block align-middle';
-      const cs = getComputedStyle(ip);
-      span.style.minHeight = cs.height;
-      span.style.padding = cs.padding;
-      span.style.whiteSpace = 'pre-wrap';
-      const parentCell = ip.closest('td, div, p') || ip.parentNode;
-      parentCell.replaceChild(span, ip);
-    });
-
-    /* F) Vô hiệu bàn phím */
-    root.addEventListener('keydown', e => e.preventDefault(), true);
-  })();
-</script>
-<!-- Tools Tab (Step 1 internal) -->
-<!-- Outputs & Templates Tab (Step 1 internal) -->
-<div id="s1-tools-tab" class="step-tab-content hidden">
-  <p class="text-sm text-gray-600 mb-4">
-    📁 All files are stored on SharePoint. Access is restricted by department.
-  </p>
-
-  <div class="grid md:grid-cols-2 gap-6">
-
-    <!-- Item 1: Final Forms -->
-    <div class="bg-white border rounded-lg p-5 hover:shadow-md transition-shadow">
-      <div class="flex items-center mb-2">
-        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-          <span class="text-green-600 text-lg">📊</span>
-        </div>
-        <div>
-          <h4 class="font-semibold text-gray-900 flex items-center gap-2">
-            Final Forms – Critical Position Evaluation
-            <span class="text-xs px-2 py-0.5 rounded-full border border-orange-200 bg-orange-50 text-ashley-orange">
-              🔒 Department-only
-            </span>
-          </h4>
-          <p class="text-sm text-gray-500">
-            SharePoint folder containing all finalized evaluation forms exported after HoD confirmation.
-            Visible only to each department.
-          </p>
-        </div>
-      </div>
-
-      <a href="https://masterashley.sharepoint.com/:f:/r/sites/AsiaTalentManagementCenter-ATMCInternalDocumentManagement/Shared%20Documents/ATMC%20Internal%20Document%20Management/02.%20Talent%20Development%20project%20blueprint%20(dev%20stage)/13.%20Succession%20Planning/Shared%20Folder/Step%201/Step%201A.%20Identify%20Critical%20Positions?csf=1&web=1&e=YHZ4og"
-         target="_blank"
-         class="block w-full text-center bg-ashley-orange text-white py-2 px-4 rounded-xl hover:bg-ashley-orange-dark transition">
-        📁 Open SharePoint folder
-      </a>
-
-      <p class="text-xs text-gray-500 mt-2"> Saved from HoD confirmation emails.</p>
-    </div>
-
-    <!-- Item 2: Success Profile -->
-    <div class="bg-white border rounded-lg p-5 hover:shadow-md transition-shadow">
-      <div class="flex items-center mb-2">
-        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-          <span class="text-blue-600 text-lg">👤</span>
-        </div>
-        <div>
-          <h4 class="font-semibold text-gray-900 flex items-center gap-2">
-            Success Profile – Department Templates (2025)
-            <span id="sp-badge"
-                  class="text-xs px-2 py-0.5 rounded-full border border-orange-200 bg-orange-50 text-ashley-orange">
-              ⏳ Opens soon
-            </span>
-          </h4>
-          <p class="text-sm text-gray-500">
-            Success Profile templates for prioritized roles in Part A — to be reviewed by HoDs as guided in the Success Profile tab.
-          </p>
-        </div>
-      </div>
-
-      <a id="sp-btn" href="#"
- 		 class="block w-full text-center bg-gray-200 text-gray-500 py-2 px-4 rounded-xl cursor-not-allowed select-none"
-		 title="This link will be activated after the unlock time">
-		 📁 Open SharePoint folder
-		</a>
-
-      <p class="text-xs text-gray-500 mt-2">
-        Link will be updated and announced via email</p>
-    </div>
-  </div>
-</div>
-
-<!-- Auto-unlock script -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const btn   = document.getElementById("sp-btn");
-    const badge = document.getElementById("sp-badge");
-    if (!btn || !badge) return;
-
-    const unlockDate = new Date("2025-11-20T13:00:00+07:00");
-	// 🔸 Giải thích: 2025-11-20 → ngày mở (theo định dạng YYYY-MM-DD)
-	// T00:00:00 → giờ mở (24h format)
-	// +07:00 → múi giờ Việt Nam
-    const forceByHash  = window.location.hash.includes("unlockSP");
-    const forceByLocal = localStorage.getItem("sp_force_open") === "1";
-
-    if (new Date() >= unlockDate || forceByHash || forceByLocal) {
-      btn.href =
-        "https://masterashley.sharepoint.com/:f:/r/sites/AsiaTalentManagementCenter-ATMCInternalDocumentManagement/Shared%20Documents/ATMC%20Internal%20Document%20Management/02.%20Talent%20Development%20project%20blueprint%20(dev%20stage)/13.%20Succession%20Planning/Shared%20Folder/Step%201/Step%201B.%20Define%20Success%20Profile%20for%20Selected%20Positions?csf=1&web=1&e=H6qdOZ";
-      btn.setAttribute("target", "_blank");
-	  btn.classList.remove("bg-gray-200","text-gray-500","cursor-not-allowed","select-none");
-      btn.classList.add("bg-ashley-orange","text-white","hover:bg-ashley-orange-dark","transition");
-      btn.textContent = "📁 Open SharePoint folder";
-      btn.removeAttribute("title");
-
-      badge.textContent = "✅ Now Open";
-      badge.classList.remove("bg-orange-50","border-orange-200","text-ashley-orange");
-      badge.classList.add("bg-green-50","border-green-200","text-green-700");
-    }
-  });
-</script>
-</div>
-</div>
-<!-- STEP 2 – Identify Talent Pool (Collapsible style, 3 colorful rounds) -->
-<div id="step-2" class="step-content hidden">
-          <div class="bg-white rounded-xl border p-6 mb-6">
-  <h3 class="text-2xl font-bold text-gray-900 mb-2">STEP 2 – Identify Talent Pool</h3>
-  <p class="text-gray-600 mb-6">Fair · Transparent · Employee-Empowered · 3-Round Filtering</p>
-
-<!-- ROUND 1 -->
-<details class="group bg-green-50 border-l-4 border-green-500 rounded-r-lg mb-4">
-  <summary class="flex items-center justify-between cursor-pointer select-none px-5 py-3">
-    <span class="font-semibold text-green-700 text-base flex items-center gap-2">
-      🧩 Round 1 – HoD Nomination
-    </span>
-    <svg class="h-5 w-5 text-green-600 transition-transform duration-200 ease-out group-open:rotate-90">
-      <path fill="currentColor"
-        d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.12l3.71-2.89a.75.75 0 1 1 1.04 1.08l-4.24 3.31a.75.75 0 0 1-.93 0L5.21 8.31a.75.75 0 0 1 .02-1.1z" />
-    </svg>
-  </summary>
-
-  <div class="px-5 pb-4 pt-1 text-sm text-gray-800">
-    <p class="mb-2">
-      AHR filters employees using the <span class="font-medium">9-Box Grid</span> from the 2025 Performance Evaluation and shares the
-      <strong>Green Zone list</strong> with each HoD for nomination.
-    </p>
-
-    <!-- === 9-Box + Group 1 & 2 visual layout === -->
-    <div class="mt-4 bg-white rounded-xl border p-4">
-      <div class="grid md:grid-cols-5 gap-4">
-        <!-- Left: 9-Box thumbnail (optional) -->
-        <div class="md:col-span-2">
-          <img src="./assets/9box_sample.png" alt="9-Box Grid"
-               class="w-full h-auto rounded-lg border shadow-sm object-cover">
-        </div>
-
-        <!-- Right: Group cards -->
-        <div class="md:col-span-3 space-y-4">
-
-          <!-- Group 1 - Green Zone -->
-          <div class="rounded-lg border border-emerald-500">
-            <div class="bg-emerald-500 text-white rounded-t-lg px-4 py-2">
-              <h5 class="font-semibold">
-                Group 1 – Green Zone
-                <span class="opacity-90 font-normal">(Superstar, High Professional, Rising Star)</span>
-              </h5>
-            </div>
-            <div class="bg-white rounded-b-lg px-4 py-3 border-t border-emerald-200">
-              <p class="text-gray-800">
-                Employees with <span class="font-semibold">above-average performance/competency</span> scores.
-                Suggested as <span class="text-emerald-700 font-semibold">priority for Talent Pool</span> consideration.
-              </p>
-            </div>
-          </div>
-
-          <!-- Group 2 - Blue Zone -->
-          <div class="rounded-lg border border-blue-700">
-            <div class="bg-blue-700 text-white rounded-t-lg px-4 py-2">
-              <h5 class="font-semibold">
-                Group 2 – Blue Zone
-                <span class="opacity-90 font-normal">(Valued Contributor)</span>
-              </h5>
-            </div>
-            <div class="bg-white rounded-b-lg px-4 py-3 border-t border-blue-200">
-              <p class="text-gray-800">
-                Employees who may be considered if they show <span class="font-semibold">outstanding traits</span>,
-                <span class="font-semibold">strong learning agility</span>, and <span class="font-semibold">ambition for growth</span>.
-                Suggested as <span class="text-blue-700 font-semibold">optional pool</span> if needed.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- === End Group layout === -->
-
-    <div class="bg-white border border-green-200 rounded-lg p-3 text-sm mt-4">
-      <p class="text-gray-700">
-        <strong>Guidelines:</strong> HoDs will receive only the Green Zone list and may tick nominees for Round 2 directly.
-        If they wish to include additional names from Blue Zone, rationale must be provided.  
-        Exclusion of Green Zone names does not require justification, but AHR recommends that no rationale be related to gender,
-        pregnancy, or any other personal factor.
-      </p>
-    </div>
-
-    <p class="mt-3 text-gray-700">
-      HoDs use the <strong>Pre-Nomination Checklist</strong> and <strong>Candidate List</strong> to finalize the nomination.
-      This step acts as a <em>pre-screening stage</em> to identify employees with development potential before the self-application phase.
-    </p>
-</div>
-</details>
-
-
-  <!-- ROUND 2 -->
-  <details class="group bg-blue-50 border-l-4 border-blue-500 rounded-r-lg mb-4">
-    <summary class="flex items-center justify-between cursor-pointer select-none px-5 py-3">
-      <span class="font-semibold text-blue-700 text-base flex items-center gap-2">
-        📝 Round 2 – Candidate Self-Application
-      </span>
-      <svg class="h-5 w-5 text-blue-600 transition-transform duration-200 ease-out group-open:rotate-90">
-        <path fill="currentColor"
-          d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.12l3.71-2.89a.75.75 0 1 1 1.04 1.08l-4.24 3.31a.75.75 0 0 1-.93 0L5.21 8.31a.75.75 0 0 1 .02-1.1z" />
-      </svg>
-    </summary>
-
-    <div class="px-5 pb-4 pt-1 text-sm text-gray-800">
-      <ul class="list-disc pl-5 space-y-1 mb-3">
-        <li>HoD-nominated employees are invited by AHR to apply via online MS Form.</li>
-        <li>Applicants must complete the <strong>Candidate Profile Template</strong>, including:</li>
-      </ul>
-
-      <div class="bg-white border border-blue-200 rounded-lg p-4 text-sm space-y-2">
-        <p>👤 <strong>Basic Info:</strong> name, department, current role</p>
-        <p>🗂️ <strong>Succession Preferences:</strong> 1st & 2nd roles (at least one in current department)</p>
-        <p>❓ <strong>Reason:</strong> explanation for each role preference</p>
-        <p>🧭 <strong>Role-Specific Questions:</strong> leadership style & motivation (managerial) or technical contribution using <strong>SBI</strong> example (non-managerial)</p>
-        <p>🚚 <strong>Mobility & Availability:</strong> willingness to relocate/change department</p>
-        <p>⚡ <strong>Career Aspiration & Motivation:</strong> short & mid-term goals (1–3 years)</p>
-      </div>
-
-      <ul class="list-disc pl-5 text-gray-800 space-y-1 mt-4">
-        <li>The program is positioned as a <strong>Talent Development initiative</strong> (not a promotion program).</li>
-        <li>Preferences will be visible to relevant HoDs for career discussion & alignment.</li>
-      </ul>
-
-      <div class="mt-4 flex flex-wrap gap-2">
-        <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">Open Application Form</a>
-        <button type="button" onclick="question()" class="bg-white border border-blue-400 text-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-50">QR to Apply</button>
-      </div>
-    </div>
-  </details>
-
-  <!-- ROUND 3 -->
-  <details class="group bg-orange-50 border-l-4 border-ashley-orange rounded-r-lg mb-4">
-    <summary class="flex items-center justify-between cursor-pointer select-none px-5 py-3">
-      <span class="font-semibold text-ashley-orange text-base flex items-center gap-2">
-        🤝 Round 3 – HoD Review & Position Matching
-      </span>
-      <svg class="h-5 w-5 text-ashley-orange transition-transform duration-200 ease-out group-open:rotate-90">
-        <path fill="currentColor"
-          d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.12l3.71-2.89a.75.75 0 1 1 1.04 1.08l-4.24 3.31a.75.75 0 0 1-.93 0L5.21 8.31a.75.75 0 0 1 .02-1.1z" />
-      </svg>
-    </summary>
-
-    <div class="px-5 pb-4 pt-1 text-sm text-gray-800">
-      <p class="mb-3">From successor applications, HoDs receive <strong>segmented lists</strong> for review:</p>
-
-      <!-- Equal-width cards -->
-      <div class="grid md:grid-cols-3 gap-4 mb-4">
-        <div class="bg-ashley-orange text-white p-4 rounded-xl text-center font-semibold shadow-sm">
-          Internal Applicants<br>
-          <span class="text-sm opacity-90">(same department)</span>
-        </div>
-        <div class="bg-amber-600 text-white p-4 rounded-xl text-center font-semibold shadow-sm">
-          Incoming Applicants<br>
-          <span class="text-sm opacity-90">(from other departments)</span>
-        </div>
-        <div class="bg-orange-700 text-white p-4 rounded-xl text-center font-semibold shadow-sm">
-          Outgoing Applicants<br>
-          <span class="text-sm opacity-90">(to other departments)</span>
-        </div>
-      </div>
-
-      <div class="bg-white border border-orange-200 rounded-lg p-3 mb-3">
-        <p class="font-medium text-gray-800 mb-1">Important notes:</p>
-        <ul class="list-disc pl-5 text-gray-700 space-y-1">
-          <li>Cross-department applications should be approached with sensitivity and clarity.</li>
-          <li>Candidates are encouraged to apply cross-functionally if aligned with job relevance and career goals.</li>
-          <li>HoDs should view cross-applications as <strong>growth potential</strong>, not dissatisfaction.</li>
-        </ul>
-      </div>
-
-      <ul class="list-disc pl-5 text-gray-800 space-y-1">
-        <li>HoD reviews candidate profiles and <strong>selects successors based on fit with Success Profile</strong>.</li>
-        <li>Considers development capacity for each succession position (from Step 1).</li>
-        <li>AHR consolidates endorsed candidates for <strong>Gap Assessment (Step 3)</strong>.</li>
-        <li><strong>Non-selected applicants</strong> receive thank-you note + development encouragement.</li>
-      </ul>
-    </div>
-  </details>
-
-  <!-- SUMMARY LINE -->
-  <div class="bg-white border-l-4 border-gray-400 rounded-r-lg p-4 text-sm text-gray-800">
-    <span class="font-bold text-green-700">Round 1</span> shortlists nominees based on potential, 
-    <span class="font-bold text-blue-700">Round 2</span> empowers employees to apply, and 
-    <span class="font-bold text-ashley-orange">Round 3</span> confirms the final endorsed list for Step 3 – Gap Assessment.
-  </div>
-</div>
-</div>
-        <!-- STEP 3 CONTENT -->
-        <div id="step-3" class="step-content hidden">
-          <div class="bg-white rounded-xl border p-6 mb-6">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">STEP 3: Gap Assessment</h3>
-            <p class="text-gray-600 mb-6">Module song song · Tự đánh giá · Xác nhận của quản lý · Phân loại sẵn sàng</p>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">System Setup (Mirror Module)</h4>
-                <ul class="text-sm text-gray-700 space-y-1">
-                  <li>• Separate from Performance; role‑based access; mock‑data UAT.</li>
-                  <li>• Define features & UX with CN System Team.</li>
-                  <li>• Files: System_Module_Feature_List.xlsx; UI_Wireframe_Sample.pdf</li>
-                </ul>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Part A – Candidate Self‑Assessment (1–5)</h4>
-                <ul class="text-sm text-gray-700 space-y-1">
-                  <li>• 1–2: describe gaps; 3: meets + improve; 4–5: SBI examples.</li>
-                  <li>• Map current experience to job qualifications.</li>
-                </ul>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Part B – Manager Validation & Readiness</h4>
-                <p class="text-sm text-gray-700">Assign: Ready Now (≤6m) · Ready Soon (≤2y) · Development Needed (>2y) · Not Ready. Comments visible to candidates; readiness visible to AHR & HoD only.</p>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Part C – Gap Summary & Dashboard</h4>
-                <ul class="text-sm text-gray-700 space-y-1"><li>• Template_Gap_Analysis_Sheet.xlsx</li><li>• Gap_Analysis_Summary_Report_DeptName.xlsx</li><li>• PowerBI_Gap_Tracking_Layout.pdf</li></ul>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Part D – Talent Pool Announcement</h4>
-                <p class="text-sm text-gray-700">Ready Now & Ready Soon → Talent Pool; Development Needed → Talent Watch; Not Ready → Thank‑you + feedback pointers. (Email_Talent_Pool_Confirmation.docx)</p>
-              </div>
-              <div class="bg-ashley-orange/10 p-4 rounded-lg">
-                <h4 class="font-semibold text-ashley-orange mb-2">Interactive Demo (10’)</h4>
-                <p class="text-sm text-gray-700">Self‑rate 3 competencies → leader adjusts → assign readiness → update gap sheet.</p>
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <!-- STAFF VIEW -->
+    <section id="view-staff" class="hidden">
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-4">
+          <section class="bg-white rounded-2xl shadow-sm border p-5">
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="text-xl font-semibold text-gray-900">Chọn bàn & Menu</h2>
+              <div class="flex items-center gap-3">
+                <select id="tableSelect" class="border rounded-lg px-3 py-2 text-sm"></select>
+                <select id="catFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
+                <input id="searchInput" class="border rounded-lg px-3 py-2 text-sm w-48" placeholder="Tìm món..." />
               </div>
             </div>
-          </div>
+            <div id="menuGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          </section>
         </div>
-
-        <!-- STEP 4 CONTENT -->
-        <div id="step-4" class="step-content hidden">
-          <div class="bg-white rounded-xl border p-6 mb-6">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">STEP 4: IDP Execution – Closing the Gap</h3>
-            <p class="text-gray-600 mb-6">Thiết kế IDP · 70‑20‑10 · Theo dõi hàng quý</p>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-semibold mb-2">Design Flow</h4><ul class="text-sm text-gray-700 space-y-1"><li>• AHR workshop → Successor drafts IDP based on gaps & readiness</li><li>• Approvals (Leader, HoD) → Quarterly updates</li></ul></div>
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-semibold mb-2">70‑20‑10 Framework</h4><ul class="text-sm text-gray-700 space-y-1"><li>• 70 Doing – projects, acting role, rotation</li><li>• 20 Others – coaching, mentoring, peer groups</li><li>• 10 Formal – courses, certifications</li></ul></div>
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-semibold mb-2">Tracking & Review</h4><p class="text-sm text-gray-700">Quarterly review; leader audit; notify aspiration/strategy shifts. Power BI for portfolio tracking.</p></div>
-              <div class="bg-white border rounded-lg p-4"><h4 class="font-semibold mb-3">Files</h4><div class="grid sm:grid-cols-2 gap-3"><button class="bg-ashley-orange text-white px-3 py-2 rounded-lg">📥 IDP_Template_Successor.xlsx</button><button class="bg-ashley-orange text-white px-3 py-2 rounded-lg">📥 IDP_Review_Checklist_Leader.docx</button></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- STEP 5 CONTENT -->
-        <div id="step-5" class="step-content hidden">
-          <div class="bg-white rounded-xl border p-6 mb-6">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">STEP 5: Talent Review Presentation</h3>
-            <p class="text-gray-600 mb-6">Báo cáo tiến độ hàng năm · Phản hồi hội đồng</p>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-semibold mb-2">Event Format</h4><ul class="text-sm text-gray-700 space-y-1"><li>• Successor presents progress & evidence</li><li>• Panel feedback → Revise IDP</li><li>• Audience: Leader, HoD, AHR, senior leaders (if available)</li></ul></div>
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-semibold mb-2">Benefits for Successors</h4><ul class="text-sm text-gray-700 space-y-1"><li>• Priority learning access</li><li>• Cross‑functional visibility</li><li>• Strategic projects</li><li>• Eligible for Asia Domination (GS)</li></ul></div>
-              <div class="bg-white border rounded-lg p-4"><h4 class="font-semibold mb-3">Files</h4><div class="grid sm:grid-cols-2 gap-3"><button class="bg-ashley-orange text-white px-3 py-2 rounded-lg">📥 Talent_Review_Presentation_Template.pptx</button><button class="bg-ashley-orange text-white px-3 py-2 rounded-lg">📥 Talent_Review_Panel_Feedback_Form.docx</button></div></div>
-              <div class="bg-ashley-orange/10 p-4 rounded-lg"><h4 class="font-semibold text-ashley-orange mb-2">Evidence Sprint (5’)</h4><p class="text-sm text-gray-700">Draft 3 evidence items to showcase progress this year.</p></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- STEP 6 CONTENT -->
-        <div id="step-6" class="step-content hidden">
-          <div class="bg-white rounded-xl border p-6 mb-6">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">STEP 6: Continuous Review & Yearly Refresh</h3>
-            <p class="text-gray-600 mb-6">Theo dõi KPI · Lắng nghe phản hồi · Làm mới Talent Pool</p>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-semibold mb-2">Semi‑Annual KPIs</h4><ul class="text-sm text-gray-700 space-y-1"><li>• % critical roles with ≥1 successor</li><li>• % on‑time IDP updates</li><li>• % IDP actions completed</li><li>• Participation in development activities</li></ul></div>
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-semibold mb-2">Annual KPIs</h4><ul class="text-sm text-gray-700 space-y-1"><li>• Internal fill rate for critical roles</li><li>• % successors advancing readiness</li><li>• Talent Pool retention (12–18m)</li></ul></div>
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-semibold mb-2">Feedback & Improvement</h4><ul class="text-sm text-gray-700 space-y-1"><li>• Successor & HoD satisfaction; training effectiveness</li><li>• Adjust tools & process; refresh pool after year‑end review</li></ul></div>
-              <div class="bg-white border rounded-lg p-4"><h4 class="font-semibold mb-3">Survey</h4><button class="bg-ashley-orange text-white px-3 py-2 rounded-lg">📝 Talent_Program_Feedback_Survey_Form</button></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Prev/Next -->
-        <div class="flex justify-between">
-          <button onclick="previousStep()" id="prev-btn" class="bg-gray-300 text-gray-500 px-6 py-2 rounded-xl cursor-not-allowed" disabled>← Previous</button>
-          <button onclick="nextStep()" id="next-btn" class="bg-ashley-orange text-white px-6 py-2 rounded-xl hover:bg-ashley-orange-dark">Next →</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- TOOLS TAB -->
-    <section id="tools-tab" class="tab-content hidden">
-      <div class="mb-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-2">Tools & Templates</h2>
-        <p class="text-gray-600 mb-6">Công cụ & Mẫu biểu</p>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-white border rounded-xl p-6 hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 bg-ashley-orange rounded-lg flex items-center justify-center mb-4"><span class="text-white text-xl">📊</span></div>
-            <h3 class="font-semibold text-gray-900 mb-2">Critical Position Evaluation</h3>
-            <p class="text-sm text-gray-500 mb-4">Scoring matrix for role prioritization</p>
-<a href="https://masterashley-my.sharepoint.com/:x:/g/personal/anguyen_ashleyfurniture_com/ESRPdp4SMZlBkVt48EwOKMMBBzPAPFD4wZPGAxpuxeIygA?e=U2DyCS" 
-   target="_blank" 
-   class="w-full block text-center bg-ashley-orange text-white py-2 px-4 rounded-xl hover:bg-ashley-orange-dark">
-  📥 Download Excel
-</a>
-</div>
-
-<div class="bg-white border rounded-xl p-6 hover:shadow-md transition-shadow">
-  <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4"><span class="text-white text-xl">👤</span>
-
-</div>
-            <h3 class="font-semibold text-gray-900 mb-2">Success Profile Template</h3>
-            <p class="text-sm text-gray-500 mb-4">Competency framework builder</p>
-            <button class="w-full bg-ashley-orange text-white py-2 px-4 rounded-xl hover:bg-ashley-orange-dark">📥 Download Excel</button>
-          </div>
-          <div class="bg-white border rounded-xl p-6 hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4"><span class="text-white text-xl">📋</span></div>
-            <h3 class="font-semibold text-gray-900 mb-2">Gap Assessment Tool</h3>
-            <p class="text-sm text-gray-500 mb-4">Readiness evaluation matrix</p>
-            <button class="w-full bg-ashley-orange text-white py-2 px-4 rounded-xl hover:bg-ashley-orange-dark">📥 Download Excel</button>
-          </div>
-          <div class="bg-white border rounded-xl p-6 hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4"><span class="text-white text-xl">🧭</span></div>
-            <h3 class="font-semibold text-gray-900 mb-2">IDP Template & Review</h3>
-            <p class="text-sm text-gray-500 mb-4">70‑20‑10 + quarterly checkpoints</p>
-            <div class="grid grid-cols-2 gap-2"><button class="bg-ashley-orange text-white py-2 px-3 rounded-lg">📥 IDP.xlsx</button><button class="bg-ashley-orange text-white py-2 px-3 rounded-lg">📥 Review.docx</button></div>
-          </div>
-          <div class="bg-white border rounded-xl p-6 hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center mb-4"><span class="text-white text-xl">📑</span></div>
-            <h3 class="font-semibold text-gray-900 mb-2">Talent Review Pack</h3>
-            <p class="text-sm text-gray-500 mb-4">Slides + panel form</p>
-            <div class="grid grid-cols-2 gap-2"><button class="bg-ashley-orange text-white py-2 px-3 rounded-lg">📥 Template.pptx</button><button class="bg-ashley-orange text-white py-2 px-3 rounded-lg">📥 Panel.docx</button></div>
-          </div>
-          <div class="bg-white border rounded-xl p-6 hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 bg-rose-500 rounded-lg flex items-center justify-center mb-4"><span class="text-white text-xl">✉️</span></div>
-            <h3 class="font-semibold text-gray-900 mb-2">Comms & Survey</h3>
-            <p class="text-sm text-gray-500 mb-4">Email + feedback survey</p>
-            <div class="grid grid-cols-2 gap-2"><button class="bg-ashley-orange text-white py-2 px-3 rounded-lg">📥 Talent_Pool_Confirmation.docx</button><button class="bg-ashley-orange text-white py-2 px-3 rounded-lg">📝 Feedback Survey</button></div>
-          </div>
-        </div>
-
-            </section>
-
-    <!-- METRICS & GOVERNANCE TAB -->
-    <section id="metrics-tab" class="tab-content hidden">
-      <div class="mb-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-2">Metrics & Governance</h2>
-        <p class="text-gray-600 mb-6">Chỉ số & Quản trị</p>
-        <div class="bg-white rounded-xl border p-6 mb-6">
-          <h3 class="text-xl font-semibold mb-4">Key Performance Indicators</h3>
-          <div class="grid md:grid-cols-2 gap-6">
-            <div class="space-y-4">
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-medium text-gray-900 mb-2">Succession Readiness Rate</h4><p class="text-sm text-gray-600">% of critical roles with ready successors</p></div>
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-medium text-gray-900 mb-2">Internal Fill Rate</h4><p class="text-sm text-gray-600">% of leadership roles filled internally</p></div>
-            </div>
-            <div class="space-y-4">
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-medium text-gray-900 mb-2">Time to Fill</h4><p class="text-sm text-gray-600">Average days to fill critical positions</p></div>
-              <div class="bg-gray-50 p-4 rounded-lg"><h4 class="font-medium text-gray-900 mb-2">Development Progress</h4><p class="text-sm text-gray-600">% completion of successor IDPs</p></div>
-            </div>
-          </div>
-        </div>
-        <div class="bg-white rounded-xl border p-6">
-          <h3 class="text-xl font-semibold mb-4">RACI (Lite)</h3>
-          <div class="overflow-auto">
-            <table class="min-w-full text-sm text-center border">
-              <thead class="bg-gray-50"><tr><th class="p-2 border">Step</th><th class="p-2 border">AHR</th><th class="p-2 border">HoD</th><th class="p-2 border">Leader</th><th class="p-2 border">Successor</th><th class="p-2 border">StratEx</th><th class="p-2 border">SysDev</th></tr></thead>
-              <tbody>
-                <tr><td class="p-2 border">1</td><td class="p-2 border">A</td><td class="p-2 border">R</td><td class="p-2 border">C</td><td class="p-2 border">I</td><td class="p-2 border">C</td><td class="p-2 border">I</td></tr>
-                <tr><td class="p-2 border">2</td><td class="p-2 border">A</td><td class="p-2 border">R</td><td class="p-2 border">C</td><td class="p-2 border">I</td><td class="p-2 border">I</td><td class="p-2 border">I</td></tr>
-                <tr><td class="p-2 border">3</td><td class="p-2 border">A</td><td class="p-2 border">R</td><td class="p-2 border">R</td><td class="p-2 border">C</td><td class="p-2 border">C</td><td class="p-2 border">R</td></tr>
-                <tr><td class="p-2 border">4</td><td class="p-2 border">A</td><td class="p-2 border">C</td><td class="p-2 border">R</td><td class="p-2 border">R</td><td class="p-2 border">C</td><td class="p-2 border">I</td></tr>
-                <tr><td class="p-2 border">5</td><td class="p-2 border">A</td><td class="p-2 border">C</td><td class="p-2 border">C</td><td class="p-2 border">R</td><td class="p-2 border">I</td><td class="p-2 border">I</td></tr>
-                <tr><td class="p-2 border">6</td><td class="p-2 border">A</td><td class="p-2 border">C</td><td class="p-2 border">C</td><td class="p-2 border">I</td><td class="p-2 border">R</td><td class="p-2 border">I</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ TAB -->
-    <section id="faq-tab" class="tab-content hidden">
-      <div class="mb-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-2">Frequently Asked Questions</h2>
-        <p class="text-gray-600 mb-6">Câu hỏi thường gặp</p>
         <div class="space-y-4">
-          <div class="bg-white rounded-xl border">
-            <button onclick="toggleAccordion('faq-1', event)" class="w-full text-left p-6 flex justify-between items-center hover:bg-gray-50"><h4 class="font-semibold text-gray-900">How often should we update succession plans?</h4><span class="accordion-icon text-ashley-orange">▼</span></button>
-            <div id="faq-1" class="accordion-content hidden p-6 pt-0 border-t"><p class="text-gray-600">Review quarterly and update annually, or after significant org changes.</p></div>
-          </div>
-          <div class="bg-white rounded-xl border">
-            <button onclick="toggleAccordion('faq-2', event)" class="w-full text-left p-6 flex justify-between items-center hover:bg-gray-50"><h4 class="font-semibold text-gray-900">What if we don't have internal successors ready?</h4><span class="accordion-icon text-ashley-orange">▼</span></button>
-            <div id="faq-2" class="accordion-content hidden p-6 pt-0 border-t"><p class="text-gray-600">Accelerate development, use interim leadership, and consider external pipeline while you build internal capability.</p></div>
-          </div>
-          <div class="bg-white rounded-xl border">
-            <button onclick="toggleAccordion('faq-3', event)" class="w-full text-left p-6 flex justify-between items-center hover:bg-gray-50"><h4 class="font-semibold text-gray-900">Alice có đẹp gái không?</h4><span class="accordion-icon text-ashley-orange">▼</span></button>
-            <div id="faq-3" class="accordion-content hidden p-6 pt-0 border-t"><p class="text-gray-600">Có. Alice super đẹp gái luôn.</p></div>
-          </div>
-          <div class="bg-white rounded-xl border">
-            <button onclick="toggleAccordion('faq-4', event)" class="w-full text-left p-6 flex justify-between items-center hover:bg-gray-50"><h4 class="font-semibold text-gray-900">Is succession equal to promotion?</h4><span class="accordion-icon text-ashley-orange">▼</span></button>
-            <div id="faq-4" class="accordion-content hidden p-6 pt-0 border-t"><p class="text-gray-600">No. Readiness informs development plans; it is not a promise of immediate title change.</p></div>
-          </div>
-          <div class="bg-white rounded-xl border">
-            <button onclick="toggleAccordion('faq-5', event)" class="w-full text-left p-6 flex justify-between items-center hover:bg-gray-50"><h4 class="font-semibold text-gray-900">Chị Hannie có bị khùm hem?</h4><span class="accordion-icon text-ashley-orange">▼</span></button>
-            <div id="faq-5" class="accordion-content hidden p-6 pt-0 border-t"><p class="text-gray-600">Đúm z.</p></div>
-          </div>
+          <section class="bg-white rounded-2xl shadow-sm border p-5">
+            <h2 id="cartTitle" class="text-xl font-semibold text-gray-900 mb-3">Giỏ hàng</h2>
+            <div id="cartList" class="space-y-3 text-sm text-gray-700">Chưa có món.</div>
+            <div class="pt-3 mt-2 border-t flex items-center justify-between">
+              <span class="font-semibold">Tổng</span>
+              <span id="cartTotal" class="font-bold">0₫</span>
+            </div>
+            <button id="btnSubmitOrder" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-2 mt-3">Gửi order đến quầy pha chế</button>
+          </section>
+          <section class="bg-white rounded-2xl shadow-sm border p-5">
+            <h2 class="text-xl font-semibold text-gray-900 mb-3">Đơn gần đây (chưa thanh toán)</h2>
+            <div id="recentOrders" class="space-y-2 max-h-80 overflow-auto pr-1"></div>
+          </section>
         </div>
       </div>
+    </section>
+
+    <!-- BARISTA VIEW -->
+    <section id="view-barista" class="hidden space-y-4">
+      <section class="bg-white rounded-2xl shadow-sm border p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xl font-semibold text-gray-900">Hàng đợi pha chế</h2>
+          <div class="flex items-center gap-2 text-sm">
+            <button id="tabByTable" class="px-3 py-1 rounded-lg border">Xem theo bàn</button>
+            <button id="tabByItem" class="px-3 py-1 rounded-lg border">Xem tổng món</button>
+          </div>
+        </div>
+        <div id="baristaByTable" class="grid md:grid-cols-2 gap-4"></div>
+        <div id="baristaByItem" class="grid md:grid-cols-3 gap-4 hidden"></div>
+      </section>
+      <section class="bg-white rounded-2xl shadow-sm border p-5">
+        <h2 class="text-xl font-semibold text-gray-900 mb-2">Đã sẵn sàng giao</h2>
+        <p class="text-sm text-gray-500">Chuyển sang vai trò "Nhân viên giao bàn" để xử lý giao món.</p>
+      </section>
+    </section>
+
+    <!-- SERVER VIEW -->
+    <section id="view-server" class="hidden grid md:grid-cols-2 gap-6">
+      <section class="bg-white rounded-2xl shadow-sm border p-5">
+        <h2 class="text-xl font-semibold text-gray-900 mb-3">Món đã sẵn sàng</h2>
+        <div id="readyList" class="space-y-3"></div>
+      </section>
+      <section class="bg-white rounded-2xl shadow-sm border p-5">
+        <h2 class="text-xl font-semibold text-gray-900 mb-3">Đã giao · chờ thanh toán</h2>
+        <div id="deliveredList" class="space-y-3"></div>
+      </section>
+    </section>
+
+    <!-- CASHIER VIEW -->
+    <section id="view-cashier" class="hidden space-y-4">
+      <section class="bg-white rounded-2xl shadow-sm border p-5">
+        <h2 class="text-xl font-semibold text-gray-900 mb-3">Chờ thanh toán</h2>
+        <div id="cashierNotPaid" class="space-y-3"></div>
+      </section>
+      <section class="bg-white rounded-2xl shadow-sm border p-5">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-xl font-semibold text-gray-900">Đã thanh toán hôm nay</h2>
+          <span id="cashierTotalToday" class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700"></span>
+        </div>
+        <div id="cashierPaid" class="grid md:grid-cols-2 gap-3"></div>
+      </section>
+    </section>
+
+    <!-- ADMIN VIEW -->
+    <section id="view-admin" class="hidden grid md:grid-cols-2 gap-6">
+      <section class="bg-white rounded-2xl shadow-sm border p-5">
+        <h2 class="text-xl font-semibold text-gray-900 mb-3">Cấu hình quán</h2>
+        <label class="text-sm text-gray-700">Số lượng bàn</label>
+        <input id="tablesInput" type="number" min="1" class="border rounded-lg px-3 py-2 w-40" />
+      </section>
+      <section class="bg-white rounded-2xl shadow-sm border p-5">
+        <h2 class="text-xl font-semibold text-gray-900 mb-3">Menu (JSON)</h2>
+        <textarea id="menuTextarea" class="w-full h-80 border rounded-xl p-3 font-mono text-sm"></textarea>
+        <div class="mt-3">
+          <button id="btnSaveAdmin" class="px-4 py-2 rounded-lg bg-black text-white">Lưu thay đổi</button>
+        </div>
+      </section>
     </section>
   </main>
 
- <!-- QUESTION MODAL -->
-<div id="questionModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-[60]">
-  <div class="bg-white w-full max-w-lg rounded-2xl p-6 shadow-xl">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-semibold">I have a question!</h3>
-      <button onclick="closeQuestionModal()" class="text-gray-500 hover:text-gray-700">✖</button>
+  <!-- Pay Modal -->
+  <div id="payModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-4">
+    <div class="bg-white rounded-2xl w-full max-w-lg p-5 modal-enter">
+      <div class="flex items-center justify-between mb-2">
+        <h3 id="payTitle" class="text-lg font-semibold">Thanh toán</h3>
+        <button id="btnClosePay" class="text-gray-500 hover:text-gray-700">✕</button>
+      </div>
+      <div id="payLines" class="space-y-2"></div>
+      <div class="pt-2 mt-2 border-t flex items-center justify-between">
+        <span class="font-semibold">Tổng</span>
+        <span id="payTotal" class="font-bold">0₫</span>
+      </div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button id="btnCancelPay" class="px-4 py-2 rounded-lg border">Đóng</button>
+        <button id="btnConfirmPay" class="px-4 py-2 rounded-lg bg-emerald-600 text-white">Xác nhận thanh toán</button>
+      </div>
     </div>
-    <p class="text-sm text-gray-600 mb-3">Type your question below and click send.</p>
-
-    <!-- Form gửi email (tiếng Việt không lỗi) -->
-<form onsubmit="sendEmail(event)">
-  <textarea id="questionInput" 
-            class="w-full border rounded-xl px-3 py-2 mb-3 h-32" 
-            placeholder="Submit your question here to send email to our team..."></textarea>
-  <div class="flex justify-end gap-2">
-    <button type="button" onclick="closeQuestionModal()" 
-            class="bg-white border px-3 py-2 rounded-xl">Cancel</button>
-    <button type="submit" 
-            class="bg-ashley-orange text-white px-3 py-2 rounded-xl">Send</button>
   </div>
-</form>
-
-<script>
-  function sendEmail(e) {
-    e.preventDefault();
-    const question = document.getElementById("questionInput").value;
-    const subject = encodeURIComponent("Câu hỏi từ Website");
-    const body = encodeURIComponent(question);
-    const to = "anguyen@ashleyfurniture.com,hphamhong@ashleyfurniture.com";
-    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-  }
-</script>
-  </div>
-</div>
-<script>
-  function showQuestionModal() {
-    document.getElementById('questionModal').classList.remove('hidden');
-    document.getElementById('questionModal').classList.add('flex');
-  }
-  function closeQuestionModal() {
-    document.getElementById('questionModal').classList.add('hidden');
-    document.getElementById('questionModal').classList.remove('flex');
-  }
-</script>
 
   <script>
-    // ========== State ==========
-let currentStep = 1;
-let facilitatorMode = false;
-
-    // ========== Tabs (Top-level) ==========
-    function showTab(tabName, e){
-      // hide all tabs
-      document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('hidden'));
-      // show selected
-      const target = document.getElementById(`${tabName}-tab`);
-      if(target){ target.classList.remove('hidden'); }
-      // update nav highlight by data attribute
-      document.querySelectorAll('.nav-tab').forEach(btn=>{
-        if(btn.dataset.tab === tabName){
-          btn.classList.add('border-b-2','border-ashley-orange');
-        } else {
-          btn.classList.remove('border-b-2','border-ashley-orange');
-        }
-      });
-      // if called from CTAs (no event), still highlight via data attribute
-      if(e && e.preventDefault) e.preventDefault();
-    }
-
-
-    // ========== Accordions ==========
-    function toggleAccordion(id, e){
-      const content=document.getElementById(id);
-      const icon=e.currentTarget.querySelector('.accordion-icon');
-      if(content.classList.contains('hidden')){ content.classList.remove('hidden'); content.classList.add('fade-in'); icon.textContent='▲'; }
-      else { content.classList.add('hidden'); icon.textContent='▼'; }
-    }
-	
-    // ========== Framework Stepper ==========
-    function showStep(stepNum, e){
-      currentStep=stepNum;
-      document.querySelectorAll('.step-content').forEach(c=>c.classList.add('hidden'));
-      const cur = document.getElementById(`step-${stepNum}`); if(cur) cur.classList.remove('hidden');
-      document.querySelectorAll('.step-btn').forEach(b=>{ b.classList.remove('bg-ashley-orange','text-white'); b.classList.add('bg-gray-200','text-gray-700'); });
-      if(e){ e.target.classList.remove('bg-gray-200','text-gray-700'); e.target.classList.add('bg-ashley-orange','text-white'); }
-      const indicators=document.querySelectorAll('.step-indicator'); const lines=document.querySelectorAll('.step-line');
-      indicators.forEach((el,i)=>{ if(i<stepNum){ el.classList.remove('bg-gray-300','text-gray-600'); el.classList.add('bg-ashley-orange','text-white'); } else { el.classList.remove('bg-ashley-orange','text-white'); el.classList.add('bg-gray-300','text-gray-600'); } });
-      lines.forEach((ln,i)=>{ if(i<stepNum-1){ ln.classList.remove('bg-gray-300'); ln.classList.add('bg-ashley-orange'); } else { ln.classList.remove('bg-ashley-orange'); ln.classList.add('bg-gray-300'); } });
-      document.getElementById('stepLabel').textContent = `Step ${stepNum} of 6`;
-      const prevBtn=document.getElementById('prev-btn'); const nextBtn=document.getElementById('next-btn');
-      if(stepNum===1){ prevBtn.disabled=true; prevBtn.classList.add('cursor-not-allowed','bg-gray-300','text-gray-500'); }
-      else { prevBtn.disabled=false; prevBtn.classList.remove('cursor-not-allowed','bg-gray-300','text-gray-500'); prevBtn.classList.add('bg-ashley-orange','text-white'); }
-      nextBtn.textContent=(stepNum===6)?'Complete':'Next →';
-    }
-	function nextStep(){ if(currentStep<6) showStep(currentStep+1);window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-	function previousStep(){ if(currentStep>1) showStep(currentStep-1); window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-    // ========== Step 1 inner tabs (IDs prefixed to avoid collisions) ==========
-    function showStepTab(tabName, e){
-      const scope = document.getElementById('step-1');
-      scope.querySelectorAll('.step-tab-content').forEach(t=>t.classList.add('hidden'));
-      const id = `s1-${tabName}-tab`;
-      const tgt = document.getElementById(id);
-      if(tgt){ tgt.classList.remove('hidden'); }
-      scope.querySelectorAll('.step-tab-btn').forEach(b=>{ b.classList.remove('border-ashley-orange','text-ashley-orange'); b.classList.add('border-transparent','text-gray-500'); });
-      if(e){ e.target.classList.remove('border-transparent','text-gray-500'); e.target.classList.add('border-ashley-orange','text-ashley-orange'); }
-    }
-
-    // ========== QR Board ==========
-    function question(){ const m=document.getElementById('qrModal'); m.classList.remove('hidden'); m.classList.add('flex'); }
-    function closeQRBoard(){ const m=document.getElementById('qrModal'); m.classList.add('hidden'); m.classList.remove('flex'); }
-    function copyQRLink(){ const i=document.getElementById('qrInput'); if(!i.value) return alert('Paste a link first'); navigator.clipboard.writeText(i.value).then(()=>alert('Link copied')); }
-
- // ========== Init ==========
-  document.addEventListener('DOMContentLoaded', ()=>{ showTab('home'); });
-</script>
-
-<!-- =================== SEARCH MODAL (HTML) =================== -->
-<div id="searchModal" 
-     class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-[100]">
-  <div class="bg-white w-full max-w-lg rounded-2xl p-6 shadow-xl">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-semibold text-gray-800">🔎 Search Playbook</h3>
-      <button onclick="closeSearchModal()" class="text-gray-500 hover:text-gray-700">✖</button>
-    </div>
-    <input id="searchInput"
-           type="text"
-           placeholder="Enter keyword (e.g. Step 3, IDP, Criteria...)"
-           class="w-full border rounded-xl px-3 py-2 mb-4 focus:ring-2 focus:ring-orange-300 focus:outline-none" />
-    <div id="searchResults" class="max-h-64 overflow-y-auto text-sm space-y-2 text-gray-700"></div>
-  </div>
-</div>
-
-<!-- =================== SEARCH MODAL (JS) =================== -->
-<script>
-  /* Open / Close */
-  function openSearchModal() {
-    const m = document.getElementById('searchModal');
-    m.classList.remove('hidden'); m.classList.add('flex');
-    const ip = document.getElementById('searchInput');
-    ip.value = '';
-    document.getElementById('searchResults').innerHTML = '';
-    ip.focus();
-  }
-  function closeSearchModal() {
-    const m = document.getElementById('searchModal');
-    m.classList.add('hidden'); m.classList.remove('flex');
-    clearHighlights();
-  }
-  /* ====== Utils ====== */
-  function escReg(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
-
-  function buildSnippet(text, query, pad=80){
-    const q = query.trim();
-    if(!q) return '';
-    const re = new RegExp(escReg(q), 'i');
-    const m = text.match(re);
-    if(!m) return '';
-    const i = m.index;
-    const start = Math.max(0, i - pad);
-    const end   = Math.min(text.length, i + q.length + pad);
-    let snippet = text.slice(start, end);
-    // thêm dấu … nếu cắt đầu/cuối
-    if(start>0) snippet = '…' + snippet;
-    if(end<text.length) snippet = snippet + '…';
-    // highlight trong snippet
-    snippet = snippet.replace(new RegExp(escReg(q), 'ig'), (s)=>`<mark>${s}</mark>`);
-    return snippet;
-  }
-
-  function clearHighlights(){
-    document.querySelectorAll('mark.search-highlight').forEach(mark=>{
-      const text = document.createTextNode(mark.textContent);
-      mark.parentNode.replaceChild(text, mark);
-    });
-  }
-
-  function highlightIn(container, query){
-    if(!container || !query) return;
-    const selector = 'h1,h2,h3,h4,h5,h6,p,li,span,td,th';
-    const re = new RegExp(escReg(query), 'ig');
-    let firstHit = null;
-
-    container.querySelectorAll(selector).forEach(el=>{
-      // bỏ qua các vùng có quá nhiều tương tác/HTML
-      if(el.closest('button, a, input, textarea, select')) return;
-      const html = el.innerHTML;
-      if(!html) return;
-      if(!re.test(el.textContent)) return;
-      // thay thế trên innerHTML (đơn giản, đủ an toàn cho text/heading)
-      const replaced = html.replace(re, (s)=>{
-        if(!firstHit) firstHit = true; // đánh dấu đã có hit đầu tiên
-        return `<mark class="search-highlight">${s}</mark>`;
-      });
-      el.innerHTML = replaced;
-    });
-
-    // cuộn đến highlight đầu tiên
-    const first = container.querySelector('mark.search-highlight');
-    if(first && first.scrollIntoView){
-      first.scrollIntoView({ behavior:'smooth', block:'center' });
-    } else {
-      window.scrollTo({ top:0, behavior:'smooth' });
-    }
-  }
-
-  /* ====== Push result item ====== */
-  function addResult(list, label, tab, step, anchorSelector, snippet){
-    list.push({ label, tab, step, anchorSelector, snippet });
-  }
-
-  /* ====== Build results with snippets (có cả inner tabs của Step 1) ====== */
-  function buildSearchResults(query){
-    const q = (query||'').trim().toLowerCase();
-    const results = [];
-    if(!q) return results;
-
-    // HOME
-    const home = document.getElementById('home-tab');
-    if(home && home.textContent.toLowerCase().includes(q)){
-      addResult(
-        results,
-        'Home',
-        'home',
-        null,
-        '#home-tab h1',
-        buildSnippet(home.textContent, query)
-      );
-    }
-
-    // FRAMEWORK: Step 1-6
-    for(let i=1;i<=6;i++){
-      const stepEl = document.getElementById(`step-${i}`);
-      if(stepEl && stepEl.textContent.toLowerCase().includes(q)){
-        const h = stepEl.querySelector('h2,h3,h4');
-        addResult(
-          results,
-          `Framework → Step ${i}`,
-          'framework',
-          i,
-          h ? null : null, // anchor sẽ tự tìm h2/h3/h4 trong click
-          buildSnippet(stepEl.textContent, query)
-        );
-      }
-    }
-
-    // Step 1 inner tabs (Overview, Criteria, Scoring, Profile, Tools)
-    const innerTabs = [
-      { key:'overview', id:'s1-overview-tab',  label:'Framework → Step 1 → Overview' },
-      { key:'criteria', id:'s1-criteria-tab',  label:'Framework → Step 1 → Criteria' },
-      { key:'scoring',  id:'s1-scoring-tab',   label:'Framework → Step 1 → Scoring' },
-      { key:'profile',  id:'s1-profile-tab',   label:'Framework → Step 1 → Success Profile' },
-      { key:'tools',    id:'s1-tools-tab',     label:'Framework → Step 1 → Tools' },
+    const STORAGE_KEY = 'tiemnuoctuiminh_pos_v1_html';
+    const seedMenu = [
+      { id: 'mt-truyen-thong', name: 'Trà sữa truyền thống', price: 32000, category: 'Milk Tea' },
+      { id: 'mt-matcha', name: 'Matcha sữa', price: 38000, category: 'Milk Tea' },
+      { id: 'mt-olong', name: 'Oolong sữa', price: 36000, category: 'Milk Tea' },
+      { id: 'tea-dao', name: 'Hồng trà đào', price: 35000, category: 'Tea' },
+      { id: 'tea-vai', name: 'Trà vải', price: 35000, category: 'Tea' },
+      { id: 'macchiato-oolong', name: 'Oolong macchiato', price: 42000, category: 'Cheese' },
+      { id: 'yq-sugarcane', name: 'Nước mía tắc', price: 25000, category: 'Fresh' },
+      { id: 'topping-tranchau', name: '+ Trân châu', price: 5000, category: 'Topping' },
+      { id: 'topping-thach', name: '+ Thạch trái cây', price: 6000, category: 'Topping' },
     ];
-    innerTabs.forEach(t=>{
-      const el = document.getElementById(t.id);
-      if(el && el.textContent.toLowerCase().includes(q)){
-        addResult(
-          results,
-          t.label,
-          'framework',
-          1,
-          `#${t.id}`,
-          buildSnippet(el.textContent, query)
-        );
-      }
-    });
 
-    // TOOLS
-    const tools = document.getElementById('tools-tab');
-    if(tools && tools.textContent.toLowerCase().includes(q)){
-      addResult(
-        results,
-        'Tools & Templates',
-        'tools',
-        null,
-        '#tools-tab h2',
-        buildSnippet(tools.textContent, query)
-      );
+    function money(n){ return n.toLocaleString('vi-VN') + '₫'; }
+    function now(){ return Date.now(); }
+    function newId(prefix){ return prefix + '_' + Math.random().toString(36).slice(2,9); }
+    function calcPriority(items){ return items.reduce((s,it)=>s+it.qty,0); }
+
+    function loadStore(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return { menu: seedMenu, orders: [], tables: 20 };
+        return JSON.parse(raw);
+      }catch(e){ return { menu: seedMenu, orders: [], tables: 20 }; }
     }
+    function saveStore(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(store)); bcPost(); }
 
-    // METRICS
-    const metrics = document.getElementById('metrics-tab');
-    if(metrics && metrics.textContent.toLowerCase().includes(q)){
-      addResult(
-        results,
-        'Metrics & Governance',
-        'metrics',
-        null,
-        '#metrics-tab h2',
-        buildSnippet(metrics.textContent, query)
-      );
-    }
+    const els = {
+      roleSelect: document.getElementById('roleSelect'),
+      btnResetData: document.getElementById('btnResetData'),
+      views: {
+        staff: document.getElementById('view-staff'),
+        barista: document.getElementById('view-barista'),
+        server: document.getElementById('view-server'),
+        cashier: document.getElementById('view-cashier'),
+        admin: document.getElementById('view-admin'),
+      },
+      // staff
+      tableSelect: document.getElementById('tableSelect'),
+      catFilter: document.getElementById('catFilter'),
+      searchInput: document.getElementById('searchInput'),
+      menuGrid: document.getElementById('menuGrid'),
+      cartTitle: document.getElementById('cartTitle'),
+      cartList: document.getElementById('cartList'),
+      cartTotal: document.getElementById('cartTotal'),
+      btnSubmitOrder: document.getElementById('btnSubmitOrder'),
+      recentOrders: document.getElementById('recentOrders'),
+      // barista
+      tabByTable: document.getElementById('tabByTable'),
+      tabByItem: document.getElementById('tabByItem'),
+      baristaByTable: document.getElementById('baristaByTable'),
+      baristaByItem: document.getElementById('baristaByItem'),
+      // server
+      readyList: document.getElementById('readyList'),
+      deliveredList: document.getElementById('deliveredList'),
+      // cashier
+      cashierNotPaid: document.getElementById('cashierNotPaid'),
+      cashierPaid: document.getElementById('cashierPaid'),
+      cashierTotalToday: document.getElementById('cashierTotalToday'),
+      // admin
+      tablesInput: document.getElementById('tablesInput'),
+      menuTextarea: document.getElementById('menuTextarea'),
+      btnSaveAdmin: document.getElementById('btnSaveAdmin'),
+      // modal
+      payModal: document.getElementById('payModal'),
+      payTitle: document.getElementById('payTitle'),
+      payLines: document.getElementById('payLines'),
+      payTotal: document.getElementById('payTotal'),
+      btnClosePay: document.getElementById('btnClosePay'),
+      btnCancelPay: document.getElementById('btnCancelPay'),
+      btnConfirmPay: document.getElementById('btnConfirmPay'),
+    };
 
-    // FAQ
-    const faq = document.getElementById('faq-tab');
-    if(faq && faq.textContent.toLowerCase().includes(q)){
-      addResult(
-        results,
-        'FAQ',
-        'faq',
-        null,
-        '#faq-tab h2',
-        buildSnippet(faq.textContent, query)
-      );
-    }
+    let store = loadStore();
+    window.store = store; // expose for Firebase module
+    let cart = {}; // {menuItemId: qty}
+    let role = 'staff';
+    let baristaTab = 'by-table';
+    let tablePicking = 1;
+    let viewingOrderId = null;
 
-    return results;
-  }
-
-  /* ====== Render list + click to navigate & highlight ====== */
-  function renderSearchResults(results, query){
-    const box = document.getElementById('searchResults');
-    box.innerHTML = '';
-
-    if(!results.length){
-      box.innerHTML = '<p class="text-gray-500 italic">No matches found.</p>';
-      return;
-    }
-
-    results.forEach((r, idx)=>{
-      const item = document.createElement('button');
-      item.type = 'button';
-      item.className = 'w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 border';
-      const snippetHtml = r.snippet ? `<div class="text-xs text-gray-600 search-snippet mt-1">${r.snippet}</div>` : '';
-      item.innerHTML = `
-        <div class="font-medium">${r.label}</div>
-        <div class="text-[11px] text-gray-500">Go to ${r.tab}${r.step ? ' · Step ' + r.step : ''}</div>
-        ${snippetHtml}
-      `;
-
-      item.addEventListener('click', ()=>{
-        // 1) mở đúng tab
-        showTab(r.tab);
-
-        // 2) nếu là Framework và có step → mở step
-        if(r.tab==='framework' && r.step){
-          showStep(r.step);
+    // --- Multi-tab sync (same device) via BroadcastChannel ---
+    const bc = ('BroadcastChannel' in window) ? new BroadcastChannel('tiem_nuoc_tui_minh_sync') : null;
+    function bcPost(){ if(bc){ bc.postMessage({ type:'store:update', store }); } }
+    if(bc){
+      bc.addEventListener('message', (e)=>{
+        if(!e || !e.data) return;
+        if(e.data.type==='store:update'){
+          store = e.data.store; render();
         }
-
-        // 3) xác định container để highlight
-        let container = null;
-        if(r.tab==='framework' && r.step){
-          container = document.getElementById(`step-${r.step}`);
-          // nếu là inner tab
-          if(r.anchorSelector && r.anchorSelector.startsWith('#s1-')){
-            // mở inner tab tương ứng
-            const key = r.anchorSelector.replace(/^#s1-/, '').replace(/-tab$/,'');
-            if(typeof showStepTab === 'function'){
-              showStepTab(key);
-            }
-          }
-        } else {
-          container = document.getElementById(`${r.tab}-tab`);
-        }
-
-        // 4) highlight + scroll
-        setTimeout(()=>{
-          clearHighlights();
-          if(container){
-            highlightIn(container, document.getElementById('searchInput').value);
-          } else {
-            window.scrollTo({ top:0, behavior:'smooth' });
-          }
-        }, 0);
-
-        // 5) đóng modal
-        closeSearchModal();
       });
-
-      box.appendChild(item);
-
-      if(idx < results.length-1){
-        const hr = document.createElement('div');
-        hr.className = 'border-b my-1';
-        box.appendChild(hr);
-      }
-    });
-  }
-
-  /* ====== Live search ====== */
-  document.getElementById('searchInput').addEventListener('input', function(e){
-    const q = e.target.value || '';
-    const results = buildSearchResults(q);
-    renderSearchResults(results, q);
-  });
-</script>
-<script>
-/* ========== Search highlight: chỉ chạy khi click kết quả ========== */
-(function(){
-  let highlightTimer = null;
-
-  function escapeRegex(s){
-    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
-
-  // Tháo toàn bộ <mark class="search-highlight"> trong scope (hoặc toàn trang)
-  function clearHighlights(scope){
-    const root = scope || document;
-    const marks = root.querySelectorAll('mark.search-highlight');
-    marks.forEach(m => {
-      const text = document.createTextNode(m.textContent);
-      m.parentNode.replaceChild(text, m);
-    });
-    // Gộp text node liền kề cho sạch DOM
-    (root.normalize && root.normalize());
-  }
-
-  // Bọc từ khoá bằng <mark> trong container chỉ định
-  function highlightIn(container, term){
-    if (!container || !term) return 0;
-    const words = term.trim().split(/\s+/).filter(Boolean);
-    if (!words.length) return 0;
-
-    const rx = new RegExp('(' + words.map(escapeRegex).join('|') + ')', 'gi');
-
-    // Duyệt text node và bọc match
-    const walker = document.createTreeWalker(
-      container,
-      NodeFilter.SHOW_TEXT,
-      {
-        acceptNode(node){
-          if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-          const p = node.parentNode;
-          if (!p) return NodeFilter.FILTER_REJECT;
-          const tag = p.nodeName.toLowerCase();
-          if (tag === 'script' || tag === 'style' || tag === 'noscript' || tag === 'mark') {
-            return NodeFilter.FILTER_REJECT;
-          }
-          return rx.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-        }
-      }
-    );
-
-    let count = 0;
-    const toProcess = [];
-    while (walker.nextNode()) toProcess.push(walker.currentNode);
-
-    toProcess.forEach(textNode => {
-      const frag = document.createDocumentFragment();
-      const parts = textNode.nodeValue.split(rx); // [text, match, text, match...]
-      for (let i = 0; i < parts.length; i++){
-        const seg = parts[i];
-        if (!seg) continue;
-        if (rx.test(seg) && i % 2 === 1){
-          const mark = document.createElement('mark');
-          mark.className = 'search-highlight';
-          mark.textContent = seg;
-          frag.appendChild(mark);
-          count++;
-        } else {
-          frag.appendChild(document.createTextNode(seg));
-        }
-      }
-      textNode.parentNode.replaceChild(frag, textNode);
-    });
-
-    return count;
-  }
-
-  // Cuộn tới highlight đầu tiên trong container
-  function scrollFirstHighlight(container){
-    const first = container.querySelector('mark.search-highlight');
-    if (first){
-      first.scrollIntoView({behavior:'smooth', block:'center'});
     }
-  }
 
-  // Public API: gọi hàm này khi click 1 kết quả search
-  // opts = { tab?: 'home'|'framework'|'tools'|'metrics'|'faq', step?: 1..6, container: 'CSS selector', term: 'từ khoá' }
-  window.goToAndHighlight = function(opts){
-    if (!opts || !opts.container || !opts.term) return;
+    // --- Role from URL (?role=barista) & persist per tab ---
+    const urlRole = new URLSearchParams(location.search).get('role');
+    if(urlRole){ role = urlRole; }
+    try{ const savedRole = sessionStorage.getItem('tn_role'); if(savedRole) role = savedRole; }catch{}
+    function persistRole(){ try{ sessionStorage.setItem('tn_role', role); }catch{} }
 
-    // Hủy timer & gỡ highlight cũ trước khi điều hướng
-    if (highlightTimer){ clearTimeout(highlightTimer); highlightTimer = null; }
-    clearHighlights(document);
+    // ---------- helpers ----------
+    function setRole(r){ role = r; persistRole(); render(); }
+    function statusLabel(s){ return { queued:'Chờ pha', brewing:'Đang pha', ready:'Sẵn sàng', delivered:'Đã giao', paid:'Đã thanh toán'}[s] || s; }
+    function calcOrderTotal(order){ return order.items.reduce((t,it)=>t+it.price*it.qty,0); }
 
-    // Điều hướng: tab -> step (nếu có)
-    if (opts.tab) window.showTab && window.showTab(opts.tab);
-    if (opts.step) window.showStep && window.showStep(Number(opts.step));
+    function getQueues(){
+      const notPaid = store.orders.filter(o=>o.status!=='paid');
+      const brewing = notPaid.filter(o=>['queued','brewing'].includes(o.status))
+        .sort((a,b)=> (b.priority - a.priority) || (a.createdAt - b.createdAt));
+      const ready = notPaid.filter(o=>o.status==='ready').sort((a,b)=>a.createdAt-b.createdAt);
+      const delivered = notPaid.filter(o=>o.status==='delivered').sort((a,b)=>a.createdAt-b.createdAt);
+      return { brewing, ready, delivered, notPaid };
+    }
 
-    // Chờ DOM render sau showTab/showStep rồi mới highlight
-    requestAnimationFrame(() => {
-      const container = document.querySelector(opts.container);
-      if (!container) return;
-
-      // Chỉ highlight trong đúng container của kết quả
-      const total = highlightIn(container, opts.term);
-      if (total > 0){
-        scrollFirstHighlight(container);
-        // Tự gỡ sau 5s (tháo hẳn <mark>)
-        highlightTimer = setTimeout(() => {
-          clearHighlights(container);
-          highlightTimer = null;
-        }, 5000);
+    // ---------- mutations ----------
+    function setStatus(orderId, status){
+      // ưu tiên cập nhật qua Firebase nếu có
+      if (window.firebaseApi && window.firebaseApi.ready) {
+        const o = store.orders.find(x=>x.id===orderId);
+        if(!o) return;
+        const newTimeline = [...o.timeline, { status, ts: now() }];
+        window.firebaseApi.updateStatus(orderId, status, newTimeline).then((ok)=>{
+          if(!ok) alert('Không thể cập nhật trạng thái lên cloud');
+        });
+        return;
       }
+      // Fallback local
+      store.orders = store.orders.map((o) =>
+        o.id === orderId ? { ...o, status, timeline: [...o.timeline, { status, ts: now() }] } : o
+      );
+      saveStore(); render();
+    }
+    function payOrder(orderId){ setStatus(orderId, 'paid'); closePay(); }
+
+    function resetData(){ if(!confirm('Xoá toàn bộ dữ liệu?')) return; store = { menu: seedMenu, orders: [], tables: store.tables }; cart = {}; saveStore(); render(); }
+
+    // ---------- staff actions ----------
+    function addToCart(id){
+  cart[id] = (cart[id] || 0) + 1;
+  renderStaff();   // <-- cập nhật cả số trên card + giỏ hàng
+}
+
+function decFromCart(id){
+  if (!cart[id]) return;
+  cart[id] = Math.max(0, cart[id] - 1);
+  if (cart[id] === 0) delete cart[id];
+  renderStaff();   // <-- cập nhật cả số trên card + giỏ hàng
+}
+
+
+    function submitOrder(){
+      const items = Object.entries(cart)
+        .map(([id, qty]) => {
+          const mi = store.menu.find((m) => m.id === id);
+          return mi && qty > 0 ? { menuItemId: id, name: mi.name, price: mi.price, qty } : null;
+        })
+        .filter(Boolean);
+      if (items.length === 0) return alert('Giỏ hàng trống');
+
+      const order = { id: newId('ord'), table: tablePicking, items, priority: calcPriority(items), createdAt: now(), status:'queued', timeline:[{status:'queued', ts: now()}] };
+
+      if (window.firebaseApi && window.firebaseApi.ready) {
+        window.firebaseApi.pushOrder(order).then((ok)=>{
+          if(!ok) return alert('Không thể gửi đơn lên cloud');
+          cart = {}; render();
+          alert(`Đã gửi đơn cho bàn ${tablePicking}`);
+        });
+        return;
+      }
+      // Fallback local
+      store.orders.push(order); cart = {}; saveStore(); alert('Đã gửi đơn cho bàn '+tablePicking); render();
+    }
+
+    // ---------- cashier modal ----------
+    function openPay(orderId){
+      viewingOrderId = orderId;
+      const o = store.orders.find(x=>x.id===orderId); if(!o) return;
+      els.payTitle.textContent = `Thanh toán · Bàn ${o.table}`;
+      els.payLines.innerHTML = o.items.map(it=>`
+        <div class="flex items-center justify-between">
+          <span>${it.name} × ${it.qty}</span>
+          <span class="font-medium">${money(it.price*it.qty)}</span>
+        </div>`).join('');
+      els.payTotal.textContent = money(calcOrderTotal(o));
+      els.payModal.classList.remove('hidden');
+      requestAnimationFrame(()=>{
+        const box = els.payModal.querySelector('.modal-enter');
+        box && box.classList.add('modal-enter-active');
+      });
+    }
+    function closePay(){ viewingOrderId = null; els.payModal.classList.add('hidden'); }
+
+    // ---------- renderers ----------
+    function renderRole(){
+      Object.values(els.views).forEach(v=>v.classList.add('hidden'));
+      els.views[role].classList.remove('hidden');
+      els.roleSelect.value = role;
+    }
+
+    function renderStaff(){
+      els.tableSelect.innerHTML = Array.from({length: store.tables}).map((_,i)=>`<option value="${i+1}">Bàn ${i+1}</option>`).join('');
+      els.tableSelect.value = String(tablePicking);
+      els.cartTitle.textContent = `Giỏ hàng · Bàn ${tablePicking}`;
+
+      const cats = ['All', ...Array.from(new Set(store.menu.map(m=>m.category)) )];
+      els.catFilter.innerHTML = cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+
+      const kw = (els.searchInput.value||'').toLowerCase();
+      const cat = els.catFilter.value || 'All';
+      const list = store.menu.filter(m=> (cat==='All'||m.category===cat) && (!kw||m.name.toLowerCase().includes(kw)) );
+      els.menuGrid.innerHTML = list.map(m=>`
+        <div class="border rounded-xl p-4 hover:shadow-sm">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="font-semibold text-gray-900">${m.name}</h3>
+              <p class="text-sm text-gray-500">${m.category}</p>
+            </div>
+            <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700">${money(m.price)}</span>
+          </div>
+          <div class="mt-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <button data-dec="${m.id}" class="px-2 py-1 border rounded">-</button>
+              <span class="w-8 text-center">${cart[m.id]||0}</span>
+              <button data-inc="${m.id}" class="px-2 py-1 border rounded">+</button>
+            </div>
+            <button data-add="${m.id}" class="px-3 py-1 rounded-lg bg-black text-white text-sm">Thêm</button>
+          </div>
+        </div>
+      `).join('');
+
+      els.menuGrid.querySelectorAll('[data-inc]').forEach(b=>b.addEventListener('click',e=>addToCart(e.target.getAttribute('data-inc'))));
+      els.menuGrid.querySelectorAll('[data-dec]').forEach(b=>b.addEventListener('click',e=>decFromCart(e.target.getAttribute('data-dec'))));
+      els.menuGrid.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',e=>addToCart(e.target.getAttribute('data-add'))));
+
+      renderCart();
+
+      const listRecent = store.orders.filter(o=>o.status!=='paid').sort((a,b)=>b.createdAt-a.createdAt).slice(0,8);
+      els.recentOrders.innerHTML = listRecent.map(o=>`
+        <div class="flex items-center justify-between border rounded-lg p-3">
+          <div>
+            <p class="font-medium">Bàn ${o.table}</p>
+            <p class="text-xs text-gray-500">${o.items.map(it=>`${it.name}×${it.qty}`).join(', ')}</p>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700">${statusLabel(o.status)}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderCart(){
+      const entries = Object.entries(cart);
+      if(entries.length===0){ els.cartList.textContent = 'Chưa có món.'; els.cartTotal.textContent = '0₫'; return; }
+      els.cartList.innerHTML = entries.map(([id,qty])=>{
+        const mi = store.menu.find(m=>m.id===id); if(!mi) return '';
+        return `
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-medium">${mi.name}</p>
+              <p class="text-xs text-gray-500">${money(mi.price)} × ${qty}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button data-dec-cart="${id}" class="px-2 py-1 border rounded">-</button>
+              <span class="w-6 text-center">${qty}</span>
+              <button data-inc-cart="${id}" class="px-2 py-1 border rounded">+</button>
+            </div>
+          </div>`;
+      }).join('');
+      els.cartList.querySelectorAll('[data-dec-cart]').forEach(b=>b.addEventListener('click',e=>decFromCart(e.target.getAttribute('data-dec-cart'))));
+      els.cartList.querySelectorAll('[data-inc-cart]').forEach(b=>b.addEventListener('click',e=>addToCart(e.target.getAttribute('data-inc-cart'))));
+
+      const total = entries.reduce((t,[id,qty])=>{ const mi = store.menu.find(m=>m.id===id); return t + (mi?mi.price*qty:0); },0);
+      els.cartTotal.textContent = money(total);
+      els.cartTitle.textContent = `Giỏ hàng · Bàn ${tablePicking}`;
+    }
+
+    function renderBarista(){
+      els.tabByTable.classList.toggle('bg-black', baristaTab==='by-table');
+      els.tabByTable.classList.toggle('text-white', baristaTab==='by-table');
+      els.tabByItem.classList.toggle('bg-black', baristaTab==='by-item');
+      els.tabByItem.classList.toggle('text-white', baristaTab==='by-item');
+
+      const { brewing } = getQueues();
+      const group = new Map();
+      brewing.forEach(o=>{ const arr = group.get(o.table)||[]; arr.push(o); group.set(o.table, arr); });
+      const entries = Array.from(group.entries()).sort((a,b)=>a[0]-b[0]);
+      els.baristaByTable.innerHTML = entries.map(([table,orders])=>`
+        <div class="border rounded-xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-semibold">Bàn ${table}</h3>
+            <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700">${orders.length} đơn</span>
+          </div>
+          <div class="space-y-3">
+            ${orders.map(o=>`
+              <div class="border rounded-lg p-3">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm text-gray-500">#${o.id.slice(-4)} · Ưu tiên ${o.priority}</p>
+                  <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700">${statusLabel(o.status)}</span>
+                </div>
+                <ul class="mt-2 text-sm list-disc list-inside">
+                  ${o.items.map(it=>`<li>${it.name} × ${it.qty}</li>`).join('')}
+                </ul>
+                <div class="mt-3 flex gap-2">
+                  ${o.status==='queued' ? `<button data-start="${o.id}" class="px-3 py-1 rounded-lg bg-amber-600 text-white">Bắt đầu pha</button>`:''}
+                  ${o.status==='brewing' ? `<button data-ready="${o.id}" class="px-3 py-1 rounded-lg bg-emerald-600 text-white">Hoàn thành</button>`:''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>`).join('');
+
+      els.baristaByTable.querySelectorAll('[data-start]').forEach(b=>b.addEventListener('click',e=>setStatus(e.target.getAttribute('data-start'),'brewing')));
+      els.baristaByTable.querySelectorAll('[data-ready]').forEach(b=>b.addEventListener('click',e=>setStatus(e.target.getAttribute('data-ready'),'ready')));
+
+      const agg = new Map();
+      brewing.forEach(o=>o.items.forEach(it=>{ const v = agg.get(it.menuItemId)||{name:it.name,totalQty:0}; v.totalQty += it.qty; agg.set(it.menuItemId, v);}));
+      const rows = Array.from(agg.entries()).map(([id,v])=>({id,name:v.name,totalQty:v.totalQty}));
+      els.baristaByItem.innerHTML = rows.map(r=>`
+        <div class="border rounded-xl p-4">
+          <h4 class="font-semibold">${r.name}</h4>
+          <p class="text-3xl font-bold mt-2">${r.totalQty}</p>
+          <p class="text-xs text-gray-500 mt-1">Tổng số ly cần làm</p>
+        </div>`).join('');
+
+      els.baristaByTable.classList.toggle('hidden', baristaTab!=='by-table');
+      els.baristaByItem.classList.toggle('hidden', baristaTab!=='by-item');
+    }
+
+    function renderServer(){
+      const { ready, delivered } = getQueues();
+      els.readyList.innerHTML = ready.map(o=>`
+        <div class="border rounded-lg p-3 flex items-center justify-between">
+          <div>
+            <p class="font-medium">Bàn ${o.table}</p>
+            <p class="text-xs text-gray-500">${o.items.map(it=>`${it.name}×${it.qty}`).join(', ')}</p>
+          </div>
+          <button data-deliver="${o.id}" class="px-3 py-1 rounded-lg bg-indigo-600 text-white">Đã giao</button>
+        </div>`).join('') || '<p class="text-sm text-gray-500">Chưa có món sẵn sàng.</p>';
+      els.readyList.querySelectorAll('[data-deliver]').forEach(b=>b.addEventListener('click',e=>setStatus(e.target.getAttribute('data-deliver'),'delivered')));
+
+      els.deliveredList.innerHTML = delivered.map(o=>`
+        <div class="border rounded-lg p-3 flex items-center justify-between">
+          <div>
+            <p class="font-medium">Bàn ${o.table}</p>
+            <p class="text-xs text-gray-500">${o.items.map(it=>`${it.name}×${it.qty}`).join(', ')}</p>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700">Chờ thanh toán</span>
+        </div>`).join('') || '<p class="text-sm text-gray-500">—</p>';
+    }
+
+    function renderCashier(){
+      const notPaid = store.orders.filter(o=>o.status!=='paid');
+      const paid = store.orders.filter(o=>o.status==='paid');
+      els.cashierNotPaid.innerHTML = notPaid.map(o=>`
+        <div class="border rounded-lg p-3 flex items-center justify-between">
+          <div>
+            <p class="font-semibold">Bàn ${o.table} · #${o.id.slice(-4)}</p>
+            <p class="text-xs text-gray-500">${o.items.map(it=>`${it.name}×${it.qty}`).join(', ')}</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-bold">${money(calcOrderTotal(o))}</span>
+            <button data-pay="${o.id}" class="px-3 py-1 rounded-lg bg-emerald-600 text-white">Thanh toán</button>
+          </div>
+        </div>`).join('') || '<p class="text-sm text-gray-500">Không có đơn.</p>';
+      els.cashierNotPaid.querySelectorAll('[data-pay]').forEach(b=>b.addEventListener('click',e=>openPay(e.target.getAttribute('data-pay'))));
+
+      const paidCards = paid.slice().reverse().map(o=>`
+        <div class="border rounded-lg p-3">
+          <div class="flex items-center justify-between">
+            <p class="font-semibold">Bàn ${o.table}</p>
+            <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700">#${o.id.slice(-4)}</span>
+          </div>
+          <ul class="mt-2 text-sm list-disc list-inside">
+            ${o.items.map(it=>`<li>${it.name} × ${it.qty} — ${money(it.price*it.qty)}</li>`).join('')}
+          </ul>
+          <div class="pt-2 mt-2 border-t flex items-center justify-between">
+            <span class="font-semibold">Tổng</span>
+            <span class="font-bold">${money(calcOrderTotal(o))}</span>
+          </div>
+        </div>`).join('');
+      els.cashierPaid.innerHTML = paidCards || '<p class="text-sm text-gray-500">—</p>';
+
+      const totalToday = paid.reduce((s,o)=>s+calcOrderTotal(o),0);
+      els.cashierTotalToday.textContent = `Tổng: ${money(totalToday)}`;
+    }
+
+    function renderAdmin(){
+      els.tablesInput.value = store.tables;
+      els.menuTextarea.value = JSON.stringify(store.menu, null, 2);
+    }
+
+    function render(){
+      window.store = store; // keep globals in sync for Firebase module
+      window.render = render;
+      renderRole();
+      if(role==='staff') renderStaff();
+      if(role==='barista') renderBarista();
+      if(role==='server') renderServer();
+      if(role==='cashier') renderCashier();
+      if(role==='admin') renderAdmin();
+      saveStore();
+    }
+
+    // ---------- events ----------
+    els.roleSelect.addEventListener('change', e=>setRole(e.target.value));
+    // Kiosk mode nếu có ?role=
+    if(new URLSearchParams(location.search).get('role')){
+      els.roleSelect.setAttribute('disabled','disabled');
+      els.roleSelect.classList.add('opacity-60','cursor-not-allowed');
+    }
+    els.btnResetData.addEventListener('click', resetData);
+
+    // staff inputs
+    els.tableSelect.addEventListener('change', e=>{ tablePicking = Number(e.target.value); renderCart(); });
+    els.catFilter.addEventListener('change', ()=>renderStaff());
+    els.searchInput.addEventListener('input', ()=>renderStaff());
+    els.btnSubmitOrder.addEventListener('click', submitOrder);
+
+    // barista tabs
+    els.tabByTable.addEventListener('click', ()=>{ baristaTab='by-table'; renderBarista(); });
+    els.tabByItem.addEventListener('click', ()=>{ baristaTab='by-item'; renderBarista(); });
+
+    // modal events
+    [els.btnClosePay, els.btnCancelPay].forEach(b=>b.addEventListener('click', closePay));
+    els.btnConfirmPay.addEventListener('click', ()=>{ if(viewingOrderId) payOrder(viewingOrderId); });
+
+    // admin save
+    els.btnSaveAdmin.addEventListener('click', ()=>{
+      try{
+        const parsed = JSON.parse(els.menuTextarea.value);
+        if(!Array.isArray(parsed)) throw new Error('Menu phải là mảng items');
+        store.menu = parsed; store.tables = Math.max(1, Number(els.tablesInput.value)||20);
+        alert('Đã lưu cấu hình'); render();
+      }catch(e){ alert('Menu không hợp lệ: '+e.message); }
     });
-  };
 
-  // Gỡ highlight khi đổi TAB (để không “sáng” lại khi quay lại)
-  if (window.showTab){
-    const _showTab = window.showTab;
-    window.showTab = function(tabName, e){
-      if (highlightTimer){ clearTimeout(highlightTimer); highlightTimer = null; }
-      clearHighlights(document);
-      return _showTab.call(this, tabName, e);
+    // initial
+    render();
+  </script>
+
+  <!-- === FIREBASE (đã chèn cấu hình của bạn) === -->
+  <script type="module">
+    window.FIREBASE_CONFIG = {
+      apiKey: "AIzaSyC5g01aNIwU6Ysa5zsW2ahBmR_wiAHSc-0",
+      authDomain: "tiem-nuoc-tui-minh.firebaseapp.com",
+      databaseURL: "https://tiem-nuoc-tui-minh-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "tiem-nuoc-tui-minh",
+      appId: "1:599673062211:web:2ac6b038d1b17c6130a5f6"
     };
-  }
 
-  // Gỡ highlight khi đổi STEP trong Framework
-  if (window.showStep){
-    const _showStep = window.showStep;
-    window.showStep = function(stepNum, e){
-      if (highlightTimer){ clearTimeout(highlightTimer); highlightTimer = null; }
-      // Chỉ cần sạch trong khu vực framework để nhanh
-      const fw = document.getElementById('framework-tab');
-      clearHighlights(fw || document);
-      return _showStep.call(this, stepNum, e);
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js';
+    import { getDatabase, ref, onValue, push, set, update } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js';
+    import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js';
+
+    const hasConfig = !!(window.FIREBASE_CONFIG && window.FIREBASE_CONFIG.apiKey);
+
+    const firebaseApi = {
+      app: null, db: null, auth: null, user: null, ordersRef: null, ready: false,
+      async init(){
+        if(!hasConfig){ console.info('[Firebase] No config → dùng localStorage'); return; }
+        try {
+          this.app  = initializeApp(window.FIREBASE_CONFIG);
+          this.db   = getDatabase(this.app);
+          this.auth = getAuth(this.app);
+
+          await signInAnonymously(this.auth);
+          onAuthStateChanged(this.auth, (u)=>{ this.user = u || null; });
+
+          this.ordersRef = ref(this.db, 'orders');
+          this.ready = true;
+          console.info('[Firebase] READY');
+        } catch (err) {
+          console.error('[Firebase] Lỗi khởi tạo:', err);
+          this.ready = false; // fallback local
+        }
+      },
+      subscribeOrders(cb){
+        if(!this.ready) return;
+        onValue(this.ordersRef, (snap)=>{
+          const val = snap.val() || {};
+          const arr = Object.entries(val).map(([id,data])=>({ id, ...data }))
+                       .sort((a,b)=>a.createdAt - b.createdAt);
+          cb(arr);
+        });
+      },
+      async pushOrder(order){
+        if(!this.ready) return false;
+        try {
+          const newRef = push(this.ordersRef);
+          await set(newRef, { ...order, id: newRef.key });
+          return true;
+        } catch (e) { console.error(e); return false; }
+      },
+      async updateStatus(orderId, status, timeline){
+        if(!this.ready) return false;
+        try {
+          await update(ref(this.db, `orders/${orderId}`), { status, timeline });
+          return true;
+        } catch (e) { console.error(e); return false; }
+      }
     };
-  }
-})();
-</script>
 
+    window.firebaseApi = firebaseApi;
+
+    (async () => {
+      await firebaseApi.init();
+      if(firebaseApi.ready){
+        firebaseApi.subscribeOrders((ordersFromCloud)=>{
+          try{
+            window.store.orders = ordersFromCloud;
+            if(typeof window.render === 'function') window.render();
+          }catch(e){ console.error(e); }
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

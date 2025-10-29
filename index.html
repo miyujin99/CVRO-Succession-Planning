@@ -1565,13 +1565,98 @@ if (btnEmail){
       HoDs use the <strong>Pre-Nomination Checklist</strong> and <strong>Candidate List</strong> to finalize the nomination.
       This step acts as a <em>pre-screening stage</em> to identify employees with development potential before the self-application phase.
     </p>
-	<div class="mt-4 flex flex-wrap gap-2">
-	  <a href="https://masterashley-my.sharepoint.com/:x:/g/personal/anguyen_ashleyfurniture_com/EdCqzddv4ZtCvxWBespJGVoBvoNMsg1iZwGRmiuDK-vUMA?e=nhqZJ0"
-	     target="_blank"
-	     class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700">
-	    Successor Pre-Nomination Checklist & Candidate List
-	  </a>
-	</div>
+	<!-- === ROUND 1 – Successor Pre-Nomination (centered button text) === -->
+<div class="bg-orange-50 border border-orange-200 rounded-lg px-4 py-3 mt-4">
+  <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+    <!-- Left column -->
+    <div class="flex-1">
+      <div class="font-semibold text-gray-900 flex items-center gap-2 flex-wrap text-sm">
+        <span class="text-base">📋</span>
+        <span>Successor Pre-Nomination Checklist &amp; Candidate List</span>
+        <span class="text-xs px-2 py-0.5 rounded-full border border-orange-200 bg-white text-ashley-orange whitespace-nowrap">
+          🔒 Department-only
+        </span>
+        <span id="r1-badge-open"
+              class="text-xs px-2 py-0.5 rounded-full border border-orange-200 bg-white text-ashley-orange whitespace-nowrap">
+          ⏳ Opens soon
+        </span>
+      </div>
+
+      <p class="text-xs text-gray-600 mt-1 leading-snug md:max-w-[80%]">
+        Includes one example file for HoDs to preview and a SharePoint folder containing all Green-Zone candidate lists. 
+        The folder link will unlock after the performance evaluation is finalized; in the meantime, HoDs may review the example file as needed.
+      </p>
+    </div>
+
+    <!-- Right column (stacked buttons, centered text) -->
+    <div class="w-full md:w-56 shrink-0">
+      <div class="flex flex-col gap-1.5">
+        <!-- Always-open example (CSV id: rround2_ms_form) -->
+        <a id="r1-example-btn"
+           data-link-id="rround2_ms_form"
+           href="#"
+           target="_blank"
+           class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-sm
+                  bg-green-600 text-white hover:bg-green-700 transition whitespace-nowrap w-full text-center">
+          📄 View Example File
+        </a>
+
+        <!-- Timed-open folder (CSV id: round1_department) -->
+        <a id="r1-folder-btn"
+           data-link-id="round1_department"
+           href="#"
+           class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-sm
+                  bg-gray-200 text-gray-500 cursor-not-allowed select-none transition whitespace-nowrap w-full text-center"
+           title="This link will be activated after the unlock time">
+          📁 Open Folder
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Unlock script (same logic as before) -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  (async () => {
+    const btnFolder = document.getElementById("r1-folder-btn");
+    const btnEx     = document.getElementById("r1-example-btn");
+    const badgeOpen = document.getElementById("r1-badge-open");
+    if (!btnFolder || !btnEx || !badgeOpen) return;
+
+    await (window.linksReady || Promise.resolve());
+    const folderHref = btnFolder.getAttribute("href");
+    const exHref     = btnEx.getAttribute("href");
+
+    if (!exHref || exHref === "#") btnEx.addEventListener("click", e => e.preventDefault());
+    else btnEx.setAttribute("target", "_blank");
+
+    const unlockDate   = new Date("2025-10-20T13:00:00+07:00");
+    const forceByHash  = window.location.hash.includes("unlockR1");
+    const forceByLocal = localStorage.getItem("r1_force_open") === "1";
+    const shouldOpen   = (new Date() >= unlockDate) || forceByHash || forceByLocal;
+
+    btnFolder.addEventListener("click", e => {
+      if (!shouldOpen || !folderHref || folderHref === "#") e.preventDefault();
+    });
+
+    if (shouldOpen && folderHref && folderHref !== "#") {
+      btnFolder.setAttribute("target", "_blank");
+      btnFolder.classList.remove("bg-gray-200","text-gray-500","cursor-not-allowed","select-none");
+      btnFolder.classList.add("bg-ashley-orange","text-white","hover:bg-ashley-orange-dark");
+      btnFolder.removeAttribute("title");
+
+      badgeOpen.textContent = "✅ Now Open";
+      badgeOpen.classList.remove("bg-white","border-orange-200","text-ashley-orange");
+      badgeOpen.classList.add("bg-green-50","border-green-200","text-green-700");
+    } else {
+      btnFolder.setAttribute("href", "#");
+      badgeOpen.textContent = "⏳ Opens soon";
+    }
+  })();
+});
+</script>
+
 </div>
 </details>
 

@@ -1186,13 +1186,14 @@ if (btnEmail){
   </div>
 
   <!-- Cột phải: Nút -->
-  <a
-    href="https://masterashley.sharepoint.com/:f:/r/sites/AsiaTalentManagementCenter-ATMCInternalDocumentManagement/Shared%20Documents/ATMC%20Internal%20Document%20Management/02.%20Talent%20Development%20project%20blueprint%20(dev%20stage)/13.%20Succession%20Planning/Shared%20Folder/Step%201/Step%201A.%20Identify%20Critical%20Positions?csf=1&web=1&e=YHZ4og"
-    target="_blank"
-    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm bg-ashley-orange text-white hover:bg-ashley-orange-dark transition whitespace-nowrap"
-  >
-    📁 Open Folder
-  </a>
+	<a
+	  data-link-id="stage1a_final_forms_folder"
+	  href="#"
+	  target="_blank"
+	  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm bg-ashley-orange text-white hover:bg-ashley-orange-dark transition whitespace-nowrap"
+	>
+	  📁 Open Folder
+	</a>
 </div>
 </div>
 
@@ -2801,6 +2802,58 @@ let facilitatorMode = false;
   }
 })();
 </script>
+<script>
+  // Đường dẫn CSV (chỉ chứa link)
+  const CSV_URL = "./assets/links.csv";
 
+  // Parser CSV gọn (không cần thư viện)
+  function parseCSV(text) {
+    const lines = text.replace(/^\uFEFF/, "").trim().split(/\r?\n/);
+    const headers = lines[0].split(",").map(s => s.trim());
+    return lines.slice(1).filter(Boolean).map(line => {
+      // tách đơn giản; nếu có nhiều dấu phẩy trong dấu ngoặc kép, hãy dùng parser nâng cao
+      const cols = [];
+      let cur = "", q = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') {
+          if (q && line[i+1] === '"') { cur += '"'; i++; } else { q = !q; }
+        } else if (ch === ',' && !q) { cols.push(cur); cur = ""; }
+        else cur += ch;
+      }
+      cols.push(cur);
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (cols[i] ?? "").replace(/^"|"$/g,"").trim());
+      return obj;
+    });
+  }
+
+  async function wireLinksFromCSV() {
+    try {
+      const res = await fetch(`${CSV_URL}?v=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`CSV fetch failed ${res.status}`);
+      const text = await res.text();
+      const rows = parseCSV(text);
+
+      // Tạo map theo id trong CSV
+      const mapById = Object.fromEntries(rows.map(r => [r.id, r]));
+
+      // Tìm tất cả phần tử có data-link-id
+      document.querySelectorAll("[data-link-id]").forEach(el => {
+        const key = el.getAttribute("data-link-id");
+        const item = mapById[key];
+        if (!item || !item.url) return;
+        el.setAttribute("href", item.url);
+        // Không đụng target/style/text — bạn đã kiểm soát trong HTML
+      });
+
+    } catch (err) {
+      console.error("Wire CSV links error:", err);
+      // (tuỳ chọn) hiển thị thông báo lỗi ở đâu đó nếu bạn muốn
+    }
+  }
+
+  wireLinksFromCSV();
+</script>
 </body>
 </html>

@@ -1381,52 +1381,73 @@ if (btnEmail){
 <div class="mt-6 bg-orange-50 border border-orange-200 rounded-xl px-5 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 
   <!-- Cột trái: Tiêu đề + badge + mô tả -->
-  <div class="flex-1">
-    <div class="font-semibold text-gray-900 flex items-center gap-2 flex-wrap">
-      <span>👤 Success Profile – Department Templates (2025)</span>
-      <span id="sp-badge"
-        class="text-xs px-2 py-0.5 rounded-full border border-orange-200 bg-white text-ashley-orange whitespace-nowrap">
-        ⏳ Opens soon
-      </span>
-    </div>
-    <div class="text-xs text-gray-600 mt-1">
-      Success Profile templates for prioritized roles in Part A — to be reviewed by HoDs as guided in the Success Profile tab.
-    </div>
-  </div>
+	<div class="flex-1">
+	  <div class="font-semibold text-gray-900 flex items-center gap-2 flex-wrap">
+	    <span>👤 Success Profile – Department Templates (2025)</span>
+	    <span id="sp-badge"
+	      class="text-xs px-2 py-0.5 rounded-full border border-orange-200 bg-white text-ashley-orange whitespace-nowrap">
+	      ⏳ Opens soon
+	    </span>
+	  </div>
+	  <div class="text-xs text-gray-600 mt-1">
+	    Success Profile templates for prioritized roles in Part A — to be reviewed by HoDs as guided in the Success Profile tab.
+	  </div>
+	</div>
 
-  <!-- Cột phải: Nút -->
-  <a id="sp-btn"
-     href="#"
-     class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm bg-gray-200 text-gray-500 cursor-not-allowed select-none transition whitespace-nowrap"
-     title="This link will be activated after the unlock time">
-    📁 Open Folder
-  </a>
-</div>
+  <!-- Cột phải: Nút (đặt data-link-id theo CSV) -->
+	<a id="sp-btn"
+	   data-link-id="stage1b_success_profile_templates_folder"
+	   href="#"
+	   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm bg-gray-200 text-gray-500 cursor-not-allowed select-none transition whitespace-nowrap"
+	   title="This link will be activated after the unlock time">
+	  📁 Open Folder
+	</a>
+	</div>
 
-  <!-- Auto-unlock script -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const btn = document.getElementById("sp-btn");
-      const badge = document.getElementById("sp-badge");
-      if (!btn || !badge) return;
-
-      const unlockDate = new Date("2025-11-20T13:00:00+07:00");
-      const forceByHash  = window.location.hash.includes("unlockSP");
-      const forceByLocal = localStorage.getItem("sp_force_open") === "1";
-
-      if (new Date() >= unlockDate || forceByHash || forceByLocal) {
-        btn.href = "https://masterashley.sharepoint.com/:f:/r/sites/AsiaTalentManagementCenter-ATMCInternalDocumentManagement/Shared%20Documents/ATMC%20Internal%20Document%20Management/02.%20Talent%20Development%20project%20blueprint%20(dev%20stage)/13.%20Succession%20Planning/Shared%20Folder/Step%201/Step%201B.%20Define%20Success%20Profile%20for%20Selected%20Positions?csf=1&web=1&e=H6qdOZ";
-        btn.setAttribute("target", "_blank");
-        btn.classList.remove("bg-gray-200","text-gray-500","cursor-not-allowed","select-none");
-        btn.classList.add("bg-ashley-orange","text-white","hover:bg-ashley-orange-dark","transition");
-        btn.removeAttribute("title");
-
-        badge.textContent = "✅ Now Open";
-        badge.classList.remove("bg-orange-50","border-orange-200","text-ashley-orange");
-        badge.classList.add("bg-green-50","border-green-200","text-green-700");
-      }
-    });
-  </script>
+	<!-- Auto-unlock script -->
+	<script>
+	document.addEventListener("DOMContentLoaded", () => {
+	  (async () => {
+	    const btn   = document.getElementById("sp-btn");
+	    const badge = document.getElementById("sp-badge");
+	    if (!btn || !badge) return;
+	
+	    // ⏳ Chờ cho tới khi CSV được nạp và các link đã gắn xong
+	    await window.linksReady;
+	
+	    // Lấy link từ CSV dựa vào data-link-id
+	    const csvHref = btn.getAttribute("href");
+	
+	    // Cấu hình unlock
+	    const unlockDate   = new Date("2025-10-20T13:00:00+07:00");
+	    const forceByHash  = window.location.hash.includes("unlockSP");
+	    const forceByLocal = localStorage.getItem("sp_force_open") === "1";
+	    const shouldOpen   = (new Date() >= unlockDate) || forceByHash || forceByLocal;
+	
+	    // Chặn click khi còn khóa
+	    btn.addEventListener("click", e => {
+	      if (!shouldOpen || !csvHref || csvHref === "#") e.preventDefault();
+	    });
+	
+	    if (shouldOpen && csvHref && csvHref !== "#") {
+	      // ✅ Bật nút bằng link lấy từ CSV
+	      btn.setAttribute("target", "_blank");
+	      btn.classList.remove("bg-gray-200","text-gray-500","cursor-not-allowed","select-none");
+	      btn.classList.add("bg-ashley-orange","text-white","hover:bg-ashley-orange-dark","transition");
+	      btn.removeAttribute("title");
+	
+	      badge.textContent = "✅ Now Open";
+	      badge.classList.remove("bg-orange-50","border-orange-200","text-ashley-orange");
+	      badge.classList.add("bg-green-50","border-green-200","text-green-700");
+	    } else {
+	      // 🔒 Giữ trạng thái khóa
+	      btn.setAttribute("href", "#");
+	      btn.setAttribute("title", "This link will be activated after the unlock time");
+	      badge.textContent = "⏳ Opens soon";
+	    }
+	  })();
+	});
+	</script>
 </div>
 
 <!-- ===== Watermark CSS (KEEP) ===== -->
@@ -2853,7 +2874,7 @@ let facilitatorMode = false;
     }
   }
 
-  wireLinksFromCSV();
+  window.linksReady = wireLinksFromCSV();
 </script>
 </body>
 </html>

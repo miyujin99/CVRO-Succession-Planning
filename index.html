@@ -1939,15 +1939,13 @@ function clearCards(){
 
   <!-- 🎥 How-to Video Wrapper (button + badge outside) -->
   <div id="howtoWrap" class="flex items-center gap-2">
-	<button id="btnHowToVideo"
-	  data-link-id="round3_video"
+    <a id="btnHowToVideo"
+      data-link-id="round3_video"
 	  href="#"
-	  target="_blank"
-	  class="inline-flex items-center gap-2 bg-white text-[#F68C2C] border border-[#F68C2C] hover:bg-orange-50 px-4 py-2 rounded-lg text-sm font-medium transition"
-	  disabled
-	  aria-disabled="true">
-	  🎥 How-to Video
-	</button>
+      target="_blank"
+      class="inline-flex items-center gap-2 bg-white text-[#F68C2C] border border-[#F68C2C] hover:bg-orange-50 px-4 py-2 rounded-lg text-sm font-medium transition pointer-events-none opacity-60">
+      🎥 How-to Video
+    </a>
 
     <!-- External badge -->
     <span id="videoBadge"
@@ -2093,100 +2091,32 @@ function clearCards(){
 
 <!-- ============ Script ============ -->
 <script>
-  /* ===== Modal logic ===== */
-  const modal = document.getElementById('exampleModal');
-  const openBtn = document.getElementById('btnOpenExample');
-  const closeBtns = [document.getElementById('btnCloseExample'), document.getElementById('btnCloseExample2')];
-  const backdrop = document.getElementById('exampleBackdrop');
-
-  openBtn.addEventListener('click', () => {
-    modal.classList.remove('hidden');
-    document.body.classList.add('overflow-hidden');
-  });
-  const closeModal = () => {
-    modal.classList.add('hidden');
-    document.body.classList.remove('overflow-hidden');
-  };
-  closeBtns.forEach(btn => btn.addEventListener('click', closeModal));
-  backdrop.addEventListener('click', closeModal);
-  window.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
-  });
-
-  /* ===== How-to Video (manual open only, using URL from links.csv) ===== */
   const unlockAt = new Date('2025-01-21T00:00:00+07:00').getTime(); // thời gian mở nút
   const videoBtn = document.getElementById('btnHowToVideo');
   const videoBadge = document.getElementById('videoBadge');
 
-  function openVideoWindow() {
-    // lấy URL từ links.csv (đã được gán vào thẻ <a id="round3_video">)
-    const anchor = document.getElementById('round3_video');
-    const videoUrl = anchor ? (anchor.getAttribute('href') || anchor.getAttribute('data-video-url')) : '';
-
-    const html = `
-      <!doctype html>
-      <html>
-      <head>
-        <meta charset="utf-8" />
-        <title>Round 3 – How-to Video</title>
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <style>
-          body{margin:0;background:#111;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-          header{padding:12px 16px;background:#F68C2C;color:#fff;font-weight:600}
-          .wrap{padding:12px}
-          iframe{width:100%;height:70vh;border:0;border-radius:12px}
-          .note{font-size:12px;opacity:.8;margin-top:8px}
-        </style>
-      </head>
-      <body>
-        <header>🎥 Round 3 – How-to: Fill the Matching File</header>
-        <div class="wrap">
-          <div style="max-width:1280px;margin:auto;">
-            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-              <iframe src="${videoUrl}" allowfullscreen
-                title="AI-First Apply Sample Walkthrough.mp4"
-                style="border:none;position:absolute;top:0;left:0;width:100%;height:100%;">
-              </iframe>
-            </div>
-          </div>
-          <div class="note">If the video doesn’t load, please check your SharePoint permissions.</div>
-        </div>
-      </body>
-      </html>`;
-    
-    const w = window.open('', 'round3_video_window', 'width=980,height=620,noopener');
-    if (w) { w.document.write(html); w.document.close(); }
-  }
-
   function updateVideoState() {
     const now = Date.now();
     if (now >= unlockAt) {
-      // Enable + restyle button, hide badge
-      videoBtn.disabled = false;
-      videoBtn.removeAttribute('aria-disabled');
-      videoBtn.classList.remove('bg-white','text-[#F68C2C]','border','border-[#F68C2C]','hover:bg-orange-50');
-      videoBtn.classList.add('bg-[#F68C2C]','hover:bg-[#E67A1A]','text-white');
+      // Enable: đổi màu cam, bỏ pointer-events-none & opacity
+      videoBtn.classList.remove('bg-white','text-[#F68C2C]','border','border-[#F68C2C]','hover:bg-orange-50','pointer-events-none','opacity-60');
+      videoBtn.classList.add('bg-[#F68C2C]','hover:bg-[#E67A1A]','text-white','shadow-sm');
       if (videoBadge) videoBadge.style.display = 'none';
-      if (!videoBtn.dataset.bound) {
-        videoBtn.addEventListener('click', openVideoWindow);
-        videoBtn.dataset.bound = '1';
-      }
     } else {
-      // Locked state
+      // Locked: trắng + badge
       if (videoBadge) {
         videoBadge.textContent = '⏳ Opens soon';
         videoBadge.style.display = 'inline-flex';
       }
-      videoBtn.disabled = true;
-      videoBtn.setAttribute('aria-disabled', 'true');
+      videoBtn.classList.add('pointer-events-none','opacity-60');
     }
   }
 
-  // chạy sau khi links.csv đã load
-  loadLinks().then(() => {
-    updateVideoState();
-    setInterval(updateVideoState, 60000);
-  });
+ document.addEventListener('DOMContentLoaded', () => {
+  updateVideoState();
+  setInterval(updateVideoState, 60000);
+});
+
 </script>
       </div>
   </details>

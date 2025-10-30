@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+    /* Luôn giữ thanh cuộn dọc trên toàn trang */
+    html {
+      overflow-y: scroll;          /* ép hiển thị thanh cuộn */
+      scrollbar-gutter: stable;    /* giữ bố cục không bị dịch khi hiện thanh cuộn */
+    }
+
+    /* Đảm bảo body luôn chiếm đủ chiều cao */
+    body {
+      min-height: 100vh;
+    }
+  </style>
   <title>CVRO Succession Planning - Workshop Playbook</title>
   <!-- PNG fallback -->
 <link rel="icon" type="image/png" href="./assets/Favicon-32.png" sizes="32x32" />
@@ -1742,7 +1754,7 @@ const examples = {
   },
   qa: {
     name:'Nguyen Hoang Long',
-    dept:'Quality Assurance (Asia)',
+    dept:'Quality Assurance',
     role:'Quality Assurance CI',
     pref1:'Vendor Champion',
     pref2:'—',
@@ -1897,21 +1909,7 @@ function clearCards(){
     <div class="px-5 pb-4 pt-1 text-sm text-gray-800">
       <p class="mb-3">From successor applications, HoDs receive <strong>segmented lists</strong> for review:</p>
 
-		 <!-- Equal-width cards -->
-		<div class="grid md:grid-cols-3 gap-4 mb-4">
-		  <div class="bg-ashley-orange text-white p-4 rounded-xl text-center font-semibold shadow-sm">
-		    Internal Applicants<br>
-		    <span class="text-sm opacity-90">(same department)</span>
-		  </div>
-		  <div class="bg-amber-600 text-white p-4 rounded-xl text-center font-semibold shadow-sm">
-		    Incoming Applicants<br>
-		    <span class="text-sm opacity-90">(from other departments)</span>
-		  </div>
-		  <div class="bg-orange-700 text-white p-4 rounded-xl text-center font-semibold shadow-sm">
-		    Outgoing Applicants<br>
-		    <span class="text-sm opacity-90">(to other departments)</span>
-		  </div>
-		</div>
+		 Internal
 		
 		<!-- Review process list -->
 		<ul class="list-disc pl-5 text-gray-800 space-y-1 mb-4">
@@ -1930,6 +1928,264 @@ function clearCards(){
 		    <li>HoDs should view cross-applications as <strong>growth potential</strong> — not dissatisfaction or disengagement.</li>
 		  </ul>
 		</div>
+<!-- ============ Example + How-to Video Section ============ -->
+<div class="mt-4 flex items-center gap-3 flex-wrap">
+
+  <!-- 🧩 Example Button -->
+  <button id="btnOpenExample"
+    class="inline-flex items-center gap-2 bg-[#F68C2C] hover:bg-[#E67A1A] text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition">
+    🧩 View Example Scenario
+  </button>
+
+  <!-- 🎥 How-to Video Wrapper (button + badge outside) -->
+  <div id="howtoWrap" class="flex items-center gap-2">
+    <button id="btnHowToVideo"
+      class="inline-flex items-center gap-2 bg-white text-[#F68C2C] border border-[#F68C2C] hover:bg-orange-50 px-4 py-2 rounded-lg text-sm font-medium transition"
+      disabled
+      aria-disabled="true">
+      🎥 How-to Video
+    </button>
+
+    <!-- External badge -->
+    <span id="videoBadge"
+      class="text-xs font-medium text-[#C25A00] bg-[#FFF3E6] border border-[#F68C2C]/30 px-3 py-1 rounded-full inline-flex items-center gap-1">
+      ⏳ Opens soon
+    </span>
+  </div>
+
+  <!-- Hidden SharePoint video link -->
+  <a id="round3_video" data-video-url="https://your-sharepoint-video-link" class="hidden">Video</a>
+</div>
+
+<!-- ============ Example Scenario (Modal) ============ -->
+<div id="exampleModal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+  <div id="exampleBackdrop" class="absolute inset-0 bg-black/40"></div>
+
+  <div class="relative mx-auto max-w-2xl mt-20 px-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-orange-200 overflow-hidden">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 py-3 bg-orange-50 border-b border-orange-100">
+        <h3 class="text-base font-semibold text-orange-700">
+          🧩 Example Scenario – HoD Review & Position Matching
+        </h3>
+        <button id="btnCloseExample"
+          class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-orange-100 text-orange-700"
+          aria-label="Close">✖</button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6 text-sm text-gray-800 space-y-5 leading-relaxed">
+
+        <p>
+          In the <strong>Engineering Department</strong>, the HoD reviews candidates for the successor role
+          <em>Senior Process Engineer</em> using three lists — internal, incoming, and outgoing applicants.
+        </p>
+
+        <!-- Pills (3 candidate groups) -->
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full border bg-orange-50 text-orange-700">Internal</span>
+          <span class="px-2.5 py-1 rounded-full border bg-orange-50 text-orange-700">Incoming</span>
+          <span class="px-2.5 py-1 rounded-full border bg-orange-50 text-orange-700">Outgoing</span>
+        </div>
+		<p> After evaluating all profiles against the <strong>Success Profile</strong>,
+		a shortlist of three candidates is created. The HoD endorses <strong>two candidates</strong>
+		for this <strong>two-year cycle</strong> based on the department’s capacity for
+		structured development.
+		</p>
+
+        <!-- Mini matching snapshot -->
+        <div class="rounded-xl border border-gray-200">
+          <div class="px-4 py-2.5 border-b bg-white rounded-t-xl font-medium">
+            Senior Process Engineer — Quick Snapshot
+          </div>
+
+          <div class="p-4">
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm bg-white border border-gray-200 rounded-lg">
+                <thead class="bg-gray-50 text-gray-600">
+                  <tr>
+                    <th class="px-3 py-2 text-left">Candidate</th>
+                    <th class="px-3 py-2 text-left">Segment</th>
+                    <th class="px-3 py-2 text-left">Fit vs. Success Profile</th>
+                    <th class="px-3 py-2 text-left">Decision</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y">
+                  <tr>
+                    <td class="px-3 py-2">Nguyen A</td>
+                    <td class="px-3 py-2">Internal</td>
+                    <td class="px-3 py-2">High</td>
+                    <td class="px-3 py-2">
+                      <span class="inline-flex items-center gap-1 text-green-600 font-medium">
+                        <span>✅</span> Endorsed
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2">Tran B</td>
+                    <td class="px-3 py-2">Incoming</td>
+                    <td class="px-3 py-2">High</td>
+                    <td class="px-3 py-2">
+                      <span class="inline-flex items-center gap-1 text-green-600 font-medium">
+                        <span>✅</span> Endorsed
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2">Le C</td>
+                    <td class="px-3 py-2">Outgoing</td>
+                    <td class="px-3 py-2">Moderate</td>
+                    <td class="px-3 py-2">
+                      <span class="inline-flex items-center gap-1 text-gray-600 font-medium">
+                        <span>⏳</span> Not prioritized (this cycle)
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Summary chips -->
+            <div class="mt-3 flex flex-wrap items-center gap-2">
+              <span class="text-xs px-2 py-1 rounded bg-green-50 border border-green-200 text-green-700">
+                Capacity OK (2/2)
+              </span>
+              <span class="text-xs px-2 py-1 rounded bg-blue-50 border border-blue-200 text-blue-700">
+                AHR: Consolidate for Gap Assessment
+              </span>
+              <span class="text-xs px-2 py-1 rounded bg-gray-50 border text-gray-700">
+                Non-selected: Thank-you note
+              </span>
+            </div>
+
+            <!-- Note -->
+            <div class="mt-3 text-xs text-gray-600">
+              <strong>Note:</strong> Two candidates are endorsed, while one is not prioritized for this cycle.
+              The final decision is based on <em>potential, readiness, and the department’s development capacity</em>
+              to provide meaningful follow-up and coaching over the next two years.
+            </div>
+          </div>
+        </div>
+
+        <!-- Practical guidance -->
+        <p class="text-gray-700">
+          In actual practice, HoDs will complete this process in the Excel file
+          <strong>“HoD Role Matching Template”</strong>. A <em>How-to Video</em> will be available at this stage.
+        </p>
+
+        <p>
+          AHR then consolidates the confirmed names to prepare for the next step —
+          <strong>Gap Assessment</strong>. Candidates who are not selected in this round will receive a
+          thank-you message recognizing their effort and encouraging continued career growth within Ashley.
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-3 bg-gray-50 border-t flex justify-end">
+        <button id="btnCloseExample2"
+          class="inline-flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-1.5 rounded-lg">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Script ============ -->
+<script>
+  /* ===== Modal logic ===== */
+  const modal = document.getElementById('exampleModal');
+  const openBtn = document.getElementById('btnOpenExample');
+  const closeBtns = [document.getElementById('btnCloseExample'), document.getElementById('btnCloseExample2')];
+  const backdrop = document.getElementById('exampleBackdrop');
+
+  openBtn.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  });
+  const closeModal = () => {
+    modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  };
+  closeBtns.forEach(btn => btn.addEventListener('click', closeModal));
+  backdrop.addEventListener('click', closeModal);
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+  });
+
+  /* ===== How-to Video (manual open only, no auto-open) ===== */
+  const unlockAt = new Date('2025-01-21T00:00:00+07:00').getTime();
+  const videoBtn = document.getElementById('btnHowToVideo');
+  const videoBadge = document.getElementById('videoBadge');
+
+  function openVideoWindow() {
+    const html = `
+      <!doctype html>
+      <html>
+      <head>
+        <meta charset="utf-8" />
+        <title>Round 3 – How-to Video</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <style>
+          body{margin:0;background:#111;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+          header{padding:12px 16px;background:#F68C2C;color:#fff;font-weight:600}
+          .wrap{padding:12px}
+          iframe{width:100%;height:70vh;border:0;border-radius:12px}
+          .note{font-size:12px;opacity:.8;margin-top:8px}
+        </style>
+      </head>
+      <body>
+        <header>🎥 Round 3 – How-to: Fill the Matching File</header>
+        <div class="wrap">
+          <div style="max-width:1280px;margin:auto;">
+            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+              <iframe 
+  src="https://masterashley-my.sharepoint.com/personal/anguyen_ashleyfurniture_com/_layouts/15/embed.aspx?UniqueId=c0cc543c-2454-437d-8dc4-71fd914bf4ae&embed=%7B%22ust%22%3Afalse%7D" 
+  width="853" height="480" frameborder="0" scrolling="no" allowfullscreen 
+  title="AI-First Apply Sample Walkthrough.mp4"
+  style="border:none; position:absolute; top:0; left:0; width:100%; height:100%;">
+</iframe>
+                allowfullscreen title="AI-First Apply Sample Walkthrough.mp4"
+                style="border:none;position:absolute;top:0;left:0;width:100%;height:100%;">
+              </iframe>
+            </div>
+          </div>
+          <div class="note">If the video doesn’t load, please check your SharePoint permissions.</div>
+        </div>
+      </body>
+      </html>`;
+    const w = window.open('', 'round3_video_window', 'width=980,height=620,noopener');
+    if (w) { w.document.write(html); w.document.close(); }
+  }
+
+  function updateVideoState() {
+    const now = Date.now();
+    if (now >= unlockAt) {
+      // Enable + restyle button, hide badge
+      videoBtn.disabled = false;
+      videoBtn.removeAttribute('aria-disabled');
+      videoBtn.classList.remove('bg-white','text-[#F68C2C]','border','border-[#F68C2C]','hover:bg-orange-50');
+      videoBtn.classList.add('bg-[#F68C2C]','hover:bg-[#E67A1A]','text-white');
+      if (videoBadge) videoBadge.style.display = 'none';
+      if (!videoBtn.dataset.bound) {
+        videoBtn.addEventListener('click', openVideoWindow);
+        videoBtn.dataset.bound = '1';
+      }
+    } else {
+      // Locked state
+      if (videoBadge) {
+        videoBadge.textContent = '⏳ Opens soon';
+        videoBadge.style.display = 'inline-flex';
+      }
+      videoBtn.disabled = true;
+      videoBtn.setAttribute('aria-disabled', 'true');
+    }
+  }
+
+  // Run immediately + refresh every minute
+  updateVideoState();
+  setInterval(updateVideoState, 60000);
+</script>
       </div>
   </details>
 

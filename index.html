@@ -1939,12 +1939,15 @@ function clearCards(){
 
   <!-- 🎥 How-to Video Wrapper (button + badge outside) -->
   <div id="howtoWrap" class="flex items-center gap-2">
-    <button id="btnHowToVideo"
-      class="inline-flex items-center gap-2 bg-white text-[#F68C2C] border border-[#F68C2C] hover:bg-orange-50 px-4 py-2 rounded-lg text-sm font-medium transition"
-      disabled
-      aria-disabled="true">
-      🎥 How-to Video
-    </button>
+	<button id="btnHowToVideo"
+	  data-link-id="round3_video"
+	  href="#"
+	  target="_blank"
+	  class="inline-flex items-center gap-2 bg-white text-[#F68C2C] border border-[#F68C2C] hover:bg-orange-50 px-4 py-2 rounded-lg text-sm font-medium transition"
+	  disabled
+	  aria-disabled="true">
+	  🎥 How-to Video
+	</button>
 
     <!-- External badge -->
     <span id="videoBadge"
@@ -1952,9 +1955,6 @@ function clearCards(){
       ⏳ Opens soon
     </span>
   </div>
-
-  <!-- Hidden SharePoint video link -->
-  <a id="round3_video" data-video-url="https://your-sharepoint-video-link" class="hidden">Video</a>
 </div>
 
 <!-- ============ Example Scenario (Modal) ============ -->
@@ -2113,12 +2113,16 @@ function clearCards(){
     if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
   });
 
-  /* ===== How-to Video (manual open only, no auto-open) ===== */
-  const unlockAt = new Date('2025-01-21T00:00:00+07:00').getTime();
+  /* ===== How-to Video (manual open only, using URL from links.csv) ===== */
+  const unlockAt = new Date('2026-01-21T00:00:00+07:00').getTime(); // thời gian mở nút
   const videoBtn = document.getElementById('btnHowToVideo');
   const videoBadge = document.getElementById('videoBadge');
 
   function openVideoWindow() {
+    // lấy URL từ links.csv (đã được gán vào thẻ <a id="round3_video">)
+    const anchor = document.getElementById('round3_video');
+    const videoUrl = anchor ? (anchor.getAttribute('href') || anchor.getAttribute('data-video-url')) : '';
+
     const html = `
       <!doctype html>
       <html>
@@ -2139,13 +2143,8 @@ function clearCards(){
         <div class="wrap">
           <div style="max-width:1280px;margin:auto;">
             <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-              <iframe 
-  src="https://masterashley-my.sharepoint.com/personal/anguyen_ashleyfurniture_com/_layouts/15/embed.aspx?UniqueId=c0cc543c-2454-437d-8dc4-71fd914bf4ae&embed=%7B%22ust%22%3Afalse%7D" 
-  width="853" height="480" frameborder="0" scrolling="no" allowfullscreen 
-  title="AI-First Apply Sample Walkthrough.mp4"
-  style="border:none; position:absolute; top:0; left:0; width:100%; height:100%;">
-</iframe>
-                allowfullscreen title="AI-First Apply Sample Walkthrough.mp4"
+              <iframe src="${videoUrl}" allowfullscreen
+                title="AI-First Apply Sample Walkthrough.mp4"
                 style="border:none;position:absolute;top:0;left:0;width:100%;height:100%;">
               </iframe>
             </div>
@@ -2154,6 +2153,7 @@ function clearCards(){
         </div>
       </body>
       </html>`;
+    
     const w = window.open('', 'round3_video_window', 'width=980,height=620,noopener');
     if (w) { w.document.write(html); w.document.close(); }
   }
@@ -2182,9 +2182,11 @@ function clearCards(){
     }
   }
 
-  // Run immediately + refresh every minute
-  updateVideoState();
-  setInterval(updateVideoState, 60000);
+  // chạy sau khi links.csv đã load
+  loadLinks().then(() => {
+    updateVideoState();
+    setInterval(updateVideoState, 60000);
+  });
 </script>
       </div>
   </details>

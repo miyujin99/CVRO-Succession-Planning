@@ -212,11 +212,11 @@
     </details>
 
 <!-- STAGE 1 summary line -->
-<div class="bg-white-50 border-l-4 border-red-400 rounded-r-lg p-4 text-sm text-gray-800">
+<div class="border-2 border-ashley-orange rounded-2xl p-4 bg-white text-sm text-gray-800 shadow-sm">
   <span class="font-bold text-ashley-orange">Part A clarifies</span>
-  <span class="font-bold">which positions should be prioritized for succession</span>;
-  <span class="font-bold text-blue-700">Part B defines</span>
-  <span class="font-bold">what successors are expected to grow toward</span>.
+  <span class="font-bold"> which positions should be prioritized for succession</span>;
+  <span class="font-bold text-blue-700"> Part B defines</span>
+  <span class="font-bold"> what successors are expected to grow toward.</span>
 </div>
 </div>
 <!-- Scoped styles for chevron rotation (no impact to other tabs) -->
@@ -2166,54 +2166,443 @@ function clearCards(){
       </div>
   </details>
 
-  <!-- stage 2 SUMMARY LINE -->
-  <div class="bg-white border-l-4 border-gray-400 rounded-r-lg p-4 text-sm text-gray-800">
-    <span class="font-bold text-green-700">Round 1</span> shortlists nominees based on potential, 
-    <span class="font-bold text-blue-700">Round 2</span> empowers employees to apply, and 
-    <span class="font-bold text-ashley-orange">Round 3</span> confirms the final endorsed list for Stage 3 – Gap Assessment.
-  </div>
+	<!-- STAGE 2 summary line -->
+	<div class="border-2 border-ashley-orange rounded-2xl p-4 bg-white text-sm text-gray-800 shadow-sm">
+	  <span class="font-bold text-green-700">Round 1</span>
+	  <span class="font-bold"> shortlists nominees based on potential, </span>
+	  <span class="font-bold text-blue-700">Round 2</span>
+	  <span class="font-bold"> empowers employees to apply, and </span>
+	  <span class="font-bold text-ashley-orange">Round 3</span>
+	  <span class="font-bold"> confirms the final endorsed list for Stage 3 – Gap Assessment.</span>
+	</div>
 </div>
 </div>
-        <!-- STEP 3 CONTENT -->
-        <div id="step-3" class="step-content hidden">
-          <div class="bg-white rounded-xl border p-6 mb-6">
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">STAGE 3: Gap Assessment</h3>
-            <p class="text-gray-600 mb-6">Module song song · Tự đánh giá · Xác nhận của quản lý · Phân loại sẵn sàng</p>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">System Setup (Mirror Module)</h4>
-                <ul class="text-sm text-gray-700 space-y-1">
-                  <li>• Separate from Performance; role‑based access; mock‑data UAT.</li>
-                  <li>• Define features & UX with CN System Team.</li>
-                  <li>• Files: System_Module_Feature_List.xlsx; UI_Wireframe_Sample.pdf</li>
-                </ul>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Part A – Candidate Self‑Assessment (1–5)</h4>
-                <ul class="text-sm text-gray-700 space-y-1">
-                  <li>• 1–2: describe gaps; 3: meets + improve; 4–5: SBI examples.</li>
-                  <li>• Map current experience to job qualifications.</li>
-                </ul>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Part B – Manager Validation & Readiness</h4>
-                <p class="text-sm text-gray-700">Assign: Ready Now (≤6m) · Ready Soon (≤2y) · Development Needed (>2y) · Not Ready. Comments visible to candidates; readiness visible to AHR & HoD only.</p>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Part C – Gap Summary & Dashboard</h4>
-                <ul class="text-sm text-gray-700 space-y-1"><li>• Template_Gap_Analysis_Sheet.xlsx</li><li>• Gap_Analysis_Summary_Report_DeptName.xlsx</li><li>• PowerBI_Gap_Tracking_Layout.pdf</li></ul>
-              </div>
-              <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-semibold mb-2">Part D – Talent Pool Announcement</h4>
-                <p class="text-sm text-gray-700">Ready Now & Ready Soon → Talent Pool; Development Needed → Talent Watch; Not Ready → Thank‑you + feedback pointers. (Email_Talent_Pool_Confirmation.docx)</p>
-              </div>
-              <div class="bg-ashley-orange/10 p-4 rounded-lg">
-                <h4 class="font-semibold text-ashley-orange mb-2">Interactive Demo (10’)</h4>
-                <p class="text-sm text-gray-700">Self‑rate 3 competencies → leader adjusts → assign readiness → update gap sheet.</p>
-              </div>
+
+<!-- STEP 3 CONTENT -->
+<div id="step-3" class="step-content hidden">
+  <div class="bg-white rounded-xl border p-6 mb-6">
+    <h3 class="text-2xl font-bold text-gray-900 mb-2">STAGE 3: Gap Assessment</h3>
+    <p class="text-gray-600 mb-6">
+      To <strong>evaluate the readiness and development gaps of endorsed candidates</strong> 
+      through structured self-assessment and HoD validation, comparing their current capabilities 
+      against the defined Success Profile — with the goal of <strong>identifying a focused group 
+      of high-potential, high-readiness successors</strong> for prioritized and targeted 
+      development investment.
+    </p>
+
+ <!-- PART A (reworked) -->
+<details class="group bg-orange-50 border-l-4 border-ashley-orange rounded-r-lg mb-5">
+  <summary class="flex items-center justify-between cursor-pointer select-none px-5 py-3">
+    <span class="font-semibold text-ashley-orange text-base flex items-center gap-2">
+      📝 Part A – Candidate Self-Assessment
+    </span>
+    <svg class="h-5 w-5 text-ashley-orange transition-transform duration-200 ease-out group-open:rotate-90">
+      <path fill="currentColor"
+        d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.12l3.71-2.89a.75.75 0 1 1 1.04 1.08l-4.24 3.31a.75.75 0 0 1-.93 0L5.21 8.31a.75.75 0 0 1 .02-1.1z"/>
+    </svg>
+  </summary>
+
+  <div class="px-5 pb-4 pt-1 text-sm text-gray-800">
+	<p class="mb-3">
+	  Candidates self-assess their <strong>competency levels</strong> and <strong>job qualifications</strong> 
+	  based on the <strong> targeted successor position</strong>,
+	  identifying key strengths and development actions.
+	</p>
+<!-- 2 orange action buttons -->
+<div class="grid md:grid-cols-2 gap-3">
+  <!-- Button 1 -->
+  <button type="button" id="btnOpenCompetency"
+    class="w-full text-left rounded-xl border border-orange-200 bg-white/70 hover:bg-white hover:border-ashley-orange transition p-4 shadow-sm">
+    <div class="flex items-center justify-between mb-0.5">
+      <h4 class="font-semibold text-gray-900 leading-tight">For Competency Requirements</h4>
+      <span class="text-ashley-orange font-medium underline decoration-transparent hover:decoration-inherit">View details</span>
+    </div>
+    <p class="text-gray-600">
+      Self-rate each competency (Scale 1–5) and explain the chosen rating.
+    </p>
+  </button>
+
+  <!-- Button 2 -->
+  <button type="button" id="btnOpenJQ"
+    class="w-full text-left rounded-xl border border-orange-200 bg-white/70 hover:bg-white hover:border-ashley-orange transition p-4 shadow-sm">
+    <div class="flex items-center justify-between mb-0.5">
+      <h4 class="font-semibold text-gray-900 leading-tight">For Job Qualifications</h4>
+      <span class="text-ashley-orange font-medium underline decoration-transparent hover:decoration-inherit">View details</span>
+    </div>
+    <p class="text-gray-600">
+      (e.g., education, experience, certifications, tools) — describe how current experience aligns with the listed requirements.
+    </p>
+  </button>
+</div>
+</div>
+</details>
+
+<!-- ===== MODAL: Competency Requirements ===== -->
+<div id="modalCompetency" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/40" data-close="modalCompetency"></div>
+  <div class="relative mx-auto max-w-4xl mt-16 px-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-orange-200 overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-3 bg-orange-50 border-b border-orange-100">
+        <h3 class="text-base font-semibold text-orange-700">Competency Self-Assessment – Instruction</h3>
+        <button class="w-8 h-8 rounded-lg hover:bg-orange-100 text-orange-700" data-close="modalCompetency">✖</button>
+      </div>
+
+      <div class="p-6 text-sm text-gray-800 space-y-5">
+        <!-- Instruction Scale (1–5) with colors -->
+        <section>
+          <div class="font-medium text-gray-900 mb-2">Instruction Scale (1–5): 
+		  Candidate self-rating their <span class="text-ashley-orange">current competency vs. target successor position.</span></div>
+          <div class="grid grid-cols-5 gap-2">
+            <div class="rounded-lg border border-orange-200 bg-orange-50 text-center p-3">
+              <div class="text-lg font-bold text-gray-900">1</div>
+              <div class="text-xs text-gray-700">Far Below</div>
+            </div>
+            <div class="rounded-lg border border-orange-200 bg-orange-50 text-center p-3">
+              <div class="text-lg font-bold text-gray-900">2</div>
+              <div class="text-xs text-gray-700">Below</div>
+            </div>
+            <div class="rounded-lg border border-orange-300 bg-orange-100 text-center p-3">
+              <div class="text-lg font-bold text-gray-900">3</div>
+              <div class="text-xs text-gray-700">Meets Expectations</div>
+            </div>
+            <div class="rounded-lg border border-orange-400 bg-orange-200 text-center p-3">
+              <div class="text-lg font-bold text-gray-900">4</div>
+              <div class="text-xs text-gray-700">Above</div>
+            </div>
+            <div class="rounded-lg border border-orange-500 bg-orange-200 text-center p-3">
+              <div class="text-lg font-bold text-gray-900">5</div>
+              <div class="text-xs text-gray-700">Far Above</div>
             </div>
           </div>
+        </section>
+
+        <!-- What to explain for each rating (aligned to the scale colors) -->
+        <section>
+          <div class="font-medium text-gray-900 mb-2">What to explain for each rating</div>
+          <div class="grid grid-cols-5 gap-2">
+            <!-- 1–2 (light) -->
+            <div class="col-span-2 rounded-lg border border-orange-200 bg-orange-50 p-4 text-center">
+              <div class="font-semibold mb-1">If 1–2</div>
+              <div class="text-gray-800 text-xs">Describe the main gaps or challenges.</div>
+            </div>
+            <!-- 3 (medium) -->
+            <div class="col-span-1 rounded-lg border border-orange-300 bg-orange-100 p-4 text-center">
+              <div class="font-semibold mb-1">If 3</div>
+              <div class="text-gray-800 text-xs">Explain what is met and areas for improvement.</div>
+            </div>
+            <!-- 4–5 (deep) -->
+            <div class="col-span-2 rounded-lg border border-orange-400 bg-orange-200 p-4 text-center">
+              <div class="font-semibold mb-1">If 4–5</div>
+              <div class="text-gray-800 text-xs">Provide specific examples showing strengths beyond expectations.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SBI Example table tinted by groups -->
+        <section>
+		<div class="font-medium text-gray-900 mb-2">
+		  <span class="text-ashley-orange">Example</span>
+		   – How to explain a candidate’s self-rating for the 
+		  <span class="text-ashley-orange">Communication</span> competency
+		</div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm bg-white border border-gray-200 rounded-lg">
+              <thead class="bg-gray-50 text-gray-600">
+                <tr>
+                  <th class="px-3 py-2 text-left w-48">Rating</th>
+                  <th class="px-3 py-2 text-left">Example (using SBI format)</th>
+                </tr>
+              </thead>
+				 <tbody class="divide-y">
+				  <!-- 1–2 -->
+				  <tr class="bg-orange-100/50">
+				    <td class="px-3 py-2 font-medium">1–2 (Far Below / Below)</td>
+				    <td class="px-3 py-2 text-xs text-gray-800">
+				      <strong>Situation:</strong> During several team meetings, some updates I shared often led to confusion.<br>
+				      <strong>Behavior:</strong> I tended to speak too quickly and skip supporting data, without checking understanding.<br>
+				      <strong>Impact:</strong> As a result, team members frequently misunderstood priorities and follow-up tasks had to be clarified afterward.
+				    </td>
+				  </tr>
+				
+				  <!-- 3 -->
+				  <tr class="bg-orange-100/90">
+				    <td class="px-3 py-2 font-medium">3 (Meets)</td>
+				    <td class="px-3 py-2 text-xs text-gray-800">
+				      <strong>Situation:</strong> In regular HR briefings, I summarize key updates from management.<br>
+				      <strong>Behavior:</strong> I usually prepare slides and communicate clearly, allowing time for Q&amp;A — though sometimes my materials are too text-heavy.<br>
+				      <strong>Impact:</strong> The team generally understands the message, but engagement could improve with more visuals and interactive sharing.
+				    </td>
+				  </tr>
+				
+				  <!-- 4–5 -->
+				  <tr class="bg-orange-200/80">
+				    <td class="px-3 py-2 font-medium">4–5 (Above / Far Above)</td>
+				    <td class="px-3 py-2 text-xs text-gray-800">
+				      <strong>Situation:</strong> Across multiple townhall sessions and leadership meetings, I’ve been selected to present HR strategy topics such as the Succession Planning Framework.<br>
+				      <strong>Behavior:</strong> I consistently use clear visuals, storytelling, and bilingual summaries to ensure understanding across regions.<br>
+				      <strong>Impact:</strong> Presentations are regularly referenced by HoDs afterward, indicating strong message clarity and sustained communication effectiveness.
+				    </td>
+				  </tr>
+				</tbody>
+
+            </table>
+			<p class="mt-3 text-xs text-gray-600 italic">
+			  🔸 <strong>Note:</strong> The SBI examples above illustrate how candidates can explain their ratings. 
+			  Each rating level (1–5) should reflect the <strong>consistent, observable behavior and performance</strong> 
+			  over time — not a single event, success, or mistake.
+			</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="px-6 py-3 bg-gray-50 border-t flex justify-end">
+        <button class="inline-flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-1.5 rounded-lg" data-close="modalCompetency">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== MODAL: Job Qualifications ===== -->
+<div id="modalJQ" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/40" data-close="modalJQ"></div>
+  <div class="relative mx-auto max-w-4xl mt-16 px-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-orange-200 overflow-hidden">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 py-3 bg-orange-50 border-b border-orange-100">
+        <h3 class="text-base font-semibold text-orange-700">Job Qualifications – Alignment</h3>
+        <button class="w-8 h-8 rounded-lg hover:bg-orange-100 text-orange-700" data-close="modalJQ">✖</button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6 text-sm text-gray-800 space-y-4">
+        <!-- Question with info icon -->
+        <div class="flex items-start gap-3">
+          <div class="flex-1">
+            <div class="font-medium text-gray-900 mb-1">Question:</div>
+            <p>
+              Describe how your current experience aligns with the job qualifications defined in the 
+              <strong>Successor Profile</strong> of the intended successor role 
+              (e.g., education, years of experience, certifications, tools, and communication skills).
+            </p>
+          </div>
+          <button id="toggleJQInfo"
+		  class="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-lg border border-orange-300 
+		  bg-orange-100 text-ashley-orange hover:bg-orange-200"
+            title="Reference – Job Qualifications">
+            i
+          </button>
         </div>
+
+        <!-- Collapsible Reference box (moved between Question and Example Answer) -->
+        <div id="jqInfoBox" class="hidden border border-yellow-300 bg-yellow-50 rounded-lg p-4">
+          <div class="font-medium text-ashley-orange mb-2">Reference: Job Qualifications — HR Senior Team Leader</div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm bg-white border border-gray-200 rounded-lg">
+              <thead class="bg-gray-50 text-gray-600">
+                <tr>
+                  <th class="px-3 py-2 text-left w-56">Field</th>
+                  <th class="px-3 py-2 text-left">Requirement Summary</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y">
+                <tr>
+                  <td class="px-3 py-2 font-medium">Years of Experience</td>
+                  <td class="px-3 py-2">7–10 years of progressive HR experience, including at least 3 years in a supervisory role</td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2 font-medium">Education</td>
+                  <td class="px-3 py-2">Bachelor’s in HR/Business or related; MBA preferred</td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2 font-medium">Certifications</td>
+                  <td class="px-3 py-2">SHRM-CP/SHRM-SCP, CIPD Level 5/7, or equivalent HR certification (preferred)</td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2 font-medium">Technical Knowledge</td>
+                  <td class="px-3 py-2">HRIS (SAP SuccessFactors, Workday), labor law compliance, performance mgmt, talent development frameworks</td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2 font-medium">Language / Communication</td>
+                  <td class="px-3 py-2">Fluent in English &amp; Vietnamese; strong presentation, reporting, and cross-cultural communication</td>
+                </tr>
+                <tr>
+                  <td class="px-3 py-2 font-medium">Other Requirements</td>
+                  <td class="px-3 py-2">Willing to travel across Asia sites; strong stakeholder management; multicultural experience</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Example Answer -->
+        <div class="rounded-lg border bg-white p-4">
+		<div class="font-medium text-sm text-gray-900 mb-1">
+            Example Answer – Candidate applying for <span class="text-ashley-orange font-semibold">HR Senior Team Leader</span>:
+          </div>
+          <p>
+            I have 6 years of HR experience, including 2 years in a supervisory role. I hold a Bachelor’s in Business Administration and recently started pursuing a SHRM-CP certification to strengthen my HR technical foundation. While I’ve gained practical experience in recruitment, employee relations, and performance management, I still need to build more exposure in HRIS systems and cross-country collaboration. I’m fluent in English and Vietnamese and currently supporting Asia-wide HR reporting, which helps me develop regional communication and stakeholder management skills.
+          </p>
+        </div>
+
+        <!-- Development note -->
+        <p class="mt-2 text-xs text-gray-600 italic">
+          🔸 <strong>Note:</strong> This example demonstrates a realistic self-assessment. 
+          Candidates should highlight both <strong>existing strengths</strong> and <strong>areas for growth</strong> 
+          to help identify meaningful development actions for future readiness.
+        </p>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-3 bg-gray-50 border-t flex justify-end">
+        <button class="inline-flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-1.5 rounded-lg"
+                data-close="modalJQ">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== Scripts: open/close + toggle info ===== -->
+<script>
+  // Open modals
+  document.getElementById('btnOpenCompetency')?.addEventListener('click', () => {
+    document.getElementById('modalCompetency')?.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  });
+  document.getElementById('btnOpenJQ')?.addEventListener('click', () => {
+    document.getElementById('modalJQ')?.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  });
+
+  // Close modals (by button or backdrop)
+  document.querySelectorAll('[data-close="modalCompetency"]').forEach(el =>
+    el.addEventListener('click', () => {
+      document.getElementById('modalCompetency')?.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    })
+  );
+  document.querySelectorAll('[data-close="modalJQ"]').forEach(el =>
+    el.addEventListener('click', () => {
+      document.getElementById('modalJQ')?.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    })
+  );
+
+  // ESC to close
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.getElementById('modalCompetency')?.classList.add('hidden');
+      document.getElementById('modalJQ')?.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+  });
+
+  // Toggle JQ info box
+  document.getElementById('toggleJQInfo')?.addEventListener('click', () => {
+    const box = document.getElementById('jqInfoBox');
+    if (!box) return;
+    box.classList.toggle('hidden');
+  });
+</script>
+
+		<!-- PART B -->
+		<details class="group bg-green-50 border-l-4 border-green-500 rounded-r-lg mb-4">
+		  <summary class="flex items-center justify-between cursor-pointer select-none px-5 py-3">
+		    <span class="font-semibold text-green-700 text-base flex items-center gap-2">
+		      ✅ Part B – HoD / Manager Validation
+		    </span>
+		    <svg class="h-5 w-5 text-green-600 transition-transform duration-200 ease-out group-open:rotate-90">
+		      <path fill="currentColor"
+		        d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.12l3.71-2.89a.75.75 0 1 1 1.04 1.08l-4.24 3.31a.75.75 0 0 1-.93 0L5.21 8.31a.75.75 0 0 1 .02-1.1z" />
+		    </svg>
+		  </summary>
+		
+		  <div class="px-5 pb-4 pt-1 text-sm text-gray-800">
+		    <p class="mb-2">
+		      HoD reviews candidate self-ratings, adjusts if needed, and assigns readiness with 
+		      written comments to support each evaluation.
+		    </p>
+		    <ul class="list-disc pl-5 space-y-1 mb-4">
+		      <li><strong>Ready Now (≤ 6 months):</strong> Can step into the role with minimal transition.</li>
+		      <li><strong>Ready Soon (≤ 2 years):</strong> Strong potential; needs focused development.</li>
+		      <li><strong>Development Needed (> 2 years):</strong> Motivated but requires significant growth.</li>
+		      <li><strong>Not Ready:</strong> Not suitable for succession at this time; feedback still provided.</li>
+		    </ul>
+			<p class="text-xs text-gray-500 mt-3">
+		      *Candidates can view comments and adjusted ratings; the <em>readiness level</em> 
+		      is visible to AHR &amp; HoD only.
+		    </p>
+		
+		
+	<!-- WORKSHOP NOTE (formatted like Important notes box) -->
+	<div class="border border-green-300 bg-white rounded-lg p-4 mt-3">
+	  <p class="font-medium text-green-700 mb-2">Training sessions planned for this stage:</p>
+	  <ul class="list-disc pl-5 space-y-1 text-sm text-gray-800">
+	    <li>
+	      <strong>AHR hosts a Candidate Orientation Workshop</strong> before the Gap Assessment stage to introduce program goals, 
+	      equip candidates to complete self-assessment & understand expectations, and train them to provide 
+	      structured explanations using the <strong>SBI (Situation–Behavior–Impact)</strong> method.
+	    </li>
+	    <li>
+	      An optional <strong>Manager Validation Workshop</strong> is also conducted to instruct HoDs and managers 
+	      on how to validate assessments, provide constructive written feedback, and apply the 
+	      <strong>Readiness Scale</strong> consistently across departments.
+	    </li>
+	  </ul>
+	</div>
+	</div>
+	</details>
+
+    <!-- PART C -->
+   <details class="group bg-blue-50 border-l-4 border-blue-500 rounded-r-lg mb-4">
+      <summary class="flex items-center justify-between cursor-pointer select-none px-5 py-3">
+        <span class="font-semibold text-blue-700 text-base flex items-center gap-2">
+          📊 Part C – Gap Summary & Talent Pool Confirmation
+        </span>
+        <svg class="h-5 w-5 text-blue-600 transition-transform duration-200 ease-out group-open:rotate-90">
+          <path fill="currentColor"
+            d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.12l3.71-2.89a.75.75 0 1 1 1.04 1.08l-4.24 3.31a.75.75 0 0 1-.93 0L5.21 8.31a.75.75 0 0 1 .02-1.1z" />
+        </svg>
+      </summary>
+
+      <div class="px-5 pb-4 pt-1 text-sm text-gray-800 space-y-2">
+        <p>
+          AHR consolidates validated results into department-level 
+          <strong>Gap Analysis Reports</strong> to visualize capability gaps, 
+          readiness distribution, and development priorities.
+        </p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li><em>Template_Gap_Analysis_Sheet.xlsx</em></li>
+          <li><em>Gap_Analysis_Summary_Report_[DeptName]_2025.xlsx</em></li>
+          <li><em>PowerBI_Gap_Tracking_Layout.pdf</em></li>
+        </ul>
+        <p class="mt-3">
+          Based on readiness results, candidates are then classified into:
+        </p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li><strong>Talent Pool:</strong> “Ready Now” &amp; “Ready Soon” → proceed to IDP Execution.</li>
+          <li><strong>Talent Watch:</strong> “Development Needed” → long-term development tracking.</li>
+          <li><strong>Not Ready:</strong> Thank-you email + personalized feedback pointers.</li>
+        </ul>
+        <p class="text-xs text-gray-600 mt-2">
+          📎 Attached: <em>Email_Talent_Pool_Confirmation.docx</em>
+        </p>
+      </div>
+    </details>
+
+    <!-- STAGE 3 SUMMARY LINE -->
+    <div class="border-2 border-ashley-orange rounded-2xl p-4 bg-white text-sm text-gray-800 shadow-sm">
+      <span class="font-bold text-ashley-orange">Part A</span>
+      <span class="font-bold"> captures candidate self-assessment evidence, </span>
+      <span class="font-bold text-green-700">Part B</span>
+      <span class="font-bold"> validates and assigns readiness, </span>
+      <span class="font-bold text-blue-700">Part C</span>
+      <span class="font-bold"> consolidates gap findings and finalizes the Talent Pool &amp; Watch List for Stage 4 – IDP Execution.</span>
+    </div>
+  </div>
+</div>
 
         <!-- STAGE 4 CONTENT -->
         <div id="step-4" class="step-content hidden">

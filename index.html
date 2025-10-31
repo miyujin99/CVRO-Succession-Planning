@@ -1909,7 +1909,21 @@ function clearCards(){
     <div class="px-5 pb-4 pt-1 text-sm text-gray-800">
       <p class="mb-3">From successor applications, HoDs receive <strong>segmented lists</strong> for review:</p>
 
-		 Internal
+		 <!-- Equal-width cards -->
+		<div class="grid md:grid-cols-3 gap-4 mb-4">
+		  <div class="bg-ashley-orange text-white p-4 rounded-xl text-center font-semibold shadow-sm">
+		    Internal Applicants<br>
+		    <span class="text-sm opacity-90">(same department)</span>
+		  </div>
+		  <div class="bg-amber-600 text-white p-4 rounded-xl text-center font-semibold shadow-sm">
+		    Incoming Applicants<br>
+		    <span class="text-sm opacity-90">(from other departments)</span>
+		  </div>
+		  <div class="bg-orange-700 text-white p-4 rounded-xl text-center font-semibold shadow-sm">
+		    Outgoing Applicants<br>
+		    <span class="text-sm opacity-90">(to other departments)</span>
+		  </div>
+		</div>
 		
 		<!-- Review process list -->
 		<ul class="list-disc pl-5 text-gray-800 space-y-1 mb-4">
@@ -1964,7 +1978,7 @@ function clearCards(){
       <!-- Header -->
       <div class="flex items-center justify-between px-6 py-3 bg-orange-50 border-b border-orange-100">
         <h3 class="text-base font-semibold text-orange-700">
-          🧩 Example Scenario – HoD Review & Position Matching
+          🧩 Round 3 Example Scenario – HoD Review & Position Matching
         </h3>
         <button id="btnCloseExample"
           class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-orange-100 text-orange-700"
@@ -2032,7 +2046,7 @@ function clearCards(){
                   <tr>
                     <td class="px-3 py-2">Le C</td>
                     <td class="px-3 py-2">Outgoing</td>
-                    <td class="px-3 py-2">Moderate</td>
+                    <td class="px-3 py-2">Low</td>
                     <td class="px-3 py-2">
                       <span class="inline-flex items-center gap-1 text-gray-600 font-medium">
                         <span>⏳</span> Not prioritized (this cycle)
@@ -2068,7 +2082,7 @@ function clearCards(){
         <!-- Practical guidance -->
         <p class="text-gray-700">
           In actual practice, HoDs will complete this process in the Excel file
-          <strong>“HoD Role Matching Template”</strong>. A <em>How-to Video</em> will be available at this stage.
+          <strong>“HoD Role Matching Template”</strong>. A <em>How-to Video</em> will be provided to guide to complete the file.
         </p>
 
         <p>
@@ -2091,19 +2105,51 @@ function clearCards(){
 
 <!-- ============ Script ============ -->
 <script>
-  const unlockAt = new Date('2025-01-21T00:00:00+07:00').getTime(); // thời gian mở nút
+  /* ===== Modal logic (OPEN/CLOSE) ===== */
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal      = document.getElementById('exampleModal');
+    const openBtn    = document.getElementById('btnOpenExample');
+    const closeBtn   = document.getElementById('btnCloseExample');
+    const closeBtn2  = document.getElementById('btnCloseExample2');
+    const backdrop   = document.getElementById('exampleBackdrop');
+
+    function openModal() {
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('overflow-hidden');
+    }
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    if (openBtn)   openBtn.addEventListener('click', openModal);
+    if (closeBtn)  closeBtn.addEventListener('click', closeModal);
+    if (closeBtn2) closeBtn2.addEventListener('click', closeModal);
+    if (backdrop)  backdrop.addEventListener('click', closeModal);
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) closeModal();
+    });
+  });
+
+  /* ===== How-to Video timer (enable button on/after unlockAt) ===== */
+  const unlockAt = new Date('2026-01-21T00:00:00+07:00').getTime();//giờ video
   const videoBtn = document.getElementById('btnHowToVideo');
   const videoBadge = document.getElementById('videoBadge');
 
   function updateVideoState() {
+    if (!videoBtn) return;
     const now = Date.now();
     if (now >= unlockAt) {
-      // Enable: đổi màu cam, bỏ pointer-events-none & opacity
+      // Enable + restyle
       videoBtn.classList.remove('bg-white','text-[#F68C2C]','border','border-[#F68C2C]','hover:bg-orange-50','pointer-events-none','opacity-60');
       videoBtn.classList.add('bg-[#F68C2C]','hover:bg-[#E67A1A]','text-white','shadow-sm');
       if (videoBadge) videoBadge.style.display = 'none';
     } else {
-      // Locked: trắng + badge
+      // Locked
       if (videoBadge) {
         videoBadge.textContent = '⏳ Opens soon';
         videoBadge.style.display = 'inline-flex';
@@ -2112,11 +2158,10 @@ function clearCards(){
     }
   }
 
- document.addEventListener('DOMContentLoaded', () => {
-  updateVideoState();
-  setInterval(updateVideoState, 60000);
-});
-
+  document.addEventListener('DOMContentLoaded', () => {
+    updateVideoState();
+    setInterval(updateVideoState, 60000);
+  });
 </script>
       </div>
   </details>
